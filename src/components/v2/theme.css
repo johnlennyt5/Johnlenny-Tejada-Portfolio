@@ -1378,3 +1378,14 @@ html[data-motion="off"] .v2-root .v2-film-track {
 html[data-motion="off"] .v2-root .v2-film-card {
   width: min(100%, 28rem);
 }
+
+/* ---------- Rendering budget ---------- */
+
+/* Below the fold, each section skips style, layout and paint until it nears the screen.
+   The clip margin keeps shadows and overhanging art from being cut at the section edges
+   (content-visibility brings paint containment with it). */
+.v2-root main > section:not(:first-child):not(.v2-film) {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 1000px;
+  overflow-clip-margin: 4rem;
+}

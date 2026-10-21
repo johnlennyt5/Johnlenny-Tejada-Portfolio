@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CopyEmail, ResumeButton } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { diagramsById } from "@/components/shared/diagrams";
 import { projects, type Project } from "@/content";
 import { routes } from "@/lib/site";
@@ -153,7 +154,7 @@ export function CaseStudy({ project }: { project: Project }) {
         </section>
 
         {DiagramView ? (
-          <div className="px-4 pb-8 sm:px-8 lg:px-14">
+          <div className="v3-cv px-4 pb-8 sm:px-8 lg:px-14">
             <Reveal>
               <Window title="process-map.svg" className="max-w-6xl" bodyClassName="p-4 sm:p-8">
                 <DiagramView caption={`${project.name}: how the pieces connect.`} />

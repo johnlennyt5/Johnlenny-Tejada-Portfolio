@@ -4,7 +4,8 @@ import { fontClassName } from "./fonts";
 import "./theme.css";
 
 /**
- * v4 wrapper: fonts, theme tokens and the skip link.
+ * v4 wrapper: fonts, theme tokens and the skip link. framer-motion is loaded only by the islands
+ * that use it (ChapterBook, Bookmark), each inside its own MotionFeatures.
  * Used by src/app/v4/layout.tsx only.
  */
 export function V4Shell({ children }: { children: ReactNode }) {

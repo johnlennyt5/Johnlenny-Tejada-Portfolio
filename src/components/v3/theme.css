@@ -1309,3 +1309,15 @@ html[data-motion="off"] .v3-root .v3-btn:hover {
     padding-left: 0 !important;
   }
 }
+
+/* ---------- Rendering budget ---------- */
+
+/* Below the fold, each node body (and other marked blocks) skips style, layout and paint until
+   it nears the screen. Rail markers sit outside the body, so they are never clipped; the clip
+   margin keeps card shadows and the rise transform's overhang visible. */
+.v3-root .v3-node-body,
+.v3-root .v3-cv {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 900px;
+  overflow-clip-margin: 3rem;
+}

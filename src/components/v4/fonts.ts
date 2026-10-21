@@ -38,13 +38,16 @@ export const displayItalic = Fraunces({
  * Body serif. It sets the LCP text (the hero intro), so it is the only preloaded file.
  * Weights 400 and 600 only, no optical-size axis. Google serves one wght-only file for the pair,
  * so the 600 labels and buttons cost nothing extra; 700 requests resolve to the 600 face.
+ * Display "optional", like Fraunces: the preloaded file is almost always in before first paint,
+ * and when it is not, the page keeps the metric-matched fallback instead of swapping late,
+ * which would re-lay the hero and push the largest paint back behind the scripts.
  */
 export const body = Source_Serif_4({
   subsets: ["latin"],
   style: "normal",
   weight: ["400", "600"],
   variable: "--font-v4-body",
-  display: "swap",
+  display: "optional",
 });
 
 /** Chapter captions only, all below the fold. One static weight: 51 KB, the variable pair was 75 KB. */

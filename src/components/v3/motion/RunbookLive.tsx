@@ -2,6 +2,7 @@
 
 import { m, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useRef, type CSSProperties } from "react";
+import { MotionFeatures } from "@/components/shared/MotionFeatures";
 import {
   BOX_H,
   BOX_W,
@@ -93,33 +94,35 @@ export function RunbookLive({ steps }: { steps: RunbookStep[] }) {
   const d = pathData(points);
 
   return (
-    <div ref={ref} className="v3-pin" data-pin="on" style={{ "--steps": n } as CSSProperties}>
-      <div className="v3-pin-stage">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]">
-          <ol className="v3-steps">
-            {steps.map((s, i) => (
-              <StepText key={s.title} step={s} i={i} n={n} progress={progress} />
-            ))}
-          </ol>
-          <div aria-hidden="true">
-            <svg viewBox={`0 0 ${W} ${H}`} className="v3-sm block h-auto w-full max-w-[30rem]" focusable="false">
-              <path d={d} fill="none" stroke="var(--c-line-strong)" strokeWidth={2} strokeDasharray="6 6" />
-              <m.path d={d} fill="none" stroke="var(--c-ok)" strokeWidth={2.5} style={{ pathLength: drawn }} />
-              <circle cx={START[0]} cy={START[1]} r={11} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={2} />
-              <circle cx={END[0]} cy={END[1]} r={13} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={4.5} />
+    <MotionFeatures>
+      <div ref={ref} className="v3-pin" data-pin="on" style={{ "--steps": n } as CSSProperties}>
+        <div className="v3-pin-stage">
+          <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]">
+            <ol className="v3-steps">
               {steps.map((s, i) => (
-                <StateNode key={s.title} i={i} n={n} title={s.title} progress={progress} />
+                <StepText key={s.title} step={s} i={i} n={n} progress={progress} />
               ))}
-              <m.g style={{ x: tx, y: ty }}>
-                <rect x={-15} y={-15} width={30} height={30} rx={7} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={2} />
-                <text x={0} y={4.5} textAnchor="middle" fontSize={11} fontWeight={800} className="v3-sm-num" fill="var(--c-ok)">
-                  JT
-                </text>
-              </m.g>
-            </svg>
+            </ol>
+            <div aria-hidden="true">
+              <svg viewBox={`0 0 ${W} ${H}`} className="v3-sm block h-auto w-full max-w-[30rem]" focusable="false">
+                <path d={d} fill="none" stroke="var(--c-line-strong)" strokeWidth={2} strokeDasharray="6 6" />
+                <m.path d={d} fill="none" stroke="var(--c-ok)" strokeWidth={2.5} style={{ pathLength: drawn }} />
+                <circle cx={START[0]} cy={START[1]} r={11} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={2} />
+                <circle cx={END[0]} cy={END[1]} r={13} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={4.5} />
+                {steps.map((s, i) => (
+                  <StateNode key={s.title} i={i} n={n} title={s.title} progress={progress} />
+                ))}
+                <m.g style={{ x: tx, y: ty }}>
+                  <rect x={-15} y={-15} width={30} height={30} rx={7} fill="var(--c-bg)" stroke="var(--c-ok)" strokeWidth={2} />
+                  <text x={0} y={4.5} textAnchor="middle" fontSize={11} fontWeight={800} className="v3-sm-num" fill="var(--c-ok)">
+                    JT
+                  </text>
+                </m.g>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </MotionFeatures>
   );
 }

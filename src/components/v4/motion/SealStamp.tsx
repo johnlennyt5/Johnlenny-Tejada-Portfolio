@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Monogram } from "@/components/shared/Monogram";
+import { MonogramStatic } from "@/components/shared/MonogramStatic";
 
 export interface SealStampProps {
   size?: number | string;
@@ -36,7 +36,7 @@ export function SealStamp({ size = 120, spin = 90, trigger = "load", delay = 0, 
 
   return (
     <div className={classes} style={style}>
-      <Monogram variant="seal" size={size} animate={false} decorative={!title} title={title} />
+      <MonogramStatic variant="seal" size={size} decorative={!title} title={title} />
     </div>
   );
 }

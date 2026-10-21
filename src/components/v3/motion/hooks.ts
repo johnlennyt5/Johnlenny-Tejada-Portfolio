@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { useMotionPreference } from "@/components/shared";
+import { useMotionPreference } from "@/components/shared/MotionToggle";
 
 const noopSubscribe = () => () => undefined;
 

@@ -2,6 +2,7 @@
 
 import { m, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { MotionFeatures } from "@/components/shared/MotionFeatures";
 import { useFlag, useReduced } from "./hooks";
 
 export interface ChapterMark {
@@ -60,7 +61,8 @@ export function ChapterBook({ marks, children }: { marks: ChapterMark[]; childre
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(update);
     };
-    update();
+    // First read on the next frame, not during hydration, so it never forces a layout of its own.
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
@@ -71,27 +73,29 @@ export function ChapterBook({ marks, children }: { marks: ChapterMark[]; childre
   }, [marks, jump]);
 
   return (
-    <div ref={ref} className="v4-book">
-      <div className="v4-book-aside" aria-hidden="true">
-        <div className="v4-book-label">
-          {marks.map((mk, i) => (
-            <m.div
-              key={mk.id}
-              initial={false}
-              animate={{ opacity: i === active ? 1 : 0, y: reduced || i === active ? 0 : i < active ? -18 : 18 }}
-              transition={{ duration: reduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="v4-numeral block text-4xl leading-none">{mk.numeral}</span>
-              <span className="v4-smallcaps mt-2 block text-base text-muted">{mk.years}</span>
-            </m.div>
-          ))}
+    <MotionFeatures>
+      <div ref={ref} className="v4-book">
+        <div className="v4-book-aside" aria-hidden="true">
+          <div className="v4-book-label">
+            {marks.map((mk, i) => (
+              <m.div
+                key={mk.id}
+                initial={false}
+                animate={{ opacity: i === active ? 1 : 0, y: reduced || i === active ? 0 : i < active ? -18 : 18 }}
+                transition={{ duration: reduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="v4-numeral block text-4xl leading-none">{mk.numeral}</span>
+                <span className="v4-smallcaps mt-2 block text-base text-muted">{mk.years}</span>
+              </m.div>
+            ))}
+          </div>
         </div>
+        <div className="v4-thread" aria-hidden="true">
+          <div className="v4-thread-track" />
+          <m.div className="v4-thread-fill" style={{ scaleY: fill }} />
+        </div>
+        <div className="min-w-0">{children}</div>
       </div>
-      <div className="v4-thread" aria-hidden="true">
-        <div className="v4-thread-track" />
-        <m.div className="v4-thread-fill" style={{ scaleY: fill }} />
-      </div>
-      <div className="min-w-0">{children}</div>
-    </div>
+    </MotionFeatures>
   );
 }

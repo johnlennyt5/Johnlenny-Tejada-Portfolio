@@ -16,7 +16,7 @@ const MARKS = ["*", "†", "‡", "§", "¶", "‖"];
 
 function Part({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-6 border-t border-[var(--c-rule)] pt-10 pb-12">
+    <section id={id} aria-labelledby={`${id}-title`} className="v4-cv scroll-mt-6 border-t border-[var(--c-rule)] pt-10 pb-12">
       <RiseWords as="h2" id={`${id}-title`} text={title} className="v4-italic text-[clamp(2rem,4.6vw,3.25rem)] leading-[1.02]" />
       <div className="mt-6">{children}</div>
     </section>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CopyEmail, ResumeButton } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { awards, community, education, experience, profile, skills, timeline } from "@/content";
 import { routes } from "@/lib/site";
 import { Frame } from "./Frame";

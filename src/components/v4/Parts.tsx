@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CopyEmail, ResumeButton } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { awards, community, education, experience, identities, profile, skills } from "@/content";
 import type { Experience } from "@/content";
 import { Ribbon } from "./motion/Ribbon";

@@ -1,4 +1,5 @@
-import { CopyEmail, ResumeButton } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { nowBuilding, primaryIdentity, profile } from "@/content";
 import { HeroStage } from "../motion/Parallax";
 import { Out, Prompt } from "../ui";

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Monogram, MotionToggle, VersionSwitcher } from "@/components/shared";
+import { MonogramStatic } from "@/components/shared/MonogramStatic";
+import { MotionToggle } from "@/components/shared/MotionToggle";
+import { VersionSwitcher } from "@/components/shared/VersionSwitcher";
 import { profile } from "@/content";
 import { ScrollProgress } from "./motion/Parallax";
 
@@ -29,7 +31,7 @@ const BODY_ID = "v3-orch-body";
  *
  * Server rendered. The disclosure and the live statuses are wired by the page's one
  * CanvasDriver (motion/RevealObserver.tsx) through the data-v3-* hooks below, so the panel
- * itself ships no component code; only the shared Monogram, MotionToggle and VersionSwitcher hydrate.
+ * itself ships no component code; only the shared MotionToggle and VersionSwitcher hydrate.
  */
 export function Orchestrator({ queue, items, homeHref, children }: OrchestratorProps) {
   return (
@@ -37,7 +39,7 @@ export function Orchestrator({ queue, items, homeHref, children }: OrchestratorP
       <div className="v3-orch-top">
         <Link href={homeHref} className="flex min-w-0 items-center gap-3 no-underline">
           {/* Static: its stroke draw ran on the main thread at load, alongside the hero typing. */}
-          <Monogram variant="terminal" size={40} decorative animate={false} />
+          <MonogramStatic variant="terminal" size={40} decorative />
           <span className="min-w-0">
             <span className="block truncate font-display text-lg leading-tight font-bold">{profile.name}</span>
             <span className="hidden truncate font-mono text-[0.6875rem] text-muted sm:block lg:block">

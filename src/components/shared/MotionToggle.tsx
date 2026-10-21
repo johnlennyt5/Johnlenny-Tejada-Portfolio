@@ -1,6 +1,5 @@
 "use client";
 
-import { LazyMotion, MotionConfig } from "framer-motion";
 import {
   createContext,
   useCallback,
@@ -53,8 +52,6 @@ function useOsReducedMotion(): boolean {
   return useSyncExternalStore(subscribeReduced, readReduced, () => false);
 }
 
-const loadFeatures = () => import("@/lib/motion-features").then((m) => m.default);
-
 function readStored(): MotionPref | null {
   try {
     const v = window.localStorage.getItem(MOTION_STORAGE_KEY);
@@ -73,9 +70,9 @@ function writeStored(pref: MotionPref): void {
 }
 
 /**
- * Wraps the app in LazyMotion (domAnimation, loaded lazily, strict: use `m.*` components only)
- * and MotionConfig. reducedMotion is "user" by default and "always" once the viewer turns motion off.
- * Also mirrors the choice to <html data-motion="on|off"> for CSS animations.
+ * Holds the viewer's motion choice for the whole app and mirrors it to <html data-motion="on|off">
+ * for CSS animations. It ships no framer-motion: pages that use `m.*` components wrap their tree
+ * in <MotionFeatures> (LazyMotion plus MotionConfig), which reads this choice.
  */
 export function MotionProvider({ children }: { children: ReactNode }) {
   const [pref, setPrefState] = useState<MotionPref>("on");
@@ -101,11 +98,7 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <MotionPrefContext.Provider value={value}>
-      <LazyMotion features={loadFeatures} strict>
-        <MotionConfig reducedMotion={pref === "off" ? "always" : "user"}>{children}</MotionConfig>
-      </LazyMotion>
-    </MotionPrefContext.Provider>
+    <MotionPrefContext.Provider value={value}>{children}</MotionPrefContext.Provider>
   );
 }
 

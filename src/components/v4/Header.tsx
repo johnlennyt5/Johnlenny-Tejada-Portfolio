@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { CopyEmail, Monogram, MotionToggle, ResumeButton, VersionSwitcher } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { MonogramStatic } from "@/components/shared/MonogramStatic";
+import { MotionToggle } from "@/components/shared/MotionToggle";
+import { ResumeButton } from "@/components/shared/ResumeButton";
+import { VersionSwitcher } from "@/components/shared/VersionSwitcher";
 import { profile } from "@/content";
 import { getVersion, routes } from "@/lib/site";
 
@@ -20,7 +24,7 @@ export function Header() {
       <div className="v4-wrap v4-masthead-row py-3">
         <Link href={routes.home("v4")} className="flex min-h-11 min-w-0 items-center gap-3 no-underline">
           <span className="block h-9 w-9 shrink-0 sm:h-11 sm:w-11">
-            <Monogram variant="seal" size="100%" decorative />
+            <MonogramStatic variant="seal" size="100%" decorative className="v4-seal-draw" />
           </span>
           <span className="min-w-0 leading-tight">
             <span className="v4-display block truncate text-base font-semibold whitespace-nowrap min-[400px]:text-lg">{profile.name}</span>
@@ -56,7 +60,7 @@ export function Footer() {
       <div className="v4-wrap grid gap-10 py-14 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="flex items-center gap-4">
-            <Monogram variant="seal" size={64} animate={false} decorative />
+            <MonogramStatic variant="seal" size={64} decorative />
             <p className="v4-italic text-3xl leading-tight">The end, for now.</p>
           </div>
           <p className="mt-4 max-w-md text-muted">

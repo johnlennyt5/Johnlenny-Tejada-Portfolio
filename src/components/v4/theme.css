@@ -1401,3 +1401,89 @@
     padding: 1.75rem;
   }
 }
+
+/* ---------- Rendering budget ---------- */
+
+/* Below the fold, the browser skips style, layout and paint for each block until it nears the
+   screen. The clip margin keeps beads, tape, shadows and tilted paper from being cut at the
+   edges (content-visibility brings paint containment with it). */
+.v4-cv,
+.v4-chapter,
+.v4-root main > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 1400px;
+  overflow-clip-margin: 4rem;
+}
+
+.v4-root main > section#chapters {
+  /* The chapters section holds the sticky label and the thread; each chapter skips on its own. */
+  content-visibility: visible;
+  contain-intrinsic-block-size: none;
+}
+
+/* Phones and tablets: plain paper. The fractal noise tile is a desktop texture. */
+@media (max-width: 1023px) {
+  .v4-root {
+    background-image: none;
+  }
+}
+
+/* The reading thread (case studies): scaleX follows the page's scroll timeline. */
+.v4-reading-thread {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .v4-reading-thread {
+    display: block;
+    transform: scaleX(0);
+    animation: v4-thread-read auto linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  /* The motion switch shortens every animation to an instant; this one is information, so it
+     keeps running on scroll. */
+  html[data-motion="off"] .v4-reading-thread {
+    animation-duration: auto !important;
+  }
+}
+
+@keyframes v4-thread-read {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The masthead seal draws itself on once, stroke by stroke (pathLength 1 on each stroke). */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) .v4-seal-draw path {
+    stroke-dasharray: 1 1;
+    animation: v4-seal-draw 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html:not([data-motion="off"]) .v4-seal-draw path:nth-of-type(2) {
+    animation-delay: 250ms;
+  }
+
+  html:not([data-motion="off"]) .v4-seal-draw path:nth-of-type(3) {
+    animation-delay: 500ms;
+  }
+
+  html:not([data-motion="off"]) .v4-seal-draw path:nth-of-type(4) {
+    animation-delay: 750ms;
+  }
+}
+
+@keyframes v4-seal-draw {
+  from {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

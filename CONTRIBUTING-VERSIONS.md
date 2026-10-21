@@ -40,7 +40,7 @@ If you need a new fact, number, or shared feature, write the request down; do no
 
 ## Shared APIs
 
-Import from `@/content`, `@/components/shared` and `@/lib/*`.
+Import from `@/content`, `@/components/shared` and `@/lib/*`. On pages that should stay free of framer-motion, import shared components by file (for example `@/components/shared/CopyEmail`): a server component that imports the barrel pulls every shared client component into the page's bundle.
 
 ### Content (`@/content`)
 
@@ -64,10 +64,12 @@ Import from `@/content`, `@/components/shared` and `@/lib/*`.
 | Component | Props | Notes |
 |---|---|---|
 | `Monogram` | `variant` (`editorial`, `cinematic`, `terminal`, `seal`), `size`, `animate`, `delay`, `duration`, `title`, `decorative`, `className` | SVG "JT" drawn on with `pathLength`; static under reduced motion or when the toggle is off. Colors: `--mono-ink`, `--mono-paper`, `--mono-accent`. The terminal caret blinks via `.jt-caret`. |
+| `MonogramStatic` | same as `Monogram` without `animate`, `delay`, `duration` | The finished mark as a server component: no JavaScript and no framer-motion. Use it wherever the mark never draws on. Each stroke has `pathLength` 1 for a CSS draw-on. |
 | `VersionSwitcher` | `current?`, `display` (`compact` or `full`), `label`, `className` | Links to `/vN/`. Detects the version from the URL; `/` counts as v3. Style with `--vs-fg`, `--vs-line`, `--vs-accent`, `--vs-on-accent` or your own class. |
 | `CopyEmail` | `label`, `copiedLabel`, `className`, `showAddress`, `addressClassName` | Assembles the address in the browser only, copies it, announces the result in a polite live region, and reveals the address if the clipboard is blocked. Never write the address or a `mailto:` link yourself. |
 | `MotionToggle` | `label`, `onText`, `offText`, `className` | A `role="switch"` button. Persists to localStorage (guarded), sets `html[data-motion]`. |
-| `MotionProvider`, `useMotionPreference()` | | The provider is already in the root layout (LazyMotion with `domAnimation`, `strict`, plus `MotionConfig`). Use `m.*` components, never `motion.*`. `useMotionPreference().reduced` is true when the OS asks for reduced motion or the viewer turned motion off. |
+| `MotionProvider`, `useMotionPreference()` | | The provider is already in the root layout. It holds the motion choice only and ships no framer-motion. `useMotionPreference().reduced` is true when the OS asks for reduced motion or the viewer turned motion off. |
+| `MotionFeatures` | `children` | LazyMotion (`domAnimation`, `strict`) plus `MotionConfig`. Wrap any tree that renders `m.*` components in it (v1 and v2 do it in their Shell; v3 and v4 only around the islands that need it), so pages animated with CSS alone never download framer-motion. Use `m.*` components, never `motion.*`. |
 | `SkipLink` | `targetId`, `label`, `className` | Already rendered by each Shell |
 | `ResumeButton` | `mode` (`download` or `open`), `className`, `children` | Links to `/resume/Johnlenny_Tejada_Resume.pdf` |
 | `TruckWhatDiagram`, `PrismShiftDiagram`, `IlopDiagram`, `diagramsById[project.diagram]` | `className`, `layout` (`auto`, `wide`, `tall`), `caption` | Server-rendered SVG figures. `auto` switches to a tall layout when the container is under 560px wide. Theme with `--dg-bg`, `--dg-fg`, `--dg-muted`, `--dg-line`, `--dg-node`, `--dg-node-stroke`, `--dg-accent` (AI agents), `--dg-accent-2` (human steps), `--dg-group`, `--dg-font`, `--dg-mono`. |

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
-import { CopyEmail, Monogram, MotionToggle, ResumeButton, VersionSwitcher } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { MonogramStatic } from "@/components/shared/MonogramStatic";
+import { MotionToggle } from "@/components/shared/MotionToggle";
+import { ResumeButton } from "@/components/shared/ResumeButton";
+import { VersionSwitcher } from "@/components/shared/VersionSwitcher";
 import { profile } from "@/content";
 import { getVersion, routes } from "@/lib/site";
 import { CanvasDriver } from "./motion/RevealObserver";
@@ -63,7 +67,7 @@ export function Footer() {
       <div className="grid gap-10 md:grid-cols-[1.2fr_1fr]">
         <div>
           <div className="flex items-center gap-4">
-            <Monogram variant="terminal" size={56} decorative animate={false} />
+            <MonogramStatic variant="terminal" size={56} decorative />
             <div>
               <p className="font-display text-2xl font-bold leading-tight">{profile.name}</p>
               <p className="font-mono text-xs text-muted">

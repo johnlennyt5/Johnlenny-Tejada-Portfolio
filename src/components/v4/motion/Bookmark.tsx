@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from "framer-motion";
 import { useEffect, useState } from "react";
+import { MotionFeatures } from "@/components/shared/MotionFeatures";
 import { SealStamp } from "./SealStamp";
 import { useReduced } from "./hooks";
 
@@ -35,7 +36,8 @@ export function Bookmark() {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(update);
     };
-    update();
+    // First read on the next frame, not during hydration, so it never forces a layout of its own.
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
@@ -46,23 +48,25 @@ export function Bookmark() {
   }, []);
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      {mode !== "none" ? (
-        <m.nav
-          key={mode}
-          aria-label="Shortcut"
-          className="v4-bookmark"
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
-          transition={{ duration: 0.22, ease: "easeOut" }}
-        >
-          <a href={COPY[mode].href}>
-            <SealStamp size={38} spin={270} trigger="none" />
-            <span>{COPY[mode].label}</span>
-          </a>
-        </m.nav>
-      ) : null}
-    </AnimatePresence>
+    <MotionFeatures>
+      <AnimatePresence mode="wait" initial={false}>
+        {mode !== "none" ? (
+          <m.nav
+            key={mode}
+            aria-label="Shortcut"
+            className="v4-bookmark"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <a href={COPY[mode].href}>
+              <SealStamp size={38} spin={270} trigger="none" />
+              <span>{COPY[mode].label}</span>
+            </a>
+          </m.nav>
+        ) : null}
+      </AnimatePresence>
+    </MotionFeatures>
   );
 }

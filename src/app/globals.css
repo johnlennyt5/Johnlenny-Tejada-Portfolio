@@ -115,6 +115,12 @@ body {
   animation: jt-blink 1.06s steps(1, end) infinite;
 }
 
+/* Set by the root layout before a jump to a #fragment: render every skipped section so the
+   target's position is exact (see fragmentJumpScript in src/app/layout.tsx). */
+html[data-cv="off"] * {
+  content-visibility: visible !important;
+}
+
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
 html[data-motion="off"] *::after {

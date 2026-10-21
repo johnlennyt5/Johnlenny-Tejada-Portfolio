@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CopyEmail, ResumeButton } from "@/components/shared";
+import { CopyEmail } from "@/components/shared/CopyEmail";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { getProject, nowBuilding, profile } from "@/content";
 import { routes } from "@/lib/site";
 import { Node } from "../motion/Node";
