@@ -8,25 +8,12 @@ import type { Bi } from "@/content/showcase";
  * so the line is never empty and screen readers get a stable sentence (aria-live off).
  */
 export function RoleRotator({ roles }: { roles: Bi[] }) {
-  const [lang, setLang] = useState<"en" | "es">("en");
   const [index, setIndex] = useState(0);
   const [shown, setShown] = useState<string | null>(null);
 
   useEffect(() => {
-    const d = document.documentElement;
-    const read = () => {
-      setLang(d.dataset.lang === "es" ? "es" : "en");
-      setShown(null);
-    };
-    read();
-    const mo = new MutationObserver(read);
-    mo.observe(d, { attributes: true, attributeFilter: ["data-lang"] });
-    return () => mo.disconnect();
-  }, []);
-
-  useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const full = roles[index]![lang];
+    const full = roles[index]!.en;
     let i = full.length;
     let timer: number;
     const hold = window.setTimeout(function tick() {
@@ -35,7 +22,7 @@ export function RoleRotator({ roles }: { roles: Bi[] }) {
       if (i > 0) {
         timer = window.setTimeout(tick, 28);
       } else {
-        const next = roles[(index + 1) % roles.length]![lang];
+        const next = roles[(index + 1) % roles.length]!.en;
         let j = 0;
         const type = () => {
           j += 1;
@@ -50,16 +37,16 @@ export function RoleRotator({ roles }: { roles: Bi[] }) {
       window.clearTimeout(hold);
       window.clearTimeout(timer);
     };
-  }, [index, lang, roles]);
+  }, [index, roles]);
 
-  const text = shown ?? roles[index]![lang];
+  const text = shown ?? roles[index]!.en;
 
   return (
     <p className="role">
       <span className="prompt" aria-hidden="true">
         &gt;
       </span>
-      <span className="sr-only">{roles[0]![lang]}</span>
+      <span className="sr-only">{roles[0]!.en}</span>
       <span aria-hidden="true">{text}</span>
       <span className="caret" aria-hidden="true" />
     </p>

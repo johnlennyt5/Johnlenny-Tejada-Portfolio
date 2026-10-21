@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { LANG_KEY, PALETTE_KEY, palettes, type Lang, type PaletteId } from "./prefs";
+import { PALETTE_KEY, palettes, type PaletteId } from "./prefs";
 import { Close, Download, Menu } from "./icons";
 
 const links = [
@@ -27,13 +27,11 @@ export function Nav() {
   const [menu, setMenu] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [palette, setPalette] = useState<PaletteId>("ember");
-  const [lang, setLang] = useState<Lang>("en");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
     setPalette((d.dataset.palette as PaletteId) || "ember");
-    setLang(d.dataset.lang === "es" ? "es" : "en");
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -60,15 +58,6 @@ export function Nav() {
     save(PALETTE_KEY, id);
   }
 
-  function toggleLang() {
-    const next: Lang = lang === "en" ? "es" : "en";
-    const d = document.documentElement;
-    d.dataset.lang = next;
-    d.lang = next;
-    setLang(next);
-    save(LANG_KEY, next);
-  }
-
   return (
     <header className="nav" data-scrolled={scrolled || menu}>
       <div className="wrap nav-inner">
@@ -84,12 +73,7 @@ export function Nav() {
         <ul className="nav-links">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href}>
-                <span className="l-en">{l.en}</span>
-                <span className="l-es" lang="es">
-                  {l.es}
-                </span>
-              </a>
+              <a href={l.href}>{l.en}</a>
             </li>
           ))}
         </ul>
@@ -109,12 +93,7 @@ export function Nav() {
             </button>
             {paletteOpen ? (
               <div className="palette-pop" role="radiogroup" aria-label="Color palette">
-                <p>
-                  <span className="l-en">Color palette</span>
-                  <span className="l-es" lang="es">
-                    Paleta de colores
-                  </span>
-                </p>
+                <p>Color palette</p>
                 {palettes.map((p) => (
                   <button
                     key={p.id}
@@ -135,16 +114,9 @@ export function Nav() {
             ) : null}
           </div>
 
-          <button type="button" className="tool-btn" onClick={toggleLang} aria-label={lang === "en" ? "Ver en español" : "View in English"}>
-            {lang === "en" ? "ES" : "EN"}
-          </button>
-
           <a href={profile.resume.href} download={profile.resume.fileName} className="btn btn-primary nav-resume">
             <Download />
-            <span className="l-en">Resume</span>
-            <span className="l-es" lang="es">
-              Currículum
-            </span>
+            Resume
           </a>
 
           <button
@@ -166,19 +138,13 @@ export function Nav() {
             {links.map((l) => (
               <li key={l.href}>
                 <a href={l.href} onClick={() => setMenu(false)}>
-                  <span className="l-en">{l.en}</span>
-                  <span className="l-es" lang="es">
-                    {l.es}
-                  </span>
+                  {l.en}
                 </a>
               </li>
             ))}
             <li>
               <a href={profile.resume.href} download={profile.resume.fileName}>
-                <span className="l-en">Download resume</span>
-                <span className="l-es" lang="es">
-                  Descargar currículum
-                </span>
+                Download resume
               </a>
             </li>
           </ul>

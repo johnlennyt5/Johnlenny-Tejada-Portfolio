@@ -82,12 +82,6 @@ html[data-palette="daylight"] {
   color-scheme: light;
 }
 
-/* Language: both are in the HTML, one is shown. */
-html[data-lang="es"] .l-en,
-html:not([data-lang="es"]) .l-es {
-  display: none !important;
-}
-
 html:has(.site) {
   background: var(--s-bg);
   scroll-behavior: smooth;
@@ -2093,4 +2087,33 @@ html[data-palette="daylight"] .site {
 }
 .arch-node b {
   overflow-wrap: anywhere;
+}
+
+/* Bilingual badge next to the hero socials. */
+.lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid var(--s-line);
+  border-radius: 999px;
+  color: var(--s-fg);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.lang-badge b {
+  display: grid;
+  place-items: center;
+  padding: 0 7px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--s-accent);
+  color: var(--s-on-accent);
+  font: 700 0.7rem var(--ff-m);
+}
+.lang-badge b + b {
+  margin-left: -4px;
+}
+.socials {
+  flex-wrap: wrap;
 }

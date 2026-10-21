@@ -57,64 +57,35 @@ export function CompareSlider() {
               setSplit(50);
             }}
           >
-            <span className="l-en">{x.title.en}</span>
-            <span className="l-es" lang="es">
-              {x.title.es}
-            </span>
+            {x.title.en}
           </button>
         ))}
       </div>
 
       <div className="compare" ref={root} style={{ ["--split" as string]: `${split}%` }}>
         <div className="cmp-side cmp-manual">
-          <span className="cmp-label">
-            <span className="l-en">Before: manual</span>
-            <span className="l-es" lang="es">
-              Antes: manual
-            </span>
-          </span>
+          <span className="cmp-label">Before: manual</span>
           <div className="cmp-value">{c.manual.value}</div>
-          <div className="cmp-unit">
-            <span className="l-en">{c.manual.unit.en}</span>
-            <span className="l-es" lang="es">
-              {c.manual.unit.es}
-            </span>
-          </div>
+          <div className="cmp-unit">{c.manual.unit.en}</div>
           <ol className="cmp-steps">
             {c.manual.steps.map((s, i) => (
               <li key={s.en}>
                 <span>0{i + 1}</span>
-                <span className="l-en">{s.en}</span>
-                <span className="l-es" lang="es">
-                  {s.es}
-                </span>
+                {s.en}
               </li>
             ))}
           </ol>
         </div>
 
         <div className="cmp-side cmp-auto" aria-hidden={split > 96 ? true : undefined}>
-          <span className="cmp-label">
-            <span className="l-en">After: automated</span>
-            <span className="l-es" lang="es">
-              Después: automatizado
-            </span>
-          </span>
+          <span className="cmp-label">After: automated</span>
           <div className="cmp-value">{c.auto.value}</div>
-          <div className="cmp-unit">
-            <span className="l-en">{c.auto.unit.en}</span>
-            <span className="l-es" lang="es">
-              {c.auto.unit.es}
-            </span>
-          </div>
+          <div className="cmp-unit">{c.auto.unit.en}</div>
           <ol className="cmp-steps">
             {c.auto.steps.map((s, i) => (
               <li key={s.en}>
                 <span>0{i + 1}</span>
-                <span className="l-en">{s.en}</span>
-                <span className="l-es" lang="es">
-                  {s.es}
-                </span>
+                {s.en}
               </li>
             ))}
           </ol>

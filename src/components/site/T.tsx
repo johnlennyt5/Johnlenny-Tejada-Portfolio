@@ -1,28 +1,14 @@
 import type { ReactNode } from "react";
 
 /**
- * Bilingual text. Both languages are in the static HTML; CSS shows the one that matches
- * html[data-lang], so switching needs no re-render and works before hydration.
+ * Site text. The site is English only; the `es` copy is kept in content for a possible
+ * Spanish version later but is not rendered.
  */
-export function T({ en, es }: { en: ReactNode; es: ReactNode }) {
-  return (
-    <>
-      <span className="l-en">{en}</span>
-      <span className="l-es" lang="es">
-        {es}
-      </span>
-    </>
-  );
+export function T({ en }: { en: ReactNode; es?: ReactNode }) {
+  return <>{en}</>;
 }
 
 /** Block version of T, for paragraphs and lists. */
-export function TBlock({ en, es }: { en: ReactNode; es: ReactNode }) {
-  return (
-    <>
-      <div className="l-en">{en}</div>
-      <div className="l-es" lang="es">
-        {es}
-      </div>
-    </>
-  );
+export function TBlock({ en }: { en: ReactNode; es?: ReactNode }) {
+  return <>{en}</>;
 }

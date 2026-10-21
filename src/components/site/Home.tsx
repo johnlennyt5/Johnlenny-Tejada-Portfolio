@@ -1,15 +1,6 @@
 import { getProject } from "@/content";
 import { profile } from "@/content/profile";
-import {
-  award,
-  community,
-  featuredSlugs,
-  heroIntro,
-  heroStats,
-  pillars,
-  projectCopy,
-  roles,
-} from "@/content/showcase";
+import { award, community, featuredSlugs, heroIntro, heroStats, pillars, projectCopy, roles } from "@/content/showcase";
 import { CopyEmail } from "@/components/shared/CopyEmail";
 import { routes } from "@/lib/site";
 import { CompareSlider } from "./CompareSlider";
@@ -40,14 +31,24 @@ const botSteps = [
   { ic: "✉", en: "Document arrives", es: "Llega el documento" },
   { ic: "✦", en: "AI agent reads it", es: "Un agente de IA lo lee" },
   { ic: "⚖", en: "Rules check it", es: "Las reglas lo revisan" },
-  { ic: "✓", en: "Human approves edge case", es: "Una persona aprueba la excepción" },
+  {
+    ic: "✓",
+    en: "Human approves edge case",
+    es: "Una persona aprueba la excepción",
+  },
 ];
 
 export async function Home() {
   const projects = await Promise.all(
     featuredSlugs.map(async (slug) => {
       const p = getProject(slug)!;
-      return { p, copy: projectCopy[slug]!, shots: getShots(slug, p.name), code: await getCode(slug), arch: getArch(slug) };
+      return {
+        p,
+        copy: projectCopy[slug]!,
+        shots: getShots(slug, p.name),
+        code: await getCode(slug),
+        arch: getArch(slug),
+      };
     }),
   );
 
@@ -88,7 +89,12 @@ export async function Home() {
                 <a className="social" href={profile.links.github.href} aria-label="GitHub">
                   <GitHub />
                 </a>
-                <span>Providence, RI · English / Español</span>
+                <span>Providence, RI</span>
+                <span className="lang-badge">
+                  <b>EN</b>
+                  <b>ES</b>
+                  Fluent in English and Spanish
+                </span>
               </div>
             </div>
 
@@ -127,10 +133,7 @@ export async function Home() {
                   {botSteps.map((s, i) => (
                     <li key={s.en} style={{ ["--i" as string]: i }}>
                       <span className="ic">{s.ic}</span>
-                      <span className="l-en">{s.en}</span>
-                      <span className="l-es" lang="es">
-                        {s.es}
-                      </span>
+                      {s.en}
                     </li>
                   ))}
                 </ol>
@@ -277,13 +280,7 @@ export async function Home() {
             {projects.map(({ p, copy, shots, code, arch }, i) => (
               <article className="project" key={p.slug} aria-labelledby={`p-${p.slug}`}>
                 <div className="reveal">
-                  <ProjectMedia
-                    name={p.name}
-                    shots={shots}
-                    code={code}
-                    arch={arch}
-                    fallback={{ big: p.name, small: copy.title.en }}
-                  />
+                  <ProjectMedia name={p.name} shots={shots} code={code} arch={arch} fallback={{ big: p.name, small: copy.title.en }} />
                 </div>
                 <div className="reveal" style={{ ["--d" as string]: 1 }}>
                   <span className="project-num">
@@ -371,15 +368,24 @@ export async function Home() {
           <div className="solve-facts">
             <div className="fact reveal">
               <b>85%</b>
-              <T en="straight-through processing on a form-triage bot with fuzzy-match dedup" es="procesamiento directo en un bot de clasificación de formularios con deduplicación" />
+              <T
+                en="straight-through processing on a form-triage bot with fuzzy-match dedup"
+                es="procesamiento directo en un bot de clasificación de formularios con deduplicación"
+              />
             </div>
             <div className="fact reveal" style={{ ["--d" as string]: 1 }}>
               <b>5,000+</b>
-              <T en="records per import, mapped with AI-assisted column matching" es="registros por importación, mapeados con ayuda de IA" />
+              <T
+                en="records per import, mapped with AI-assisted column matching"
+                es="registros por importación, mapeados con ayuda de IA"
+              />
             </div>
             <div className="fact reveal" style={{ ["--d" as string]: 2 }}>
               <b>17</b>
-              <T en="REST controllers in the original Java and Spring Boot backend I helped build" es="controladores REST en el backend original de Java y Spring Boot que ayudé a construir" />
+              <T
+                en="REST controllers in the original Java and Spring Boot backend I helped build"
+                es="controladores REST en el backend original de Java y Spring Boot que ayudé a construir"
+              />
             </div>
           </div>
         </div>
@@ -419,7 +425,12 @@ export async function Home() {
                 </h3>
                 <TBlock
                   en={<p>AI and automation for a live multi-tenant nonprofit platform: 30+ tenants, 200+ users, now TypeScript.</p>}
-                  es={<p>IA y automatización para una plataforma multi-inquilino en vivo: más de 30 organizaciones, más de 200 usuarios, ahora en TypeScript.</p>}
+                  es={
+                    <p>
+                      IA y automatización para una plataforma multi-inquilino en vivo: más de 30 organizaciones, más de 200 usuarios, ahora
+                      en TypeScript.
+                    </p>
+                  }
                 />
               </li>
               <li className="tl-item">
@@ -429,7 +440,10 @@ export async function Home() {
                 <h3>
                   <T en="Founder" es="Fundador" /> <span>· truckWhat</span>
                 </h3>
-                <TBlock en={<p>Building a logistics marketplace solo, web and mobile.</p>} es={<p>Construyendo solo un mercado de logística, web y móvil.</p>} />
+                <TBlock
+                  en={<p>Building a logistics marketplace solo, web and mobile.</p>}
+                  es={<p>Construyendo solo un mercado de logística, web y móvil.</p>}
+                />
               </li>
               <li className="tl-item">
                 <span className="tl-when">
@@ -487,7 +501,10 @@ export async function Home() {
                 </div>
                 <div className="mini reveal" style={{ ["--d" as string]: 1 }}>
                   <b>Bryant IDEA 2026</b>
-                  <T en="Built Eve, the AI avatar that opened the keynote." es="Construí a Eve, el avatar de IA que abrió el discurso principal." />
+                  <T
+                    en="Built Eve, the AI avatar that opened the keynote."
+                    es="Construí a Eve, el avatar de IA que abrió el discurso principal."
+                  />
                 </div>
               </div>
             </div>
@@ -500,7 +517,14 @@ export async function Home() {
         <div className="wrap about">
           <div className="about-photo reveal">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/johnlenny-office.webp" width={800} height={800} alt="Johnlenny Tejada in an office, with a Build Solve Scale sign behind him" loading="lazy" decoding="async" />
+            <img
+              src="/img/johnlenny-office.webp"
+              width={800}
+              height={800}
+              alt="Johnlenny Tejada in an office, with a Build Solve Scale sign behind him"
+              loading="lazy"
+              decoding="async"
+            />
             <span className="about-tag">Providence, RI</span>
           </div>
           <div className="about-body reveal" style={{ ["--d" as string]: 1 }}>
@@ -525,13 +549,15 @@ export async function Home() {
               en={
                 <>
                   <p>
-                    I came to software from the business side. I hold a BBA in Accounting from URI, and for more than seven years I managed a
-                    barbershop in Providence: hiring, keeping clients and keeping the books. That is why I care about what an automation
+                    I came to software from the business side. I hold a BBA in Accounting from URI, and for more than seven years I managed
+                    a barbershop in Providence: hiring, keeping clients and keeping the books. That is why I care about what an automation
                     saves, who it serves and what happens when it fails.
                   </p>
                   <p>
                     Today I build AI and automation at HumanixOS, and on my own time I build startups: truckWhat, PrismShift and SmartFit
-                    Metrics. I co-host hackathons, helped run TEDxProvidence 2025, and teach people to build with AI, in English and Spanish.
+                    Metrics. I co-host hackathons, helped run TEDxProvidence 2025, and teach people to build with AI, in English and
+                    Spanish. Being bilingual means I can work directly with Spanish-speaking users, clients and teammates, not through a
+                    translator.
                   </p>
                 </>
               }
@@ -543,9 +569,9 @@ export async function Home() {
                     automatización ahorra, a quién sirve y qué pasa cuando falla.
                   </p>
                   <p>
-                    Hoy construyo IA y automatización en HumanixOS, y en mi tiempo libre construyo startups: truckWhat, PrismShift y SmartFit
-                    Metrics. Coorganizo hackathons, ayudé a dirigir TEDxProvidence 2025 y enseño a otros a construir con IA, en inglés y
-                    español.
+                    Hoy construyo IA y automatización en HumanixOS, y en mi tiempo libre construyo startups: truckWhat, PrismShift y
+                    SmartFit Metrics. Coorganizo hackathons, ayudé a dirigir TEDxProvidence 2025 y enseño a otros a construir con IA, en
+                    inglés y español.
                   </p>
                 </>
               }
@@ -564,8 +590,8 @@ export async function Home() {
                 <T en="startups built" es="startups construidas" />
               </div>
               <div className="mini">
-                <b>EN / ES</b>
-                <T en="bilingual" es="bilingüe" />
+                <b>EN + ES</b>
+                <T en="fluent in both" />
               </div>
             </div>
           </div>
@@ -583,16 +609,21 @@ export async function Home() {
               <T en="Let's build something that runs itself." es="Construyamos algo que funcione solo." />
             </h2>
             <TBlock
-              en={<p>{profile.availability} The fastest way to reach me is email or LinkedIn.</p>}
+              en={<p>{profile.availability} The fastest way to reach me is email or LinkedIn. Happy to talk in English or Spanish.</p>}
               es={
                 <p>
-                  Disponible para roles de automatización, IA y full-stack en Rhode Island, Massachusetts y Connecticut, o remoto. La forma más
-                  rápida de contactarme es por correo o LinkedIn.
+                  Disponible para roles de automatización, IA y full-stack en Rhode Island, Massachusetts y Connecticut, o remoto. La forma
+                  más rápida de contactarme es por correo o LinkedIn.
                 </p>
               }
             />
             <div className="hero-ctas">
-              <CopyEmail className="btn btn-primary" label={<T en="Copy my email" es="Copiar mi correo" />} copiedLabel={<T en="Copied!" es="¡Copiado!" />} showAddress />
+              <CopyEmail
+                className="btn btn-primary"
+                label={<T en="Copy my email" es="Copiar mi correo" />}
+                copiedLabel={<T en="Copied!" es="¡Copiado!" />}
+                showAddress
+              />
               <a href={profile.links.linkedin.href} className="btn btn-ghost">
                 <LinkedIn />
                 LinkedIn
