@@ -117,6 +117,9 @@ let htmlCount = 0;
 if (!srcOnly) {
   if (!existsSync(OUT)) console.warn("audit:facts: out/ not found, checked src/content only. Run `pnpm build` first.");
   for (const file of walk(OUT, [".html"])) {
+    // /compare shows QA scores of this website (Lighthouse, axe), not claims about Johnlenny.
+    // Its data lives in src/lib/qa.ts. Everything else on the page comes from src/content.
+    if (relative(OUT, file).replace(/\\/g, "/") === "compare/index.html") continue;
     htmlCount += 1;
     check(relative(ROOT, file).replace(/\\/g, "/"), visibleText(readFileSync(file, "utf8")));
   }

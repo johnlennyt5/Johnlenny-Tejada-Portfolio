@@ -10,6 +10,8 @@ import "./globals.css";
 
 /* Root layout: no fonts here. Each version loads its own fonts in its Shell. */
 
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: `${siteName}: ${profile.headline}`, template: `%s | ${siteName}` },
@@ -19,6 +21,8 @@ export const metadata: Metadata = {
   creator: profile.name,
   robots: { index: true, follow: true },
   formatDetection: { telephone: false, email: false, address: false },
+  // Google Search Console "HTML tag" check: set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel to the token.
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
 };
 
 export const viewport: Viewport = {

@@ -1,112 +1,79 @@
-import Link from "next/link";
-import { CopyEmail, ResumeButton } from "@/components/shared";
-import { experience, identities, nowBuilding, profile, projects } from "@/content";
-import { getVersion, routes } from "@/lib/site";
-import { Footer, Header } from "./Header";
+import { Suspense } from "react";
+import { skills } from "@/content";
+import { Frame } from "./Frame";
+import { Flow } from "./motion/Flow";
+import { Ticker } from "./motion/Ticker";
+import { Hero } from "./sections/Hero";
+import { Human } from "./sections/Human";
+import { Handoff, Now } from "./sections/NowHandoff";
+import { Production } from "./sections/Production";
+import { Roles } from "./sections/Roles";
+import { Runbook } from "./sections/Runbook";
+import { Work } from "./sections/Work";
+import { pad2 } from "./ui";
 
-const BTN = "inline-flex min-h-11 items-center rounded-full border border-line px-4 font-medium no-underline hover:border-accent";
+/** The home page queue. Order here is the order on the page and in the Orchestrator panel. */
+const QUEUE = [
+  { id: "whoami", label: "whoami" },
+  { id: "roles", label: "Roles" },
+  { id: "work", label: "Job queue" },
+  { id: "production", label: "Production" },
+  { id: "runbook", label: "Runbook" },
+  { id: "human", label: "Human in the loop" },
+  { id: "now", label: "Running now" },
+  { id: "handoff", label: "Handoff" },
+] as const;
 
-/* Stub home for v3 (The Robot Room). The v3 agent replaces this file. */
+const idx = (id: (typeof QUEUE)[number]["id"]) => pad2(QUEUE.findIndex((q) => q.id === id) + 1);
+
+/**
+ * v3 home: The Robot Room. Also rendered at "/" (keep this export name).
+ * The page is one BPMN canvas: a whoami terminal, then a connector that draws itself down
+ * through each section while the JT bot rides it and each node goes queued > running > done.
+ */
 export function Home() {
-  const version = getVersion("v3");
-  const work = [...projects].sort((a, b) => a.order - b.order);
+  const ticker = [
+    ...(skills.find((s) => s.id === "automation")?.items ?? []),
+    ...(skills.find((s) => s.id === "ai")?.items ?? []),
+  ];
   return (
-    <>
-      <Header />
-      <main id="main" className="mx-auto max-w-5xl px-4 pb-24 sm:px-6">
-        <section aria-labelledby="hero-title" className="py-12">
-          <p className="font-mono text-sm uppercase tracking-widest text-muted">{version.name}</p>
-          <h1 id="hero-title" className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
-            {profile.name}
-          </h1>
-          <p className="mt-4 text-2xl">{profile.headline}</p>
-          <p className="mt-2 text-lg text-muted">{profile.subhead}</p>
-          <p className="mt-6 max-w-2xl leading-relaxed">{profile.intro}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <CopyEmail className={BTN} />
-            <ResumeButton className={BTN} />
-            <a className={BTN} href={profile.links.linkedin.href}>
-              LinkedIn profile
-            </a>
-            <a className={BTN} href={profile.links.github.href}>
-              GitHub profile
-            </a>
-          </div>
-        </section>
-
-        <section aria-labelledby="identity-title" className="py-10">
-          <h2 id="identity-title" className="font-display text-2xl font-bold">
-            What I do
-          </h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            {identities.map((i) => (
-              <div key={i.id} className="rounded-xl border border-line p-5">
-                <h3 className="font-display text-xl font-bold">{i.title}</h3>
-                <p className="mt-2 leading-relaxed">{i.pitch}</p>
-                <ul className="mt-3 list-disc space-y-1 pl-5 text-muted">
-                  {i.proof.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section aria-labelledby="work-title" className="py-10">
-          <h2 id="work-title" className="font-display text-2xl font-bold">
-            Selected work
-          </h2>
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-            {work.map((p) => (
-              <li key={p.slug} className="rounded-xl border border-line p-5">
-                <h3 className="font-display text-xl font-bold">
-                  <Link href={routes.work("v3", p.slug)} className="underline underline-offset-4">
-                    {p.name}: {p.tagline}
-                  </Link>
-                </h3>
-                <p className="mt-1 font-mono text-sm text-muted">
-                  {p.role}, {p.dates.label}
-                </p>
-                <p className="mt-3 leading-relaxed">{p.oneLiner}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="experience-title" className="py-10">
-          <h2 id="experience-title" className="font-display text-2xl font-bold">
-            Experience
-          </h2>
-          <ul className="mt-6 space-y-6">
-            {experience.map((e) => (
-              <li key={e.id}>
-                <h3 className="font-display text-xl font-bold">
-                  {e.role}, {e.company}
-                  {e.formerly ? <span className="font-normal text-muted"> (formerly {e.formerly})</span> : null}
-                </h3>
-                <p className="font-mono text-sm text-muted">{e.dates.label}</p>
-                <p className="mt-2 leading-relaxed">{e.highlights[0]}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="now-title" className="py-10">
-          <h2 id="now-title" className="font-display text-2xl font-bold">
-            Now
-          </h2>
-          <ul className="mt-4 space-y-2">
-            {nowBuilding.map((n) => (
-              <li key={n.id}>
-                <strong>{n.title}.</strong> {n.detail}
-              </li>
-            ))}
-          </ul>
-        </section>
+    <Frame queue="portfolio" items={[...QUEUE]}>
+      <main id="main" tabIndex={-1} className="outline-none">
+        <Hero id="whoami" nextId="roles" />
+        <Ticker items={ticker} />
+        <div className="px-4 pt-20 pb-24 sm:px-8 sm:pt-28 lg:px-14">
+          <Flow>
+            {/*
+              Each section is its own Suspense boundary. Nothing here suspends; the boundaries let
+              React hydrate the page in small slices after the hero instead of one long task.
+            */}
+            <div className="grid gap-32 sm:gap-40">
+              <Suspense>
+                <Roles id="roles" index={idx("roles")} />
+              </Suspense>
+              <Suspense>
+                <Work id="work" index={idx("work")} />
+              </Suspense>
+              <Suspense>
+                <Production id="production" index={idx("production")} />
+              </Suspense>
+              <Suspense>
+                <Runbook id="runbook" index={idx("runbook")} />
+              </Suspense>
+              <Suspense>
+                <Human id="human" index={idx("human")} />
+              </Suspense>
+              <Suspense>
+                <Now id="now" index={idx("now")} />
+              </Suspense>
+              <Suspense>
+                <Handoff id="handoff" index={idx("handoff")} />
+              </Suspense>
+            </div>
+          </Flow>
+        </div>
       </main>
-      <Footer />
-    </>
+    </Frame>
   );
 }
 

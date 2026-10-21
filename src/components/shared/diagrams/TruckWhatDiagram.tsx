@@ -4,15 +4,15 @@ const clusters = [
   ["c-identity", "Identity and accounts"],
   ["c-carriers", "Carriers and drivers"],
   ["c-shippers", "Shippers and businesses"],
-  ["c-fleets", "Fleets"],
+  ["c-dispatch", "Dispatch"],
   ["c-loads", "Loads and shipments"],
   ["c-tracking", "Live tracking"],
-  ["c-pod", "Proof of delivery"],
+  ["c-verify", "Verification"],
   ["c-money", "Payments and payouts"],
-  ["c-trust", "Ratings and disputes"],
-  ["c-places", "Places and facilities"],
-  ["c-compliance", "Driver compliance"],
-  ["c-team", "Team driving"],
+  ["c-disputes", "Disputes"],
+  ["c-invoicing", "Invoicing"],
+  ["c-compliance", "Compliance"],
+  ["c-admin", "Admin and audit log"],
   ["c-messaging", "Messaging and notifications"],
   ["c-support", "Support and operations"],
   ["c-analytics", "Analytics"],
@@ -23,7 +23,7 @@ const services = [
   ["s-plaid", "Plaid Link", "bank tokens, AES-256-GCM"],
   ["s-notify", "Twilio and FCM", "SMS and push"],
   ["s-maps", "Google Maps Platform", "maps and Routes API"],
-  ["s-ai", "Gemini API", "AI features"],
+  ["s-ai", "Gemini API", "Maps grounding"],
 ] as const;
 
 function placeAll<T extends readonly (readonly [string, ...string[]])[]>(
@@ -40,11 +40,11 @@ function placeAll<T extends readonly (readonly [string, ...string[]])[]>(
 export const truckWhatSpec: DiagramSpec = {
   title: "truckWhat architecture",
   description:
-    "A Next.js web app and a React Native mobile app share one backend of Next.js API routes. The API reads and writes PostgreSQL on Supabase through Prisma, with row-level security, across domain areas from identity to analytics. Supabase also provides auth, realtime and storage. Stripe Connect, Plaid, Twilio, Firebase push, Google Maps and Gemini are integrated services. GitHub Actions runs the CI gates and scheduled jobs, and in-house monitoring opens GitHub Issues.",
+    "A Next.js web app and a React Native mobile app share one Supabase core. The web app reads and writes PostgreSQL on Supabase through Prisma, with row-level security, across domain areas from identity to analytics. Supabase also provides auth, realtime and storage. Stripe Connect, Plaid, Twilio, Firebase push, Google Maps and Gemini are integrated services. GitHub Actions runs the CI gates and scheduled jobs, and in-house monitoring opens GitHub Issues.",
   nodes: [
     { id: "web", label: "Web app", sub: "Next.js PWA" },
     { id: "mobile", label: "Mobile app", sub: "React Native and Expo" },
-    { id: "api", label: "Next.js API routes", sub: "one backend for web and mobile" },
+    { id: "api", label: "Shared Supabase core", sub: "Next.js and Prisma on web, Supabase on both" },
     { id: "supabase", label: "Supabase", sub: "auth, realtime, storage" },
     ...clusters.map(([id, label]) => ({ id, label, kind: "cluster" as const })),
     ...services.map(([id, label, sub]) => ({ id, label, sub, kind: "external" as const })),
@@ -110,7 +110,7 @@ export const truckWhatSpec: DiagramSpec = {
   },
 };
 
-/** truckWhat architecture: clients, one API, Postgres domains, integrations, CI and monitoring. */
+/** truckWhat architecture: clients, a shared Supabase core, Postgres domains, integrations, CI and monitoring. */
 export function TruckWhatDiagram(props: DiagramProps) {
   return <Diagram spec={truckWhatSpec} {...props} />;
 }

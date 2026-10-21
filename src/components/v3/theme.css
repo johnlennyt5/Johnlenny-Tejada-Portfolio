@@ -1,58 +1,1311 @@
-/* v3 theme (The Robot Room). Owned by the v3 agent. Tokens feed the shared utilities in globals.css. */
+/*
+ * v3 theme: The Robot Room. An RPA control room on a BPMN canvas.
+ * Tokens feed the shared utilities in globals.css (bg-bg, text-fg, text-muted, ...).
+ * Status colors: queued (blue), running (amber), done (green), exception (orange).
+ * Motion rule: only transform and opacity animate. Every CSS animation below is
+ * switched off under prefers-reduced-motion and under html[data-motion="off"],
+ * and every element's base style is its final state.
+ */
 
 :root:has(.v3-root),
 .v3-root {
-  --c-bg: #0B0F0C;
-  --c-fg: #D6E4D9;
-  --c-muted: #8A9E90;
-  --c-accent: #4ADE80;
-  --c-accent-2: #7DD3FC;
-  --c-line: #24302A;
-  --c-surface: #121A15;
+  --c-bg: #0b0f0c;
+  --c-fg: #d6e4d9;
+  --c-muted: #8a9e90;
+  --c-accent: #4ade80;
+  --c-accent-2: #7dd3fc;
+  --c-line: #26332b;
+  --c-line-strong: #3d4f43;
+  --c-surface: #111813;
+  --c-surface-2: #16201a;
+  --c-ok: #4ade80;
+  --c-run: #fbbf24;
+  --c-queue: #7dd3fc;
+  --c-exc: #ff8a4c;
+  --c-on-accent: #0b0f0c;
+  --c-dot: rgb(214 228 217 / 0.07);
 }
 
 @media (prefers-color-scheme: light) {
   :root:has(.v3-root),
   .v3-root {
-    --c-bg: #F3F6F2;
-    --c-fg: #0E1A12;
-    --c-muted: #4B5B50;
-    --c-accent: #1C7A3E;
-    --c-accent-2: #9A4A12;
-    --c-line: #C9D3CB;
-    --c-surface: #E7ECE6;
+    --c-bg: #f3f6f2;
+    --c-fg: #0e1a12;
+    --c-muted: #4b5b50;
+    --c-accent: #186b36;
+    --c-accent-2: #0b5e8a;
+    --c-line: #c9d3cb;
+    --c-line-strong: #9fb0a4;
+    --c-surface: #e9eee8;
+    --c-surface-2: #dfe6de;
+    --c-ok: #186b36;
+    --c-run: #7a5000;
+    --c-queue: #0b5e8a;
+    --c-exc: #9a4a12;
+    --c-on-accent: #f3f6f2;
+    --c-dot: rgb(14 26 18 / 0.09);
   }
 }
 
 .v3-root {
-  --ff-display: var(--font-v3-display), ui-sans-serif, system-ui, sans-serif;
+  --ff-display: var(--font-v3-display), "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
   --ff-body: var(--font-v3-body), ui-sans-serif, system-ui, sans-serif;
   --ff-mono: var(--font-v3-mono), ui-monospace, monospace;
+  --orch-w: 18rem;
+  --rail-x: 15px;
+  --flow-pad: 2.75rem;
   --mono-ink: var(--c-fg);
   --mono-paper: var(--c-bg);
   --mono-accent: var(--c-accent);
   --vs-fg: var(--c-fg);
-  --vs-line: var(--c-line);
-  --vs-accent: var(--c-fg);
-  --vs-on-accent: var(--c-bg);
-  --dg-bg: var(--c-bg);
+  --vs-line: var(--c-line-strong);
+  --vs-accent: var(--c-accent);
+  --vs-on-accent: var(--c-on-accent);
+  --dg-bg: var(--c-surface);
   --dg-fg: var(--c-fg);
   --dg-muted: var(--c-muted);
   --dg-line: var(--c-muted);
-  --dg-node: var(--c-surface);
-  --dg-node-stroke: var(--c-fg);
+  --dg-node: var(--c-bg);
+  --dg-node-stroke: var(--c-line-strong);
   --dg-accent: var(--c-accent);
-  --dg-accent-2: var(--c-accent-2);
+  --dg-accent-2: var(--c-run);
   --dg-group: transparent;
   --dg-font: var(--ff-body);
   --dg-mono: var(--ff-mono);
   min-height: 100vh;
-  background: var(--c-bg);
+  background-color: var(--c-bg);
+  background-image: radial-gradient(circle at 1px 1px, var(--c-dot) 1px, transparent 0);
+  background-size: 24px 24px;
   color: var(--c-fg);
   font-family: var(--ff-body);
   color-scheme: light dark;
+  overflow-x: clip;
 }
 
-.v3-root a {
-  color: inherit;
+@media (min-width: 640px) {
+  .v3-root {
+    --rail-x: 23px;
+    --flow-pad: 4.5rem;
+  }
+}
+
+@layer base {
+  .v3-root a {
+    color: inherit;
+  }
+
+  .v3-root ::selection {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+  }
+}
+
+.v3-root :focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+/* Component rules live in the components layer so Tailwind utilities can override them. */
+@layer components {
+/* ---------- Status vocabulary ---------- */
+
+.v3-tone-ok {
+  color: var(--c-ok);
+}
+.v3-tone-run {
+  color: var(--c-run);
+}
+.v3-tone-queue {
+  color: var(--c-queue);
+}
+.v3-tone-exc {
+  color: var(--c-exc);
+}
+
+.v3-dot {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  border: 2px solid var(--c-queue);
+  background: transparent;
+}
+
+.v3-dot[data-state="running"] {
+  border-color: var(--c-run);
+  background: var(--c-run);
+}
+
+.v3-dot[data-state="done"] {
+  border-color: var(--c-ok);
+  background: var(--c-ok);
+}
+
+.v3-dot[data-state="running"]::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid var(--c-run);
+  opacity: 0;
+  animation: v3-pulse 1.6s ease-out infinite;
+}
+
+@keyframes v3-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.v3-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--ff-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.v3-pill[data-state="queued"] {
+  color: var(--c-queue);
+}
+.v3-pill[data-state="running"] {
+  color: var(--c-run);
+}
+.v3-pill[data-state="done"] {
+  color: var(--c-ok);
+}
+.v3-pill[data-state="exception"] {
+  color: var(--c-exc);
+}
+
+/*
+ * A node's status chip. One element: the CanvasDriver writes data-run on the node and the
+ * word comes from CSS (the chip is aria-hidden). No data-run (server HTML, motion off) = done.
+ */
+.v3-node-pill {
+  color: var(--c-ok);
+}
+.v3-node-pill::after {
+  content: "done";
+}
+.v3-node-pill > .v3-dot {
+  border-color: currentColor;
+  background: currentColor;
+}
+.v3-node[data-run="queued"] > .v3-node-body > .v3-node-head > .v3-node-pill {
+  color: var(--c-queue);
+}
+.v3-node[data-run="queued"] > .v3-node-body > .v3-node-head > .v3-node-pill::after {
+  content: "queued";
+}
+.v3-node[data-run="queued"] > .v3-node-body > .v3-node-head > .v3-node-pill > .v3-dot {
+  background: transparent;
+}
+.v3-node[data-run="running"] > .v3-node-body > .v3-node-head > .v3-node-pill {
+  color: var(--c-run);
+}
+.v3-node[data-run="running"] > .v3-node-body > .v3-node-head > .v3-node-pill::after {
+  content: "running";
+}
+.v3-node[data-run="running"] > .v3-node-body > .v3-node-head > .v3-node-pill > .v3-dot::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: v3-pulse 1.6s ease-out infinite;
+}
+
+/* ---------- Type ---------- */
+
+.v3-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.v3-h2 {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(2.35rem, 1.4rem + 4.2vw, 5.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.v3-h2 em {
+  font-style: normal;
+  color: var(--c-accent);
+}
+
+.v3-ghost {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-line-strong);
+  user-select: none;
+  pointer-events: none;
+}
+
+.v3-comment {
+  font-family: var(--ff-mono);
+  color: var(--c-muted);
+}
+
+.v3-prose p + p {
+  margin-top: 1rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.v3-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--c-fg);
+  cursor: pointer;
+  transition: border-color 160ms ease-out, transform 160ms ease-out;
+}
+
+.v3-btn:hover {
+  border-color: var(--c-accent);
+  transform: translateY(-1px);
+}
+
+.v3-btn-primary {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.v3-btn-primary:hover {
+  border-color: var(--c-fg);
+}
+
+.v3-link {
+  text-decoration: underline;
+  text-decoration-color: var(--c-line-strong);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+
+.v3-link:hover {
+  text-decoration-color: var(--c-accent);
+}
+
+/* The CopyEmail wrapper is a flex span; keep it inline with the other buttons. */
+.v3-root .jt-copy-email-address {
+  font-size: 0.8125rem;
+  color: var(--c-fg);
+}
+
+/* ---------- Orchestrator panel (fixed left on desktop, sticky bar on phones) ---------- */
+
+.v3-orch {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--c-line);
+  background: var(--c-bg);
+}
+
+.v3-orch-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.75rem;
+  padding: 0.5rem 1rem;
+}
+
+.v3-orch-body {
+  display: none;
+  padding: 0 1rem 1.25rem;
+  max-height: calc(100svh - 3.75rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.v3-orch[data-open="true"] .v3-orch-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.v3-orch-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  max-width: 55vw;
+  padding: 0 0.75rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-fg);
+  cursor: pointer;
+}
+
+.v3-orch-toggle span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .v3-orch {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--orch-w);
+    display: flex;
+    flex-direction: column;
+    border-bottom: 0;
+    border-right: 1px solid var(--c-line);
+    background: var(--c-surface);
+    overflow-y: auto;
+  }
+
+  .v3-orch-top {
+    padding: 1.25rem 1.25rem 0.75rem;
+  }
+
+  .v3-orch-toggle {
+    display: none;
+  }
+
+  .v3-orch-body,
+  .v3-orch[data-open="true"] .v3-orch-body,
+  .v3-orch[data-open="false"] .v3-orch-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-height: none;
+    overflow: visible;
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .v3-page {
+    padding-left: var(--orch-w);
+  }
+}
+
+.v3-queue {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--c-line);
+}
+
+.v3-queue a {
+  display: grid;
+  grid-template-columns: auto 1.75rem 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0 0.5rem;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  color: var(--c-muted);
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+.v3-queue a:hover {
+  color: var(--c-fg);
+  background: var(--c-surface-2);
+}
+
+.v3-queue a[aria-current] {
+  color: var(--c-fg);
+  background: var(--c-surface-2);
+  box-shadow: inset 2px 0 0 var(--c-run);
+}
+
+.v3-queue a[data-state="done"] {
+  color: var(--c-fg);
+}
+
+.v3-queue .v3-q-num {
+  color: var(--c-muted);
+  font-size: 0.6875rem;
+}
+
+.v3-progress {
+  display: none;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--c-line);
+  overflow: hidden;
+}
+
+.v3-progress > * {
+  height: 100%;
+  background: var(--c-accent);
+  transform-origin: 0 50%;
+}
+
+.v3-orch[data-queue="done"] .v3-robot-run,
+.v3-orch:not([data-queue="done"]) .v3-robot-done {
+  display: none;
+}
+
+.v3-root .jt-version-switcher a {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  border-radius: 0.5rem;
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+}
+
+.v3-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.5rem;
+  background: transparent;
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-fg);
+  cursor: pointer;
+}
+
+.v3-toggle > span:last-child {
+  color: var(--c-ok);
+  text-transform: uppercase;
+}
+
+.v3-toggle[data-state="off"] > span:last-child {
+  color: var(--c-muted);
+}
+
+/* ---------- Terminal ---------- */
+
+.v3-term {
+  --term-bg: var(--c-surface);
+  position: relative;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.75rem;
+  background: var(--term-bg);
+  box-shadow: 0 30px 80px -40px rgb(0 0 0 / 0.6);
+}
+
+.v3-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--ff-mono);
+  font-size: 0.6875rem;
+  color: var(--c-muted);
+}
+
+.v3-term-bar i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  border: 1px solid var(--c-line-strong);
+}
+
+.v3-term-bar i:nth-child(1) {
+  background: var(--c-exc);
+  border-color: var(--c-exc);
+}
+.v3-term-bar i:nth-child(2) {
+  background: var(--c-run);
+  border-color: var(--c-run);
+}
+.v3-term-bar i:nth-child(3) {
+  background: var(--c-ok);
+  border-color: var(--c-ok);
+}
+
+.v3-prompt {
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--c-fg);
+}
+
+@media (min-width: 640px) {
+  .v3-prompt {
+    font-size: 0.875rem;
+  }
+}
+
+.v3-prompt .v3-ps1 {
+  color: var(--c-ok);
+}
+
+.v3-prompt .v3-ps1 b {
+  color: var(--c-queue);
+  font-weight: 400;
+}
+
+/* Typing without layout work: a cover slides right in steps of one character. */
+.v3-type {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: pre;
+}
+
+.v3-type::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--term-bg, var(--c-bg));
+  border-left: 0.6ch solid var(--c-accent);
+  transform: translateX(100%);
+  animation: v3-type var(--dur, 0.6s) steps(var(--n, 8), end) var(--delay, 0s) both;
+}
+
+@keyframes v3-type {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.v3-out {
+  animation: v3-out 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) both;
+}
+
+@keyframes v3-out {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.v3-caret-block {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1.1em;
+  margin-left: 0.15ch;
+  vertical-align: -0.15em;
+  background: var(--c-accent);
+}
+
+.v3-kv {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.15rem 1rem;
+}
+
+@media (max-width: 479px) {
+  .v3-kv {
+    grid-template-columns: 1fr;
+  }
+  .v3-kv dd {
+    margin-bottom: 0.4rem;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.v3-hero-name {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(3.4rem, 1.6rem + 9vw, 9.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+}
+
+/* Inline SVG, sized like the old 34vw mono [JT] (4 cells of 0.6em). No font, so no LCP wait. */
+.v3-hero-glyph {
+  display: block;
+  width: clamp(24rem, 81.6vw, 72rem);
+  height: auto;
+  overflow: visible;
+}
+
+.v3-hero-glyph path {
+  fill: none;
+  stroke: var(--c-line-strong);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- Ticker ---------- */
+
+.v3-ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--c-line);
+  background: var(--c-surface);
+}
+
+.v3-ticker-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  padding: 0.85rem 0;
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+.v3-ticker-track span::before {
+  content: "\25B8\00A0";
+  color: var(--c-ok);
+}
+
+/* ---------- Flow: the BPMN canvas with its connector and the JT bot ---------- */
+
+.v3-flow {
+  position: relative;
+  padding-left: var(--flow-pad);
+}
+
+.v3-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--rail-x) - 1px);
+  width: 2px;
+  pointer-events: none;
+}
+
+.v3-rail-base {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--c-line-strong) 50%, transparent 50%);
+  background-size: 2px 10px;
+}
+
+.v3-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ok);
+}
+
+.v3-rail-fill {
+  transform-origin: 50% 0;
+}
+
+/* The token rides a track as tall as the rail minus the token, so translateY(100%) lands it at the end. */
+.v3-token-track {
+  position: absolute;
+  top: 0;
+  bottom: 32px;
+  left: -15px;
+  width: 32px;
+  display: none;
+}
+
+.v3-token {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--c-ok);
+  border-radius: 8px;
+  background: var(--c-bg);
+  font-family: var(--ff-mono);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--c-ok);
+  box-shadow: 0 0 0 4px var(--c-bg), 0 0 24px -2px color-mix(in srgb, var(--c-ok) 55%, transparent);
+}
+
+.v3-node {
+  position: relative;
+  scroll-margin-top: 5rem;
+}
+
+@media (min-width: 1024px) {
+  .v3-node {
+    scroll-margin-top: 1.5rem;
+  }
+}
+
+.v3-marker {
+  position: absolute;
+  top: 0.3rem;
+  left: calc(var(--rail-x) - var(--flow-pad) - 9px);
+  display: grid;
+  width: 18px;
+  height: 18px;
+}
+
+.v3-marker > * {
+  grid-area: 1 / 1;
+  border-radius: 5px;
+  border: 2px solid var(--c-queue);
+  background: var(--c-bg);
+}
+
+.v3-marker > [data-state="done"] {
+  border-color: var(--c-ok);
+  background: var(--c-ok);
+  transition: opacity 0.35s ease-out;
+}
+
+.v3-node[data-run="queued"] > .v3-marker > [data-state="done"] {
+  opacity: 0;
+}
+
+.v3-marker[data-shape="event"] > * {
+  border-radius: 999px;
+}
+
+.v3-node-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+}
+
+.v3-activity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.v3-activity b {
+  color: var(--c-muted);
+  font-weight: 400;
+}
+
+/* ---------- Cards, logs, manifest ---------- */
+
+.v3-card {
+  position: relative;
+  border: 1px solid var(--c-line);
+  border-radius: 0.75rem;
+  background: var(--c-surface);
+}
+
+.v3-card-hover {
+  transition: border-color 200ms ease-out, transform 200ms ease-out;
+}
+
+.v3-card-hover:hover,
+.v3-card-hover:focus-within {
+  border-color: var(--c-accent);
+  transform: translateY(-2px);
+}
+
+/* Whole card is clickable through its heading link. */
+.v3-stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.v3-log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.v3-log > li {
+  display: grid;
+  grid-template-columns: 4.75rem 1fr;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-top: 1px dashed var(--c-line);
+}
+
+.v3-log > li:first-child {
+  border-top: 0;
+}
+
+@media (max-width: 479px) {
+  .v3-log > li {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+.v3-tag {
+  font-family: var(--ff-mono);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.6rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.v3-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--c-line);
+  border-radius: 0.375rem;
+  font-family: var(--ff-mono);
+  font-size: 0.75rem;
+  color: var(--c-muted);
+}
+
+.v3-chip strong {
+  color: var(--c-fg);
+}
+
+.v3-manifest {
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.v3-manifest .k {
+  color: var(--c-queue);
+}
+.v3-manifest .s {
+  color: var(--c-ok);
+}
+
+/* One element per package: the comma is generated, so the list stays light in the DOM. */
+.v3-manifest .s + .s::before {
+  content: ", ";
+  color: var(--c-muted);
+}
+.v3-manifest .p {
+  color: var(--c-muted);
+}
+
+.v3-metric-value {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 1.4rem + 2vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mini process map inside the job inspector. */
+.v3-mini {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v3-mini li {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 0.5rem;
+  background: var(--c-bg);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.v3-mini li + li {
+  margin-top: 1rem;
+}
+
+.v3-mini li + li::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  top: calc(-1rem - 1px);
+  height: 1rem;
+  width: 2px;
+  background: var(--c-ok);
+}
+
+/* Before and after bars. */
+.v3-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  transform-origin: 0 50%;
+}
+
+.v3-shrink > .v3-bar {
+  transform: scaleX(var(--to, 1));
+}
+
+/* ---------- Runbook: pinned state machine (desktop with motion), list otherwise ---------- */
+
+.v3-pin[data-pin="on"] {
+  height: calc(var(--steps, 6) * 62vh + 100vh);
+}
+
+.v3-pin[data-pin="on"] .v3-pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.v3-pin[data-pin="on"] .v3-steps {
+  display: grid;
+}
+
+.v3-pin[data-pin="on"] .v3-steps > li {
+  grid-area: 1 / 1;
+}
+
+.v3-step-num {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 4.5rem;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-accent);
+}
+
+.v3-sm text {
+  font-family: var(--ff-body);
+}
+
+.v3-sm .v3-sm-num {
+  font-family: var(--ff-mono);
+  font-weight: 700;
+}
+
+/* ---------- Git log (about page) ---------- */
+
+.v3-gitlog {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+}
+
+.v3-gitlog > li {
+  position: relative;
+  padding: 0 0 1.25rem 1.75rem;
+}
+
+.v3-gitlog > li::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 0.35rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--c-ok);
+}
+
+.v3-gitlog > li::after {
+  content: "";
+  position: absolute;
+  left: calc(0.6rem - 1px);
+  top: 1.1rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--c-line-strong);
+}
+
+.v3-gitlog > li:last-child::after {
+  display: none;
+}
+
+} /* end @layer components */
+
+/* ---------- Motion switches ---------- */
+
+/*
+ * Reveal (see motion/Reveal.tsx and motion/RevealObserver.tsx). Only the observer sets
+ * "armed", only when motion is on and only below the fold; the HTML state is the final state.
+ */
+.v3-root [data-v3-reveal="armed"] {
+  opacity: 0;
+  transform: translate3d(0, var(--rise, 24px), 0);
+}
+
+.v3-root [data-v3-reveal="in"] {
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--rd, 0s),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--rd, 0s);
+}
+
+/* Scroll-driven CSS animations, no JavaScript: index drift, ticker, canvas, hero, progress. */
+@keyframes v3-drift {
+  from {
+    transform: translate3d(0, 60px, 0);
+  }
+  to {
+    transform: translate3d(0, -60px, 0);
+  }
+}
+
+@keyframes v3-ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-35%, 0, 0);
+  }
+}
+
+/*
+ * The canvas: every scroll-linked move below is a CSS scroll-driven animation (transform only,
+ * composited, no JavaScript). Each range mirrors the framer offsets it replaced:
+ * "cover <n>vh" is the moment the element's top sits <n>vh above the bottom of the viewport.
+ */
+@keyframes v3-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes v3-ride {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes v3-node-rise {
+  from {
+    transform: translate3d(0, 56px, 0) scale(0.965);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes v3-shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(var(--to, 1));
+  }
+}
+
+@keyframes v3-hero-drift {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translate3d(0, 220px, 0);
+  }
+}
+
+@keyframes v3-hero-sink {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translate3d(0, -40px, 0) scale(0.94);
+  }
+}
+
+@keyframes v3-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .v3-root .v3-ticker {
+    view-timeline-name: --v3-ticker;
+  }
+
+  .v3-root .v3-flow {
+    view-timeline-name: --v3-flow;
+  }
+
+  .v3-root .v3-node[data-v3-node] {
+    view-timeline-name: --v3-node;
+  }
+
+  .v3-root .v3-shrink {
+    view-timeline-name: --v3-shrink;
+  }
+
+  .v3-root .v3-hero-stage {
+    view-timeline-name: --v3-hero;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="off"]) .v3-root .v3-drift {
+      animation: v3-drift linear both;
+      animation-timeline: view();
+    }
+
+    html:not([data-motion="off"]) .v3-root .v3-ticker-track {
+      animation: v3-ticker linear both;
+      animation-timeline: --v3-ticker;
+    }
+
+    /* Flow: the connector draws from the canvas top crossing 55% of the screen to its bottom crossing it. */
+    html:not([data-motion="off"]) .v3-root .v3-rail-fill,
+    html:not([data-motion="off"]) .v3-root .v3-token-track {
+      animation: v3-fill linear both;
+      animation-timeline: --v3-flow;
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    html:not([data-motion="off"]) .v3-root .v3-token-track {
+      display: block;
+      animation-name: v3-ride;
+    }
+
+    /* Node: rises from its top at 92% of the screen to its top at 50%. */
+    html:not([data-motion="off"]) .v3-root .v3-node-body {
+      transform-origin: 0 0;
+      animation: v3-node-rise linear both;
+      animation-timeline: --v3-node;
+      animation-range: cover 8vh cover 50vh;
+    }
+
+    /* Shrink bar: from its top at 95% of the screen to its top at 60%. */
+    html:not([data-motion="off"]) .v3-root .v3-shrink > .v3-bar {
+      animation: v3-shrink linear both;
+      animation-timeline: --v3-shrink;
+      animation-range: cover 5vh cover 40vh;
+    }
+
+    /* Hero: from its top at the top of the screen until it has scrolled away. */
+    html:not([data-motion="off"]) .v3-root .v3-hero-back {
+      animation: v3-hero-drift linear both;
+      animation-timeline: --v3-hero;
+      animation-range: cover 100vh cover 100%;
+    }
+
+    html:not([data-motion="off"]) .v3-root .v3-hero-front {
+      transform-origin: 50% 0;
+      animation: v3-hero-sink linear both;
+      animation-timeline: --v3-hero;
+      animation-range: cover 100vh cover 100%;
+    }
+
+    html:not([data-motion="off"]) .v3-root .v3-progress {
+      display: block;
+    }
+
+    html:not([data-motion="off"]) .v3-root .v3-progress > * {
+      animation: v3-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-root [data-v3-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+html[data-motion="off"] .v3-root [data-v3-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-root .v3-anim,
+  .v3-root .v3-anim::after,
+  .v3-root .v3-type::after,
+  .v3-root .v3-dot::after {
+    animation: none !important;
+  }
+}
+
+html[data-motion="off"] .v3-root .v3-anim,
+html[data-motion="off"] .v3-root .v3-anim::after,
+html[data-motion="off"] .v3-root .v3-type::after,
+html[data-motion="off"] .v3-root .v3-dot::after,
+.v3-root [data-skip="true"] .v3-anim,
+.v3-root [data-skip="true"] .v3-type::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-card-hover:hover,
+  .v3-card-hover:focus-within,
+  .v3-btn:hover {
+    transform: none;
+  }
+}
+
+html[data-motion="off"] .v3-root .v3-card-hover:hover,
+html[data-motion="off"] .v3-root .v3-card-hover:focus-within,
+html[data-motion="off"] .v3-root .v3-btn:hover {
+  transform: none;
+}
+
+@media print {
+  .v3-orch,
+  .v3-rail,
+  .v3-ticker {
+    display: none !important;
+  }
+  .v3-page {
+    padding-left: 0 !important;
+  }
 }

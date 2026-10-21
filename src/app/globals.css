@@ -72,7 +72,8 @@ body {
   border: 0;
 }
 
-.jt-skip-link {
+/* :root raises specificity above each version's ".vN-root a { color: inherit }" reset. */
+:root .jt-skip-link {
   position: absolute;
   left: 1rem;
   top: -100px;

@@ -29,7 +29,7 @@ export const skills: SkillGroup[] = [
     title: "AI and agents",
     items: [
       "Agentic workflows",
-      "UiPath Agent Builder and evaluations",
+      "UiPath agents and agent evaluations",
       "OpenAI API",
       "Anthropic API",
       "AWS Bedrock",

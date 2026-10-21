@@ -22,9 +22,9 @@ export const community: CommunityItem[] = [
   },
   {
     id: "bryant-hackathon",
-    title: "Hosted a hackathon at Bryant University",
+    title: "Co-hosted the Red Day hackathon at Bryant University",
     org: "Bryant University",
-    detail: "Hosted a hackathon at Bryant University in Smithfield, Rhode Island.",
+    detail: "Co-hosted the hackathon at Bryant University's Red Day event in Smithfield, Rhode Island, two years running.",
     kind: "community",
   },
   {
@@ -65,7 +65,7 @@ export const beyondCode: string[] = [
   "BBA in Accounting, University of Rhode Island.",
   "Managed a Providence barbershop for 7+ years and kept its books in Excel.",
   "Assistant Coordinator, TEDxProvidence 2025.",
-  "Hosted a hackathon at Bryant University.",
+  "Co-hosted the Red Day hackathon at Bryant University two years running.",
   "Bilingual: English and Spanish.",
 ];
 

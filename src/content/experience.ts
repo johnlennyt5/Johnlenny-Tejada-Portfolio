@@ -21,7 +21,7 @@ export const experience: Experience[] = [
       "Built an unattended UiPath import bot (REFramework dispatcher and performer, retries, exception reports) that took a 3-hour manual import to zero-touch.",
       "Automated nonprofit verification with human-in-the-loop review in Action Center, cutting approval turnaround from 5 days to under 2 hours.",
       "Built a form-triage bot with fuzzy-match deduplication that reached 85% straight-through processing.",
-      "Designed and built the original Java and Spring Boot backend: 17 REST controllers and 100+ endpoints with JWT and API-key security and per-tenant MySQL schemas, deployed on AWS (Elastic Beanstalk, SES, SNS). The platform has since moved to TypeScript.",
+      "Helped design and build the original Java and Spring Boot backend: 17 REST controllers and 100+ endpoints with JWT and API-key security and per-tenant MySQL schemas, deployed on AWS (Elastic Beanstalk, SES, SNS). The platform has since moved to TypeScript.",
       "Own the full cycle on my work: PDD and SDD design documents, peer code review, UAT, go-live, and production support with root-cause analysis.",
       "Onboard new teammates and pair-program with coworkers.",
     ],
@@ -67,11 +67,11 @@ export const experience: Experience[] = [
     highlights: [
       "Co-founded the company and was one of the two engineers who coded the entire product: a React Native and Expo app with a Bun and Hono API.",
       "Built the Stripe membership checkout in the app and the Stripe integration in the backend.",
-      "Shipped the app to the Apple App Store and Google Play as Ironclad Fitness RI, released in January 2026.",
+      "Helped ship the app as Ironclad Fitness RI: released on the Apple App Store in January 2026, and also on Google Play.",
       "Still hold equity. My partner now runs the company and its development full time.",
     ],
     metrics: [],
-    stack: ["React Native", "Expo and EAS", "TypeScript", "Bun", "Hono", "Supabase", "Stripe"],
+    stack: ["React Native", "Expo and EAS", "Bun", "Hono", "Supabase", "Stripe"],
     links: [
       {
         label: "App Store",

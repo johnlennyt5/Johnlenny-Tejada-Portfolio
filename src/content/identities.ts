@@ -12,9 +12,9 @@ export const identities: Identity[] = [
     pitch:
       "I build UiPath automations and agentic workflows that turn manual, multi-step processes into exception-only work, with people in the loop where the stakes call for it.",
     proof: [
-      "UiPath robots at HumanixOS took a 3-hour manual import to zero-touch and cut an approval cycle from 5 days to under 2 hours.",
+      "At HumanixOS, an unattended UiPath import bot took a 3-hour manual import to zero-touch, and automated nonprofit verification cut approval turnaround from 5 days to under 2 hours.",
       "PrismShift migrates Blue Prism automations into UiPath, with tenant isolation proven in CI.",
-      "ILOP orchestrates loan intake agents on UiPath Maestro with a hard compliance veto and human review in Action Center.",
+      "ILOP, still in progress, orchestrates loan and mortgage intake agents on UiPath Maestro with a compliance agent and human review in Action Center.",
     ],
     projects: ["prismshift", "ilop", "eve", "yconic", "parameter-golf"],
   },

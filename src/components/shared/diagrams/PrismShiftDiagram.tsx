@@ -3,28 +3,28 @@ import { Diagram, type DiagramProps, type DiagramSpec } from "./engine";
 export const prismShiftSpec: DiagramSpec = {
   title: "PrismShift pipeline",
   description:
-    "Inside the browser, a Blue Prism release, or an Automation Anywhere bot through an adapter, is parsed in a Web Worker into a vendor-neutral intermediate representation. Analysis rules grade each process from A to F, and the transformer generates a UiPath project plus a Maestro BPMN pipeline with a migration report. Only metadata leaves the browser, to Supabase with row-level security and an immutable audit log. An optional AI summary goes through a rate-limited proxy that only receives a redacted digest. A command line tool deploys the result to UiPath Orchestrator.",
+    "Inside the browser, a Blue Prism release export is parsed client-side in a Web Worker, and a golden answer-key corpus of synthetic releases runs through the same parser in CI. 14 analysis rules check each process, and the converter generates UiPath REFramework projects, Maestro BPMN for human-review steps and a migration report with an effort estimate. Redaction guards check everything that leaves the browser. Supabase stores workspace data with row-level security and an immutable audit log, and AI calls go through an LLM proxy with per-workspace rate limits and origin restrictions. Deployment to UiPath Orchestrator goes through its OData API.",
   nodes: [
     { id: "release", label: "Blue Prism release", sub: ".bprelease export" },
-    { id: "aa", label: "Automation Anywhere bot", sub: "adapter, same IR", kind: "external" },
+    { id: "aa", label: "Answer-key corpus", sub: "synthetic releases, CI", kind: "external" },
     { id: "parse", label: "Parser", sub: "Web Worker" },
-    { id: "ir", label: "Vendor-neutral IR", sub: "process graph" },
-    { id: "rules", label: "Analysis rules", sub: "grades A to F" },
-    { id: "gen", label: "UiPath project + Maestro BPMN", sub: "report and punch list" },
-    { id: "supa", label: "Supabase", sub: "metadata only, RLS, immutable audit log", kind: "store" },
-    { id: "llm", label: "LLM proxy", sub: "opt-in, redacted, rate limited", kind: "agent" },
-    { id: "orch", label: "Orchestrator", sub: "queues, assets, deploy" },
+    { id: "ir", label: "Parsed processes", sub: "stages, client-side" },
+    { id: "rules", label: "Analysis rules", sub: "14 rules" },
+    { id: "gen", label: "UiPath projects + Maestro BPMN", sub: "migration report, effort estimate" },
+    { id: "supa", label: "Supabase", sub: "RLS, immutable audit log", kind: "store" },
+    { id: "llm", label: "LLM proxy", sub: "rate limited, origin checked", kind: "agent" },
+    { id: "orch", label: "Orchestrator", sub: "queues, assets, OData deploy" },
   ],
-  groups: [{ id: "browser", label: "In the browser: source never leaves the machine", dashed: true }],
+  groups: [{ id: "browser", label: "In the browser: parsed client-side", dashed: true }],
   edges: [
     { from: "release", to: "parse" },
     { from: "aa", to: "parse" },
     { from: "parse", to: "ir" },
     { from: "ir", to: "rules" },
     { from: "rules", to: "gen" },
-    { from: "rules", to: "supa", label: "metadata only", dashed: true },
-    { from: "rules", to: "llm", label: "redacted digest", dashed: true },
-    { from: "gen", to: "orch", label: "CLI deploy" },
+    { from: "rules", to: "supa", label: "redaction guard", dashed: true },
+    { from: "rules", to: "llm", label: "redaction guard", dashed: true },
+    { from: "gen", to: "orch", label: "OData API" },
   ],
   wide: {
     cols: 14,
@@ -79,7 +79,7 @@ export const prismShiftSpec: DiagramSpec = {
   },
 };
 
-/** PrismShift: Blue Prism release to parser, IR, graded analysis, UiPath project and BPMN, Orchestrator. */
+/** PrismShift: Blue Prism release to client-side parser, analysis rules, UiPath projects and BPMN, Orchestrator. */
 export function PrismShiftDiagram(props: DiagramProps) {
   return <Diagram spec={prismShiftSpec} {...props} />;
 }

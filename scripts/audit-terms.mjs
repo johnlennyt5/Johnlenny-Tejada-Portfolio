@@ -38,6 +38,15 @@ const RULES = [
   { id: "email-literal", pattern: /johnlennyt@gmail\.com/gi, why: "Email must be assembled in JS by CopyEmail" },
   { id: "mailto", pattern: /mailto:/gi, why: "No plain mailto links; use CopyEmail" },
   { id: "tenant-url", pattern: /cloud\.uipath\.com\/[a-z0-9-]+\//gi, why: "No UiPath tenant URLs" },
+  // Claims removed by the 2026-10-21 fact audit (not in the ledger or the fact-checked Phase 0 tables).
+  { id: "grades-a-to-f", pattern: /\bA to F\b/g, why: "PrismShift letter grades are unconfirmed; say \"14 analysis rules\"" },
+  { id: "automation-anywhere", pattern: /\bAutomation Anywhere\b/gi, why: "PrismShift Automation Anywhere adapter is unconfirmed" },
+  { id: "proof-of-delivery", pattern: /\bproof of delivery\b/gi, why: "truckWhat proof of delivery is unconfirmed" },
+  { id: "veto", pattern: /\bveto(?:es|ed)?\b/gi, why: "ILOP compliance veto is unconfirmed; say \"compliance agent\"" },
+  { id: "agent-builder", pattern: /\bAgent Builder\b/g, why: "Not in the ledger; say \"UiPath agents\"" },
+  { id: "never-leave", pattern: /never leave the (?:building|machine)/gi, why: "Overclaim; say \"parsed in the browser\"" },
+  { id: "production-python", pattern: /\bproduction Python\b/gi, why: "Python is project work only" },
+  { id: "expert", pattern: /\bexpert\b/gi, why: "No \"expert\" claims" },
 ];
 
 const TEXT_EXT = new Set([".ts", ".tsx", ".js", ".mjs", ".cjs", ".jsx", ".css", ".md", ".mdx", ".json", ".html", ".txt", ".xml", ".svg", ".webmanifest"]);

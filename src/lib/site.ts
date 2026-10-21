@@ -66,6 +66,8 @@ export const routes = {
   home: (v: VersionId) => `/${v}/`,
   about: (v: VersionId) => `/${v}/about/`,
   work: (v: VersionId, slug: string) => `/${v}/work/${slug}/`,
+  /** Side-by-side view of all four versions. Linked from each footer as "All versions", not from the main nav. */
+  compare: "/compare/",
   resume: "/resume/Johnlenny_Tejada_Resume.pdf",
   og: (id: VersionId | "default") => `/og/${id}.png`,
 } as const;

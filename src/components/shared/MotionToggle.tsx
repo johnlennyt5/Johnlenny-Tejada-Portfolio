@@ -1,7 +1,16 @@
 "use client";
 
-import { LazyMotion, MotionConfig, useReducedMotion } from "framer-motion";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { LazyMotion, MotionConfig } from "framer-motion";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 
 /** localStorage key. The inline script in the root layout reads the same key before paint. */
 export const MOTION_STORAGE_KEY = "jt-motion";
@@ -20,6 +29,29 @@ interface MotionPrefValue {
 }
 
 const MotionPrefContext = createContext<MotionPrefValue | null>(null);
+
+const REDUCE_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReduced(onChange: () => void): () => void {
+  if (typeof window === "undefined" || !window.matchMedia) return () => undefined;
+  const mql = window.matchMedia(REDUCE_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+}
+
+function readReduced(): boolean {
+  return typeof window !== "undefined" && !!window.matchMedia && window.matchMedia(REDUCE_QUERY).matches;
+}
+
+/**
+ * The OS reduced-motion setting, hydration safe: the server snapshot and the first client
+ * render both report false, then React re-renders with the real value right after hydration.
+ * (framer-motion's useReducedMotion reads the media query during the first render, which makes
+ * any markup that branches on it differ from the static HTML.)
+ */
+function useOsReducedMotion(): boolean {
+  return useSyncExternalStore(subscribeReduced, readReduced, () => false);
+}
 
 const loadFeatures = () => import("@/lib/motion-features").then((m) => m.default);
 
@@ -47,7 +79,7 @@ function writeStored(pref: MotionPref): void {
  */
 export function MotionProvider({ children }: { children: ReactNode }) {
   const [pref, setPrefState] = useState<MotionPref>("on");
-  const osReduced = useReducedMotion() ?? false;
+  const osReduced = useOsReducedMotion();
 
   useEffect(() => {
     const stored = readStored();
@@ -80,7 +112,7 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 /** Read the motion preference. Works without a provider (falls back to the OS setting). */
 export function useMotionPreference(): MotionPrefValue {
   const ctx = useContext(MotionPrefContext);
-  const osReduced = useReducedMotion() ?? false;
+  const osReduced = useOsReducedMotion();
   if (ctx) return ctx;
   return { pref: "on", setPref: () => undefined, reduced: osReduced };
 }

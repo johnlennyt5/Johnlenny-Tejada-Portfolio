@@ -121,6 +121,62 @@ export const evidence = [
     claim: "pgTAP assertions proving tenant isolation in CI",
     source: "Ledger row 'Migration Platform for Regulated Banking'; Phase 0 E14",
   },
+  {
+    id: "ps-vitest",
+    value: "1,038",
+    claim: "Vitest tests in PrismShift",
+    source: "Ledger 2026-10-21 'PrismShift (verified 2026-10-21)' ('1,038 Vitest tests + 75 pgTAP assertions'); replaces the stale ~646 count",
+  },
+  {
+    id: "ps-rules",
+    value: "14",
+    claim: "Analysis rules (security, reliability, maintainability, compliance)",
+    source: "Ledger 2026-10-21 'PrismShift (verified 2026-10-21)'",
+  },
+  {
+    id: "ps-stages",
+    value: "274 of 345",
+    claim: "Stages auto-converted in the Packt email-driven refund pipeline sample",
+    source: "Ledger 2026-10-21 'PrismShift (verified 2026-10-21)' ('274/345 stages auto-converted (79%)')",
+  },
+  {
+    id: "ps-auto-rate",
+    value: "79%",
+    claim: "Share of stages auto-converted in that sample",
+    source: "Ledger 2026-10-21 'PrismShift (verified 2026-10-21)'",
+  },
+  {
+    id: "ps-answer-keys",
+    value: "6",
+    claim: "Synthetic answer-key releases in the golden regression suite",
+    source: "Ledger 2026-10-21 'PrismShift (verified 2026-10-21)' ('6 synthetic answer-key releases')",
+  },
+
+  // ILOP (in progress)
+  {
+    id: "ilop-queues",
+    value: "7",
+    claim: "Orchestrator queues in ILOP",
+    source: "Ledger 2026-10-21 'ILOP / Harborview (verified 2026-10-21)'",
+  },
+  {
+    id: "ilop-confidence",
+    value: "0.75",
+    claim: "Router confidence needed before routing LOAN / MORTGAGE / OTHER",
+    source: "Ledger 2026-10-21 'ILOP / Harborview' ('router LOAN/MORTGAGE/OTHER at >= 0.75 confidence')",
+  },
+  {
+    id: "ilop-loan-fields",
+    value: "24",
+    claim: "Fields pulled by the LLM loan extractor",
+    source: "Ledger 2026-10-21 'ILOP / Harborview' ('LLM loan extractor 24 fields')",
+  },
+  {
+    id: "ilop-mortgage-fields",
+    value: "about 55",
+    claim: "URLA fields pulled by the mortgage extractor",
+    source: "Ledger 2026-10-21 'ILOP / Harborview' ('mortgage extractor ~55 URLA fields')",
+  },
 
   // HumanixOS
   {

@@ -19,10 +19,10 @@ export const profile = {
     "I build automations that turn manual, multi-step work into exception-only work, and the full-stack products around them. Since January 2023 I have done that at HumanixOS, a nonprofit software platform in Providence. On my own time I founded truckWhat, built PrismShift, and co-founded SmartFit Metrics.",
   /** First-person bio for About sections. Paragraphs in order. */
   bio: [
-    "I am a software engineer at HumanixOS, where I build AI and automation features for a live multi-tenant platform that nonprofits run on. That work spans UiPath robots with humans in the loop, AI-assisted data migrations from legacy databases and spreadsheets, and the TypeScript product code around them. Before the platform moved to TypeScript, I designed and built its original Java and Spring Boot backend.",
-    "Outside the day job I build products end to end. truckWhat is my own logistics startup, a web and mobile trucking marketplace I am building solo with a CI gate on every push. PrismShift migrates Blue Prism automations into UiPath for banks that cannot let their source exports leave the building. I co-founded SmartFit Metrics and was one of its two engineers; the app is live on the App Store and Google Play.",
+    "I am a software engineer at HumanixOS, where I build AI and automation features for a live multi-tenant platform that nonprofits run on. That work spans UiPath robots with humans in the loop, AI-assisted data migrations from legacy databases and spreadsheets, and the TypeScript product code around them. Before the platform moved to TypeScript, I helped design and build its original Java and Spring Boot backend.",
+    "Outside the day job I build products end to end. truckWhat is my own logistics startup, a web and mobile trucking marketplace I am building solo with a CI gate on every push. PrismShift migrates Blue Prism automations into UiPath for regulated banks, parsing the source exports in the browser. I co-founded SmartFit Metrics and was one of its two engineers; the app is live on the App Store and Google Play.",
     "I came to software from the business side. I hold a BBA in Accounting from the University of Rhode Island, and for more than seven years I managed a barbershop in Providence: hiring barbers, keeping clients, and keeping the books in Excel. That is why I care about what an automation saves, who it serves, and what happens when it fails.",
-    "I also like building rooms full of builders. I was Assistant Coordinator for TEDxProvidence 2025, I hosted a hackathon at Bryant University, and I teach people to code with AI at hackathons and community events. I work in English and Spanish.",
+    "I also like building rooms full of builders. I was Assistant Coordinator for TEDxProvidence 2025, I co-hosted the Red Day hackathon at Bryant University two years running, and I teach people to code with AI at hackathons and community events. I work in English and Spanish.",
   ],
   location: {
     city: "Providence",
@@ -33,7 +33,7 @@ export const profile = {
     short: "Providence, RI",
     timeZone: "America/New_York",
   },
-  availability: "Open to automation, AI and full-stack engineering roles in New England or remote.",
+  availability: "Open to automation, AI and full-stack engineering roles in Rhode Island, Massachusetts and Connecticut, or remote.",
   languages: ["English", "Spanish"],
   links: {
     linkedin: {

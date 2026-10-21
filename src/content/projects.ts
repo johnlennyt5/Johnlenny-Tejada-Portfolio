@@ -20,21 +20,22 @@ export const projects: Project[] = [
       "React",
       "Vite",
       "Web Workers",
+      "fast-xml-parser",
       "pnpm and Turborepo monorepo",
-      "Supabase (Postgres, Auth, Edge Functions)",
+      "Supabase",
       "Row-level security",
       "pgTAP",
       "Vitest",
       "GitHub Actions",
-      "Anthropic API (opt-in)",
-      "UiPath Studio",
-      "UiPath Orchestrator API",
+      "Anthropic API (through an LLM proxy)",
+      "UiPath REFramework",
+      "UiPath Orchestrator (OData)",
       "Maestro BPMN",
     ],
     oneLiner:
-      "Migrates Blue Prism automations into UiPath without recoding them by hand, built for banks whose source exports can never leave the building.",
+      "Migrates Blue Prism automations into UiPath without recoding them by hand, built for regulated banks, with source exports parsed in the browser.",
     summary:
-      "PrismShift parses Blue Prism releases in the browser, grades every process, and generates UiPath projects plus a Maestro BPMN pipeline ready for Orchestrator. The server only ever sees metadata, and tenant isolation is proven in CI with 75 pgTAP assertions.",
+      "PrismShift parses Blue Prism release exports in the browser, runs 14 analysis rules on every process, and generates UiPath REFramework projects, Maestro BPMN for human review and a migration report with an effort estimate. Redaction guards check everything that leaves the browser, and tenant isolation is proven in CI with 75 pgTAP assertions.",
     links: [],
     linkNote: "The repository is private. I am happy to walk through the code live.",
     metrics: [
@@ -44,11 +45,10 @@ export const projects: Project[] = [
     diagram: "prismshift",
     caseStudy: {
       problem:
-        "Banks that want to leave Blue Prism face a rewrite: every process has to be rebuilt by hand in UiPath. The exports that hold that logic also carry credential references, internal hostnames and business rules, so most bank security teams will not let them be uploaded to a vendor tool at all.",
+        "Banks that want to leave Blue Prism face a rewrite: every process has to be rebuilt by hand in UiPath. The exports that hold that logic can also carry credential references, internal hostnames and business rules, so a migration tool built for banks should not need to upload them anywhere.",
       constraints: [
-        "Source exports may not be uploaded anywhere. Parsing, analysis and conversion have to run on the analyst's own machine.",
-        "The output has to open, compile and run in real UiPath tooling, not just look plausible in a diff.",
-        "There is no access to the bank's target applications, so UI selectors cannot be verified automatically.",
+        "Source exports should stay on the analyst's machine, so parsing and analysis run client-side in the browser.",
+        "The output has to run in real UiPath tooling, not just look plausible in a diff.",
         "Enterprise reviewers need evidence before they say yes: tenant isolation, an audit trail, retention rules and a threat model.",
         "A solo build, July to August 2026.",
       ],
@@ -56,81 +56,57 @@ export const projects: Project[] = [
         {
           title: "Browser-first pipeline",
           detail:
-            "All parsing, analysis and conversion run client-side in a Web Worker. The server only receives metadata, and runtime guards backed by tests reject anything that carries source values, so the privacy promise is enforced in code rather than in a policy document.",
+            "Blue Prism release exports (.bprelease or .xml) are dropped into the browser and parsed client-side with fast-xml-parser in a Web Worker. Redaction guards check everything that leaves the browser, and artifacts are AES-GCM encrypted on the client with a key that never reaches the database.",
         },
         {
-          title: "A vendor-neutral intermediate representation",
+          title: "Rules before conversion",
           detail:
-            "Blue Prism releases parse into a graph IR that knows nothing about either vendor. Rules, scoring, summaries and the UiPath transformer all read the IR. I proved the boundary by adding an Automation Anywhere parser: the downstream pipeline ran unchanged.",
+            "14 analysis rules across security, reliability, maintainability and compliance flag issues in each process before anything is converted.",
         },
         {
-          title: "Grades before conversion",
+          title: "Output a team can deploy",
           detail:
-            "Pure-function analysis rules across security, reliability, maintainability and compliance grade each process from A to F, so a migration team can triage the estate before converting anything.",
+            "The converter generates UiPath REFramework projects, asset and queue manifests, test workflows and a migration report with an effort estimate. Maestro BPMN covers the human-review steps, and deployment to Orchestrator goes through its OData API.",
         },
         {
           title: "Tenant isolation proven, not promised",
           detail:
-            "Row-level security is on every table from the first migration. A dedicated CI job runs 75 pgTAP assertions on every push: cross-workspace reads denied, role gates enforced, and the audit log immutable even for admins.",
+            "Row-level security isolates each workspace, and a dedicated CI job proves it with 75 pgTAP assertions. The audit_events table is immutable: no updates and no deletes.",
         },
         {
-          title: "AI that is opt-in and redacted",
+          title: "AI behind a proxy",
           detail:
-            "Narrative summaries can use the Anthropic API, but only through an Edge Function proxy that receives a redacted digest, enforces per-workspace rate limits, caps request size and checks the calling origin.",
+            "Calls to the Anthropic API go through an LLM proxy with per-workspace rate limits and origin restrictions.",
         },
         {
-          title: "Evidence-only activity shapes",
+          title: "Answer keys in CI",
           detail:
-            "Generated UiPath activities are built from official templates and assembly metadata, never from memory. That rule caught a typo in UiPath's own documentation that would not have compiled.",
+            "A golden answer-key regression suite runs 6 synthetic releases in CI and fails on a missed finding and on a false positive.",
         },
       ],
       tradeoffs: [
-        "Assisted conversion with a punch list instead of a promise of fully automatic conversion. Anything uncertain goes to a human with a validation checklist.",
-        "Every UI selector is flagged for human validation, because there is no live target application to test against.",
-        "A batch human-review gate today, with per-item review left for later.",
-        "A Local Mode with no account trades team features for zero data leaving the browser.",
+        "Assisted conversion instead of a promise of full automation: in a sample run on an email-driven Blue Prism refund pipeline from Packt, 274 of 345 stages converted automatically (79%), and the migration report estimates the effort for the rest.",
+        "Human-review steps stay in the generated Maestro BPMN instead of being automated away.",
+        "Client-side parsing and encryption put more work in the browser, in exchange for keeping source exports and keys out of the database.",
       ],
-      whatBroke: [
-        {
-          title: "Every decision branch went missing",
-          detail:
-            "Blue Prism stores the true and false branches of a decision differently from ordinary links, and the parser was silently dropping them in every real release. Work chains detached and queue-driven processes ran only once. Fixing the parser reconnected the chains.",
-        },
-        {
-          title: "A pipeline that deployed but would not start",
-          detail:
-            "The generated Maestro BPMN deployed cleanly and then could not start a single job. The causes were layered: solution-scoped keys, binding handles and folder resolution all had to be right before Orchestrator would run it.",
-        },
-        {
-          title: "Code bodies flattened by XML",
-          detail:
-            "Invoke Code bodies came out mangled because XML attribute normalization turns newlines into spaces. The lesson I kept: read the emitted XAML, not only the test report.",
-        },
-        {
-          title: "A catch that swallowed everything",
-          detail: "The first generated scaffold had a catch block that swallowed every failure. Now failures surface.",
-        },
-        {
-          title: "Green tests, broken build",
-          detail:
-            "Type errors hid behind passing Vitest runs until I added the full build as a CI gate next to lint and test.",
-        },
-      ],
+      whatBroke: [],
       results: [
-        "Converts Blue Prism releases into UiPath projects plus a Maestro BPMN pipeline, with a migration report and a punch list for what needs a human.",
-        "Tenant isolation proven by 75 pgTAP assertions on every push, in a CI pipeline that also runs lint, tests and a full build.",
+        "Converts Blue Prism release exports into UiPath REFramework projects, asset and queue manifests, test workflows and a migration report with an effort estimate.",
+        "In a sample run, 274 of 345 stages of an email-driven Blue Prism refund pipeline from Packt converted automatically (79%), and the result ran on my live UiPath tenant.",
+        "Tenant isolation proven by 75 pgTAP assertions in a CI pipeline that also runs lint, tests and a build.",
         "A STRIDE threat model and an infosec approval pack written for enterprise reviewers.",
         "Client-side AES-GCM encrypted artifacts whose key never reaches the database, an immutable audit log, and retention with purge for erasure requests.",
         "214 commits, all mine.",
       ],
       tests: [
-        "Vitest suites in every package of the monorepo.",
-        "pgTAP suite for row-level security, workspace RPCs and artifacts, run in its own CI job (75 assertions).",
-        "Golden answer-key regression suite on a synthetic corpus: CI fails on a missed finding and on a false positive.",
+        "1,038 Vitest tests.",
+        "75 pgTAP assertions for tenant isolation, run in their own CI job.",
+        "Golden answer-key regression suite on 6 synthetic releases: CI fails on a missed finding and on a false positive.",
       ],
       caveats: [
-        "Built and tested on synthetic samples and public Blue Prism releases, not on a bank's production estate.",
-        "Conversion is assisted: selectors and anything uncertain go to a human punch list.",
+        "Built and tested on synthetic samples and a public Blue Prism sample, not on a bank's production estate.",
+        "Conversion is assisted: what does not convert automatically is estimated in the migration report for a person to finish.",
+        "The tool does not read a mailbox. In the Packt sample run, the email-field values on the queue items were seeded by hand.",
         "This is my own independent project, separate from the Blue Prism work I have done at HumanixOS.",
         "The repository is private, so there is no public link.",
       ],
@@ -142,24 +118,23 @@ export const projects: Project[] = [
     tagline: "Agentic loan and mortgage intake on UiPath Maestro",
     role: "Solo builder",
     team: "solo",
-    dates: { start: "2026-07", end: "2026-07", label: "Jul 2026" },
+    dates: { start: "2026-07", end: null, label: "Jul 2026, in progress" },
     identities: ["automation"],
     order: 2,
     featured: true,
     stack: [
       "UiPath Maestro (BPMN)",
-      "UiPath Agent Builder",
+      "UiPath agents",
       "Agent evaluations",
       "Integration Service (Gmail trigger)",
       "Document Understanding",
       "Action Center",
       "Orchestrator queues",
-      "UiPath Studio",
     ],
     oneLiner:
-      "Loan and mortgage requests arrive by email; a BPMN process routes them through AI agents for classification, extraction and compliance, and sends anything uncertain to a person in Action Center.",
+      "Loan and mortgage requests arrive by email; a BPMN process routes them through AI agents for classification, extraction and compliance, and sends requests that need judgment to a person in Action Center.",
     summary:
-      "ILOP is an agentic intake flow for a fictional bank. BPMN owns every routing decision, agents only return schema-checked JSON with a confidence score, and the default path out of every gateway is the safe one: triage or human review.",
+      "ILOP is an agentic intake flow for a fictional bank, built solo on UiPath Maestro and still in progress. BPMN orchestrates the flow, AI agents classify and extract, risk scoring stays deterministic, and requests that need judgment go to a person in Action Center.",
     links: [{ label: "ILOP on GitHub", href: "https://github.com/johnlennyt5/ILOP", kind: "repo" }],
     metrics: [],
     diagram: "ilop",
@@ -167,7 +142,7 @@ export const projects: Project[] = [
       problem:
         "Loan and mortgage requests arrive by email in every format. Intake is manual and slow, and it is bound by fair-lending rules, so a lender cannot hand the decision to a model and hope for the best.",
       constraints: [
-        "Fair-lending law (ECOA and Regulation B) governs denials and the data a decision may use.",
+        "Lending decisions fall under fair-lending rules, which govern denials and the data a decision may use.",
         "Model output is non-deterministic, and every decision still has to be explainable and auditable.",
         "Synthetic documents and borrowers only, for a fictional bank.",
       ],
@@ -175,45 +150,34 @@ export const projects: Project[] = [
         {
           title: "Deterministic orchestration, non-deterministic reasoning",
           detail:
-            "BPMN owns routing and state. Agents only return schema-enforced JSON with a confidence score, and the default flow out of every gateway is the safe path: triage or human review, never an automatic decision.",
+            "Maestro BPMN orchestrates the flow, and AI agents do the reading: an intake router, a loan extractor, a mortgage extractor and a compliance agent.",
         },
         {
-          title: "A hard veto that cannot be outvoted",
+          title: "Confidence-gated routing",
           detail:
-            "The compliance agent returns veto codes. Any veto routes away from approval, and approval requires a pass plus score and confidence thresholds.",
+            "The intake router labels each request LOAN, MORTGAGE or OTHER and routes it only at a confidence of 0.75 or higher. The loan extractor pulls 24 fields and the mortgage extractor about 55 URLA fields.",
         },
         {
           title: "Where AI deliberately is not",
           detail:
-            "Adverse-action notices come from pre-approved reason-code templates instead of a model, because a denial must state specific, accurate reasons.",
+            "Risk scoring is deterministic code instead of a model, so the score behind a lending decision can be explained and reproduced.",
         },
         {
-          title: "Queue first, idempotent intake",
+          title: "Email in, queued work",
           detail:
-            "Every email is queued before any agent touches it, keyed on the Gmail message id, so duplicate deliveries are rejected and every request has an audit record.",
-        },
-        {
-          title: "One governance backbone",
-          detail:
-            "Separate loan and mortgage extractors feed one shared compliance and disposition path, so adding a product means one routing edge and one extractor.",
+            "An Integration Service Gmail trigger picks up each request and downloads its attachments, and Document Understanding reads the documents. The work moves through 7 Orchestrator queues.",
         },
         {
           title: "People where judgment matters",
           detail:
-            "Uncertain or borderline requests suspend the process on an Action Center task, and a human disposition resumes it.",
+            "Requests that need judgment go to a person as an Action Center task instead of being decided automatically.",
         },
       ],
       tradeoffs: [
-        "Low-confidence requests go to a triage queue for now, until per-item human review is wired in.",
-        "Agents are kept tool-less, which limits what they can do but makes them easier to evaluate.",
-        "One shared compliance backbone instead of product-specific rules.",
+        "LLM extraction where the documents vary, deterministic code where a decision has to be explained.",
+        "Agent evaluation sets are small for now: quick to run, but thin as evidence.",
       ],
       whatBroke: [
-        {
-          title: "The first design did not survive",
-          detail:
-            "An earlier mortgage-only, file-drop design was replaced after the first sprint by the email-triggered flow that handles both products.",
-        },
         {
           title: "Evaluations are thin",
           detail:
@@ -221,17 +185,17 @@ export const projects: Project[] = [
         },
       ],
       results: [
-        "An end-to-end BPMN flow from a Gmail trigger through classification, extraction, compliance and disposition routing to an Action Center review task.",
-        "Configured agent evaluations: an LLM-judge output evaluator and a trajectory evaluator on each agent.",
-        "Built solo in July 2026. The repository is public.",
+        "A BPMN flow from a Gmail trigger through classification, extraction and compliance to an Action Center review task, across 7 Orchestrator queues.",
+        "Configured agent evaluations: an LLM-judge evaluator and a trajectory evaluator on each agent.",
+        "Built solo, starting in July 2026, and still in progress. The repository is public.",
       ],
       tests: [
         "Agent evaluations with an LLM judge and a trajectory evaluator per agent.",
         "No unit test suite or CI: it is a UiPath solution.",
       ],
       caveats: [
+        "Still in progress: the approval and adverse-action emails at the end of the flow are placeholders.",
         "Robot-identity governance and Data Fabric logging are designed, not built.",
-        "The approval, adverse-action and logging steps at the end of the flow are placeholders.",
         "Fictional bank, synthetic borrowers and synthetic documents.",
       ],
     },
@@ -266,7 +230,7 @@ export const projects: Project[] = [
       "GitHub Actions",
     ],
     oneLiner:
-      "My own startup: a trucking marketplace where shippers post loads and drivers haul them, with live tracking, proof of delivery and payouts across a web app and a mobile app I am building solo.",
+      "My own startup: a trucking marketplace where shippers post loads and drivers haul them, with live tracking and payouts across a web app and a mobile app I am building solo.",
     summary:
       "truckWhat is a web and mobile logistics marketplace with live tracking, an offline GPS outbox, face-match identity checks and a 3D load viewer. It moves money and stores sensitive data, so it ships behind 800+ Vitest and 350+ Jest tests, 200+ row-level security policies and a closed-out security review.",
     links: [],
@@ -284,21 +248,21 @@ export const projects: Project[] = [
       problem:
         "Freight still runs on phone calls, paperwork and trust. Shippers need to know where a load is and that it arrived. Drivers need to get paid quickly. Both sides need to know who they are dealing with. That means live tracking, identity checks and money movement in one product, on the web and in a driver's pocket.",
       constraints: [
-        "One founder building a web app, a mobile app and the backend they share.",
+        "One founder building a web app, a mobile app and the Supabase backend behind them.",
         "It moves money and stores sensitive personal and financial data, such as bank tokens and license details, so security cannot wait for later.",
         "Drivers lose signal on the road, so tracking has to survive dead zones.",
         "There is no QA team. The CI gate is the QA team.",
       ],
       decisions: [
         {
-          title: "One backend for both apps",
+          title: "One Supabase core for both apps",
           detail:
-            "Next.js API routes over Prisma and PostgreSQL on Supabase serve both the web app and the React Native app, with Supabase Auth, Realtime and Storage shared by both. Private files are served through signed URLs.",
+            "Both apps sit on Supabase: the web app through Next.js and Prisma on PostgreSQL, the mobile app through React Native, Expo and TanStack Query. Supabase handles auth, realtime and storage, and private files are served through signed URLs.",
         },
         {
           title: "Security enforced in the database",
           detail:
-            "Postgres row-level security backs every request with 200+ policies. Plaid bank tokens are encrypted with AES-256-GCM under a versioned key, admins sign in with TOTP MFA, and incoming webhooks are signature-verified.",
+            "200+ row-level security policies enforce access in Postgres itself, not only in the app. Plaid bank tokens are encrypted with AES-256-GCM under a versioned key, admins sign in with TOTP MFA, and incoming webhooks are signature-verified.",
         },
         {
           title: "Event-driven money",
@@ -308,12 +272,12 @@ export const projects: Project[] = [
         {
           title: "Tracking that survives dead zones",
           detail:
-            "On mobile, GPS fixes go into an offline outbox when a driver loses signal and post in batches when the connection returns. Supabase Realtime powers live tracking, dispatch and messaging.",
+            "On mobile, GPS fixes wait in an offline outbox when a driver loses signal and are sent when the connection returns. Supabase Realtime powers live tracking, dispatch and messaging.",
         },
         {
           title: "Trust and planning tools",
           detail:
-            "A face-match identity check verifies drivers, and a 3D load viewer helps plan how freight fits in a trailer.",
+            "A face-match identity check verifies drivers, and a 3D load viewer lets people inspect a load visually.",
         },
         {
           title: "Monitoring built in-house",
@@ -323,7 +287,6 @@ export const projects: Project[] = [
       ],
       tradeoffs: [
         "In-house monitoring means more code to own, in exchange for keeping personal data inside the platform and alerts landing where I already work.",
-        "Unit tests mock Prisma and Supabase so CI runs fast with no database, with the tradeoff that database behavior is not exercised by the unit suite.",
         "A role-based admin portal with 4 admin roles and an audit-log viewer, instead of ad hoc database access for support work.",
       ],
       whatBroke: [
@@ -335,7 +298,7 @@ export const projects: Project[] = [
         {
           title: "Dashboards that waited in line",
           detail:
-            "Stats pages ran independent queries one after another and loaded whole histories just to count them. I moved the reads into parallel batches, pushed counting into database aggregates and removed N+1 queries.",
+            "Some pages ran independent queries one after another and loaded whole histories just to count them. I moved the reads into parallel batches, pushed counting into database aggregates and removed N+1 queries.",
         },
         {
           title: "Errors nobody saw",
@@ -355,13 +318,13 @@ export const projects: Project[] = [
         "A role-based admin portal with user management, verification review, disputes, support tickets and an audit-log viewer.",
       ],
       tests: [
-        "Vitest on the web app (800+ tests), with Prisma and Supabase mocked.",
+        "Vitest on the web app (800+ tests).",
         "Jest and React Native Testing Library on mobile (350+ tests), with a coverage script.",
         "Web CI gate on every push: Prisma schema validation, type check, lint and tests.",
         "Mobile CI gate: type check, Jest, Expo doctor and an iOS bundle compile.",
       ],
       caveats: [
-        "In development since January 2026, with most of the commit activity in September 2026.",
+        "In development since January 2026, and still in progress.",
         "Accessibility practices are built in (ARIA, alt text, keyboard handling), but there has been no formal accessibility audit.",
         "The repositories are private, so there is no public link.",
       ],
@@ -377,7 +340,7 @@ export const projects: Project[] = [
     identities: ["fullstack"],
     order: 4,
     featured: true,
-    stack: ["React Native", "Expo and EAS", "TypeScript", "Bun", "Hono", "Supabase", "Stripe"],
+    stack: ["React Native", "Expo and EAS", "Bun", "Hono", "Supabase", "Stripe"],
     oneLiner:
       "Co-founded a gym membership product and was one of its two engineers: a React Native app and a Bun and Hono API with Stripe checkout, live on the App Store and Google Play.",
     summary:
@@ -424,7 +387,7 @@ export const projects: Project[] = [
       whatBroke: [],
       results: [
         "Live on the Apple App Store as Ironclad Fitness RI, released in January 2026, and on Google Play.",
-        "Stripe membership checkout in production.",
+        "Stripe membership checkout in the app, backed by the Stripe integration I built in the API.",
       ],
       tests: [],
       caveats: [
@@ -444,19 +407,13 @@ export const projects: Project[] = [
     order: 5,
     featured: true,
     stack: [
-      "Next.js",
-      "TypeScript",
       "LiveAvatar (HeyGen) streaming avatars",
-      "OpenAI API",
-      "Supabase",
-      "Playwright",
-      "Zod",
-      "Tailwind CSS",
+      "Playwright browser automation",
     ],
     oneLiner:
       "Eve is an AI digital human that gave the opening keynote at Bryant University's IDEA 2026 in January 2026, running on an app that also coaches people through interviews.",
     summary:
-      "I built most of the app behind Eve: a streaming AI avatar with a presentation view for the IDEA 2026 keynote, plus an interview coach with 7 industry coaches, voice and text chat, and company research injected as context.",
+      "I built most of the app behind Eve: a streaming AI avatar with a keynote mode for IDEA 2026, plus an interview coach with 7 industry coaches and company research injected as context.",
     links: [
       { label: "IDEA 2026 at Bryant University", href: "https://events.bryant.edu/event/idea-2026", kind: "event" },
     ],
@@ -470,14 +427,14 @@ export const projects: Project[] = [
       ],
       decisions: [
         {
-          title: "A presentation view for the stage",
+          title: "A keynote mode for the stage",
           detail:
-            "I built a dedicated presentation view for the keynote, with mute and toggle controls, on top of a streaming digital human.",
+            "The app has a keynote mode that streams the digital human for the opening address, alongside its practice modes.",
         },
         {
           title: "Context before conversation",
           detail:
-            "The interview coach researches a company with Playwright browser automation and injects what it finds as context, so practice questions fit the company and the role.",
+            "The interview coach injects company research as context, so practice questions fit the company and the role. I also added Playwright browser automation to the app.",
         },
         {
           title: "Personas for design thinking",
@@ -491,11 +448,11 @@ export const projects: Project[] = [
       whatBroke: [],
       results: [
         "Eve gave the opening keynote at Bryant University's IDEA 2026 in January 2026.",
-        "An interview coach with 7 industry coaches, voice and text chat, and company-research context.",
+        "An interview coach with 7 industry coaches and company-research context.",
       ],
       tests: [],
       caveats: [
-        "Most of the commits are mine; teammates contributed smaller fixes and Docker support.",
+        "Most of the commits are mine; teammates contributed the rest.",
         "The repository is private, and no public recording of the keynote is linked here.",
       ],
     },
@@ -511,15 +468,12 @@ export const projects: Project[] = [
     order: 6,
     featured: false,
     stack: [
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "OpenAI API",
+      "AI agents",
       "Model Context Protocol (team)",
-      "MongoDB",
-      "Gmail API",
+      "Salesforce through MCP (team)",
       "Google Calendar API",
-      "Slack API",
+      "Gmail",
+      "Slack",
       "Stripe",
     ],
     oneLiner:
