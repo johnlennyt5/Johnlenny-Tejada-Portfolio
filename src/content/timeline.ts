@@ -42,7 +42,7 @@ export const timeline: TimelineEntry[] = [
     id: "uri-2014",
     year: 2014,
     when: "May 2014",
-    title: "BBA in Accounting",
+    title: "B.S. in Business Administration, Accounting",
     body: "Graduated from the University of Rhode Island.",
     kind: "education",
   },

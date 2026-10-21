@@ -85,6 +85,11 @@ function visibleText(html) {
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<head[\s\S]*?<\/head>/gi, " ")
+    // React text-split markers (<!-- -->) join adjacent text, so "0<!-- -->1" reads as "01".
+    .replace(/<!--[\s\S]*?-->/g, "")
+    // Code panels show real source code and file paths, not claims about Johnlenny.
+    .replace(/<pre[\s\S]*?<\/pre>/gi, " ")
+    .replace(/<code[\s\S]*?<\/code>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -108,7 +113,8 @@ function check(label, text) {
   }
 }
 
-const contentFiles = walk(CONTENT, [".ts"]).filter((f) => !/evidence\.ts$|types\.ts$|index\.ts$/.test(f));
+// code-excerpts.ts holds real source code from his repos; its numbers are code, not claims.
+const contentFiles = walk(CONTENT, [".ts"]).filter((f) => !/evidence\.ts$|types\.ts$|index\.ts$|code-excerpts\.ts$/.test(f));
 for (const file of contentFiles) {
   for (const lit of stringLiterals(readFileSync(file, "utf8"))) check(relative(ROOT, file), lit);
 }
@@ -119,7 +125,7 @@ if (!srcOnly) {
   for (const file of walk(OUT, [".html"])) {
     // /compare shows QA scores of this website (Lighthouse, axe), not claims about Johnlenny.
     // Its data lives in src/lib/qa.ts. Everything else on the page comes from src/content.
-    if (relative(OUT, file).replace(/\\/g, "/") === "compare/index.html") continue;
+    if (relative(OUT, file).replace(/\\/g, "/") === "lab/compare/index.html") continue;
     htmlCount += 1;
     check(relative(ROOT, file).replace(/\\/g, "/"), visibleText(readFileSync(file, "utf8")));
   }

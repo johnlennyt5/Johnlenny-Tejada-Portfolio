@@ -2,44 +2,42 @@
 
 The personal site of Johnlenny Tejada, an automation and AI engineer in Providence, Rhode Island. He builds UiPath RPA and agentic workflows, and the full-stack TypeScript products around them.
 
-The site tells one set of facts in four different designs. Every page is static HTML, so it is fast, cheap to host and easy to audit.
+The design is built around three words: **Build. Solve. Scale.** Every page is static HTML, so it is fast, cheap to host and easy to audit.
 
-## The four versions
+## What is on the site
 
-| Route | Name | Concept |
-|---|---|---|
-| `/v1/` | The Index | A Swiss annual report of a career: type, rules and an index of the work. |
-| `/v2/` | Launch | A product-launch keynote: pinned scenes, proof chips and a dark stage. |
-| `/v3/` | The Robot Room | An RPA control room: the workflow assembles itself as you scroll. This is also the default at `/`. |
-| `/v4/` | Providence, Built by Hand | Warm chapters from the barbershop books to AI agents. |
+| Route | What it shows |
+|---|---|
+| `/` | Hero with his photo and a live "bot run" card, the projects (each with Preview, Code and Architecture tabs), a drag-to-compare manual vs automated slider, timeline and community photos, about and contact. |
+| `/work/<slug>/` | A case study for truckWhat, PrismShift, SmartFit Metrics and ILOP: screenshots, real code, architecture, decisions, what broke, results and honest caveats. |
+| `/lab/v1/` to `/lab/v4/` | The four earlier design explorations, with `/lab/compare/`. Linked only from the footer ("Design lab") and not indexed. |
 
-Each version has a home page, an about page and a case study for every project at `/vN/work/<slug>/`. A version switcher sits in every version's header or footer. `/compare/` shows all four side by side with their accessibility and Lighthouse results; each footer links to it as "All versions".
+A palette picker in the header recolors the whole site live (Ember, Volt, Midnight, Royal, Daylight). The choice is saved in the browser, and `?palette=<name>` shares a look.
 
 ## Stack
 
 - Next.js 15 (App Router) with `output: "export"`, so the build is plain files in `out/`
-- TypeScript (strict), Tailwind CSS v4
-- Framer Motion (LazyMotion with `m.*` components), with a motion toggle and full support for reduced motion
-- `next/font/google`, loaded per version so each design only ships its own fonts
+- TypeScript (strict); the main site uses plain CSS with palette tokens (`src/components/site/site.css`)
+- Shiki at build time for code panels, themed by the same palette tokens
+- CSS and IntersectionObserver motion, with full support for reduced motion
+- `next/font/google` (Sora, Inter, JetBrains Mono)
 - `@vercel/analytics`, only on Vercel builds
 - pnpm
 
 ## Project layout
 
 ```
-src/content/            All facts and copy, shared by every version (one source of truth)
-src/content/evidence.ts Every number on the site, with where it comes from
-src/components/shared/  Monogram, VersionSwitcher, CopyEmail, MotionToggle, SkipLink, ResumeButton, diagrams
-src/components/vN/      One design version (v1 to v4)
-src/app/vN/             Routes for that version
-src/app/compare/        The side-by-side page
-src/app/og/             Open Graph cards, rendered at build time
-src/lib/                Site constants, SEO helpers, QA results for /compare
-scripts/                Audits that run in CI
-public/                 Headshot, resume PDF, /compare screenshots
+src/content/              All facts and copy (one source of truth)
+src/content/evidence.ts   Every number on the site, with where it comes from
+src/content/showcase.ts   Copy for the main site
+src/content/code-excerpts.ts, architecture.ts   Real code and repo structure for each project
+src/components/site/      The main site (Home, CaseStudy, Nav, ProjectMedia, CompareSlider, site.css)
+src/app/(site)/           Routes for / and /work/<slug>/
+src/app/lab/              Earlier design versions, noindex
+src/app/og/               Open Graph cards, rendered at build time
+scripts/                  Audits that run in CI
+public/img/               Photos and project screenshots
 ```
-
-See `CONTRIBUTING-VERSIONS.md` for the rules each version follows.
 
 ## Run it locally
 
@@ -64,9 +62,9 @@ Every push to `main` and every pull request runs `.github/workflows/ci.yml`:
 | Banned terms | `pnpm audit:terms` | No em dashes, no placeholder copy, no claims the facts do not support, no private contact details |
 | Numbers | `pnpm audit:facts` | Every number a visitor can read traces back to `src/content/evidence.ts` |
 | Links | `pnpm check:links` | Every internal link and anchor in `out/` resolves |
-| Lighthouse | `lhci autorun` | Performance, Accessibility, Best Practices and SEO on the five home pages (config in `lighthouserc.json`) |
+| Lighthouse | `lhci autorun` | Performance, Accessibility, Best Practices and SEO on the home page and the four case studies (config in `lighthouserc.json`) |
 
-Accessibility was also checked with axe-core at phone and desktop widths, in light and dark mode, with motion on and off. The results are on `/compare/`.
+Accessibility is also checked with axe-core at phone and desktop widths, in every palette.
 
 ## Deploy to Vercel (free Hobby plan)
 

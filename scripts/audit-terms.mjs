@@ -133,6 +133,8 @@ for (const file of targets) {
     rule.pattern.lastIndex = 0;
     let m;
     while ((m = rule.pattern.exec(text)) !== null) {
+      // A palette color such as rgb(237 232 226) is not a claim.
+      if (NUMERIC_RULES.has(rule.id) && /rgba?\([^)]*$/.test(text.slice(Math.max(0, m.index - 24), m.index))) continue;
       const start = Math.max(0, m.index - 40);
       const snippet = redact(text.slice(start, m.index + m[0].length + 40).replace(/\s+/g, " "));
       hits.push({ rule: rule.id, why: rule.why, file: relative(ROOT, file), line: lineOf(text, m.index), snippet });

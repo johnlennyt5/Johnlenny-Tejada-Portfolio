@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { PALETTE_KEY, palettes, type PaletteId } from "./prefs";
+import { MODE_KEY, PALETTE_KEY, palettes, trendPalettes, type Mode, type Palette, type PaletteId } from "./prefs";
 import { Close, Download, Menu } from "./icons";
 
 const links = [
@@ -27,11 +27,13 @@ export function Nav() {
   const [menu, setMenu] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [palette, setPalette] = useState<PaletteId>("ember");
+  const [mode, setMode] = useState<Mode>("dark");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
     setPalette((d.dataset.palette as PaletteId) || "ember");
+    setMode(d.dataset.mode === "light" ? "light" : "dark");
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -56,6 +58,37 @@ export function Nav() {
     document.documentElement.dataset.palette = id;
     setPalette(id);
     save(PALETTE_KEY, id);
+  }
+
+  function chooseMode(next: Mode) {
+    document.documentElement.dataset.mode = next;
+    setMode(next);
+    save(MODE_KEY, next);
+  }
+
+  const isTrend = trendPalettes.some((p) => p.id === palette);
+
+  function option(p: Palette) {
+    return (
+      <button
+        key={p.id}
+        type="button"
+        role="radio"
+        aria-checked={palette === p.id}
+        className="palette-opt"
+        onClick={() => choosePalette(p.id)}
+      >
+        <span className="swatch" aria-hidden="true">
+          {p.swatch.map((c) => (
+            <i key={c} style={{ background: c }} />
+          ))}
+        </span>
+        <span className="palette-name">
+          <b>{p.name}</b>
+          {p.mood ? <small>{p.mood}</small> : null}
+        </span>
+      </button>
+    );
   }
 
   return (
@@ -92,24 +125,27 @@ export function Nav() {
               <span className="sr-only">Choose a color palette</span>
             </button>
             {paletteOpen ? (
-              <div className="palette-pop" role="radiogroup" aria-label="Color palette">
-                <p>Color palette</p>
-                {palettes.map((p) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={palette === p.id}
-                    className="palette-opt"
-                    onClick={() => choosePalette(p.id)}
-                  >
-                    <span className="swatch" aria-hidden="true">
-                      <i style={{ background: p.swatch[0] }} />
-                      <i style={{ background: p.swatch[1] }} />
-                    </span>
-                    {p.name}
-                  </button>
-                ))}
+              <div className="palette-pop">
+                <div role="radiogroup" aria-labelledby="pal-sig">
+                  <p id="pal-sig">Signature</p>
+                  {palettes.map(option)}
+                </div>
+                <div role="radiogroup" aria-labelledby="pal-trend">
+                  <div className="palette-head">
+                    <p id="pal-trend">Trend palettes</p>
+                    <div className="mode-switch" role="group" aria-label="Trend palette mode">
+                      {(["dark", "light"] as Mode[]).map((m) => (
+                        <button key={m} type="button" aria-pressed={mode === m} onClick={() => chooseMode(m)}>
+                          {m === "dark" ? "Dark" : "Light"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {trendPalettes.map(option)}
+                </div>
+                <small className="palette-note">
+                  {isTrend ? "Every trend palette works in dark and light." : "Dark and Light apply to the trend palettes."}
+                </small>
               </div>
             ) : null}
           </div>

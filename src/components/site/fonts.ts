@@ -12,7 +12,8 @@ export const display = Sora({
 export const body = Inter({
   subsets: ["latin"],
   variable: "--ff-site-body",
-  display: "swap",
+  // optional: the fallback stays if Inter is not ready in time, so the first text never repaints.
+  display: "optional",
   preload: false,
 });
 
@@ -20,6 +21,7 @@ export const body = Inter({
 export const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--ff-site-mono",
+  // swap, not optional: the role line and code need the real monospace (the fallback is proportional).
   display: "swap",
   preload: false,
 });

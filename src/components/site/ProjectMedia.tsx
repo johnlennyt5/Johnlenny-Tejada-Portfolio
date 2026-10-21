@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useId, useRef, useState, type PointerEvent } from "react";
+import { ArchDiagram } from "./ArchDiagram";
 
 export interface Shot {
   src: string;
@@ -9,9 +10,12 @@ export interface Shot {
   height: number;
 }
 
-export interface CodeSample {
+export interface CodeRef {
   file: string;
   title: string;
+}
+
+export interface CodeSample extends CodeRef {
   /** Pre-highlighted HTML from Shiki (rendered at build time). */
   html: string;
 }
@@ -39,12 +43,15 @@ export function ProjectMedia({
   name,
   shots,
   code,
+  codeUrl,
   arch,
   fallback,
 }: {
   name: string;
   shots: Shot[];
-  code: CodeSample[];
+  code: CodeRef[];
+  /** Static JSON with the highlighted HTML for `code`, fetched when the Code tab first opens. */
+  codeUrl: string;
   arch?: Arch;
   fallback: { big: string; small: string };
 }) {
@@ -57,7 +64,20 @@ export function ProjectMedia({
   const [shot, setShot] = useState(0);
   const [sample, setSample] = useState(0);
   const [node, setNode] = useState<string | null>(arch?.nodes[0]?.id ?? null);
+  const [html, setHtml] = useState<string[] | null>(null);
   const frame = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (tab !== "code" || html) return;
+    let live = true;
+    fetch(codeUrl)
+      .then((r) => r.json() as Promise<CodeSample[]>)
+      .then((list) => live && setHtml(list.map((c) => c.html)))
+      .catch(() => live && setHtml([]));
+    return () => {
+      live = false;
+    };
+  }, [tab, html, codeUrl]);
   const id = useId();
 
   const labels: Record<Tab, string> = { preview: "Preview", code: "Code", arch: "Architecture" };
@@ -186,7 +206,7 @@ export function ProjectMedia({
                 <span>
                   <b>{activeCode.title}</b>
                   {"  "}
-                  {activeCode.file}
+                  <code>{activeCode.file}</code>
                 </span>
                 {code.length > 1 ? (
                   <button
@@ -199,7 +219,11 @@ export function ProjectMedia({
                   </button>
                 ) : null}
               </div>
-              <div dangerouslySetInnerHTML={{ __html: activeCode.html }} />
+              {html?.[sample] ? (
+                <div dangerouslySetInnerHTML={{ __html: html[sample] }} />
+              ) : (
+                <p className="code-loading">{html ? "Code could not load. Refresh to try again." : "Loading code..."}</p>
+              )}
             </div>
           </div>
         ) : null}
@@ -213,23 +237,16 @@ export function ProjectMedia({
             hidden={tab !== "arch"}
           >
             <div className="panel-arch">
-              <div className="arch-grid">
-                {arch.nodes.map((n) => (
-                  <button
-                    key={n.id}
-                    type="button"
-                    className="arch-node"
-                    aria-pressed={node === n.id}
-                    onClick={() => setNode(n.id)}
-                  >
-                    <b>{n.label}</b>
-                    <code>{n.path}</code>
-                  </button>
-                ))}
+              <ArchDiagram arch={arch} node={node} onSelect={setNode} />
+              <div className="arch-detail" aria-live="polite">
+                {current ? (
+                  <>
+                    <b>{current.label}</b>
+                    <code>{current.path}</code>
+                    <span>{current.detail}</span>
+                  </>
+                ) : null}
               </div>
-              <p className="arch-detail" aria-live="polite">
-                {current ? current.detail : ""}
-              </p>
               {current ? (
                 <div className="arch-edges">
                   {arch.edges

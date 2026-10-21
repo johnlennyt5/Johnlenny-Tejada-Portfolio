@@ -5,7 +5,7 @@ import { CopyEmail } from "@/components/shared/CopyEmail";
 import { routes } from "@/lib/site";
 import { CompareSlider } from "./CompareSlider";
 import { ArrowRight, Check, Download, GitHub, LinkedIn, Trophy } from "./icons";
-import { getArch, getCode, getShots } from "./media";
+import { getArch, getCodeIndex, getShots } from "./media";
 import { ProjectMedia } from "./ProjectMedia";
 import { RoleRotator } from "./RoleRotator";
 import { T, TBlock } from "./T";
@@ -46,7 +46,7 @@ export async function Home() {
         p,
         copy: projectCopy[slug]!,
         shots: getShots(slug, p.name),
-        code: await getCode(slug),
+        code: getCodeIndex(slug),
         arch: getArch(slug),
       };
     }),
@@ -116,22 +116,28 @@ export async function Home() {
                 fetchPriority="high"
               />
               <span className="orbit orbit-1" aria-hidden="true">
-                <b>UiPath</b> RPA
+                <i className="orbit-dot" />
+                UiPath RPA
               </span>
               <span className="orbit orbit-2" aria-hidden="true">
-                <b>AI</b> agents
+                <i className="orbit-dot" />
+                AI Agents
               </span>
               <span className="orbit orbit-3" aria-hidden="true">
-                <b>TS</b> TypeScript
+                <i className="orbit-dot" />
+                TypeScript
               </span>
               <span className="orbit orbit-4" aria-hidden="true">
-                <b>JS</b> JavaScript
+                <i className="orbit-dot" />
+                JavaScript
               </span>
               <span className="orbit orbit-5" aria-hidden="true">
-                <b>{"{ }"}</b> Node.js
+                <i className="orbit-dot" />
+                Node.js
               </span>
               <span className="orbit orbit-6" aria-hidden="true">
-                <b>Expo</b> mobile apps
+                <i className="orbit-dot" />
+                React Native
               </span>
               <div className="botrun" aria-hidden="true">
                 <div className="botrun-head">
@@ -154,37 +160,27 @@ export async function Home() {
             </div>
           </div>
 
-          <dl className="stats">
-            <div className="stat stat-award">
+          <ul className="stats">
+            <li className="stat stat-award">
               <span className="trophy" aria-hidden="true">
                 <Trophy />
               </span>
               <div>
-                <dt className="sr-only">
-                  <T en="Award" es="Premio" />
-                </dt>
-                <dd style={{ margin: 0 }}>
-                  <b>
-                    <T en={award.en} es={award.es} />
-                  </b>
-                  <span>AWS Enterprise Agents Challenge, SF 2025</span>
-                </dd>
+                <b>
+                  <T en={award.en} es={award.es} />
+                </b>
+                <span>MCP + AWS Enterprise Agents Challenge, San Francisco, 2025</span>
               </div>
-            </div>
+            </li>
             {heroStats.map((s) => (
-              <div className="stat" key={s.value}>
-                <dt className="sr-only">
+              <li className="stat" key={s.value}>
+                <b>{s.value}</b>
+                <span>
                   <T en={s.label.en} es={s.label.es} />
-                </dt>
-                <dd style={{ margin: 0 }}>
-                  <b>{s.value}</b>
-                  <span aria-hidden="true">
-                    <T en={s.label.en} es={s.label.es} />
-                  </span>
-                </dd>
-              </div>
+                </span>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
       </section>
 
@@ -289,7 +285,7 @@ export async function Home() {
             {projects.map(({ p, copy, shots, code, arch }, i) => (
               <article className="project" key={p.slug} aria-labelledby={`p-${p.slug}`}>
                 <div className="reveal">
-                  <ProjectMedia name={p.name} shots={shots} code={code} arch={arch} fallback={{ big: p.name, small: copy.title.en }} />
+                  <ProjectMedia name={p.name} shots={shots} code={code} codeUrl={`/code/${p.slug}.json`} arch={arch} fallback={{ big: p.name, small: copy.title.en }} />
                 </div>
                 <div className="reveal" style={{ ["--d" as string]: 1 }}>
                   <span className="project-num">
@@ -427,23 +423,6 @@ export async function Home() {
             <ol className="timeline reveal">
               <li className="tl-item">
                 <span className="tl-when">
-                  <T en="Jan 2023 to present" es="Ene 2023 al presente" />
-                </span>
-                <h3>
-                  Software Engineer <span>· HumanixOS</span>
-                </h3>
-                <TBlock
-                  en={<p>AI and automation for a live multi-tenant nonprofit platform: 30+ tenants, 200+ users, now TypeScript.</p>}
-                  es={
-                    <p>
-                      IA y automatización para una plataforma multi-inquilino en vivo: más de 30 organizaciones, más de 200 usuarios, ahora
-                      en TypeScript.
-                    </p>
-                  }
-                />
-              </li>
-              <li className="tl-item">
-                <span className="tl-when">
                   <T en="Jan 2026 to present" es="Ene 2026 al presente" />
                 </span>
                 <h3>
@@ -467,7 +446,26 @@ export async function Home() {
                 />
               </li>
               <li className="tl-item">
-                <span className="tl-when">2023</span>
+                <span className="tl-when">
+                  <T en="Jan 2023 to present" es="Ene 2023 al presente" />
+                </span>
+                <h3>
+                  Software Engineer <span>· HumanixOS</span>
+                </h3>
+                <TBlock
+                  en={<p>AI and automation for a live multi-tenant nonprofit platform: 30+ tenants, 200+ users, now TypeScript.</p>}
+                  es={
+                    <p>
+                      IA y automatización para una plataforma multi-inquilino en vivo: más de 30 organizaciones, más de 200 usuarios, ahora
+                      en TypeScript.
+                    </p>
+                  }
+                />
+              </li>
+              <li className="tl-item">
+                <span className="tl-when">
+                  <T en="Jan to Sep 2023" es="Ene a sep 2023" />
+                </span>
                 <h3>
                   <T en="Computer Science certificate" es="Certificado en Ciencias de la Computación" /> <span>· DevAccelerator</span>
                 </h3>
@@ -475,20 +473,20 @@ export async function Home() {
               </li>
               <li className="tl-item">
                 <span className="tl-when">
-                  <T en="7+ years" es="Más de 7 años" />
+                  <T en="Aug 2012 to Mar 2020" es="Ago 2012 a mar 2020" />
                 </span>
                 <h3>
                   Manager <span>· Supreme Cuts, Providence</span>
                 </h3>
                 <TBlock
-                  en={<p>Hired and managed barbers, kept clients coming back, and kept the books in Excel.</p>}
+                  en={<p>Hired and led a team of barbers, built a loyal client base and kept the books in Excel.</p>}
                   es={<p>Contraté y dirigí barberos, mantuve a los clientes y llevé la contabilidad en Excel.</p>}
                 />
               </li>
               <li className="tl-item">
-                <span className="tl-when">URI</span>
+                <span className="tl-when">May 2014</span>
                 <h3>
-                  <T en="BBA, Accounting" es="Licenciatura en Contabilidad" /> <span>· University of Rhode Island</span>
+                  <T en="B.S. Business Administration, Accounting" es="Licenciatura en Administración de Empresas, Contabilidad" /> <span>· University of Rhode Island</span>
                 </h3>
               </li>
             </ol>
@@ -544,12 +542,12 @@ export async function Home() {
               <T
                 en={
                   <>
-                    From the barbershop books to <em>AI agents</em>
+                    From Accounting to <em>AI Agents</em>
                   </>
                 }
                 es={
                   <>
-                    De la contabilidad de la barbería a los <em>agentes de IA</em>
+                    De la contabilidad a los <em>agentes de IA</em>
                   </>
                 }
               />
@@ -558,9 +556,10 @@ export async function Home() {
               en={
                 <>
                   <p>
-                    I came to software from the business side. I hold a BBA in Accounting from URI, and for more than seven years I managed
-                    a barbershop in Providence: hiring, keeping clients and keeping the books. That is why I care about what an automation
-                    saves, who it serves and what happens when it fails.
+                    I came to software from the business side. I earned a B.S. in Business Administration with a major in Accounting from
+                    the University of Rhode Island, then spent more than seven years managing Supreme Cuts, a barbershop in Providence: hiring and
+                    leading staff, building a loyal client base and keeping the books. That background is why I measure every automation by what
+                    it saves, who it serves and how it behaves when something goes wrong.
                   </p>
                   <p>
                     Today I build AI and automation at HumanixOS, and on my own time I build startups: truckWhat, PrismShift and SmartFit
@@ -587,8 +586,8 @@ export async function Home() {
             />
             <div className="about-facts">
               <div className="mini">
-                <b>BBA</b>
-                <T en="Accounting, URI" es="Contabilidad, URI" />
+                <b>B.S.</b>
+                <T en="Business Admin, Accounting, URI" es="Administración, Contabilidad, URI" />
               </div>
               <div className="mini">
                 <b>7+ yrs</b>

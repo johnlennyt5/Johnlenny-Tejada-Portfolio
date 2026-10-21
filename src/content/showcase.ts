@@ -15,7 +15,7 @@ export const featuredSlugs: ProjectSlug[] = ["truckwhat", "prismshift", "ilop", 
 export const roles: Bi[] = [
   { en: "Automation & AI Engineer", es: "Ingeniero de Automatización e IA" },
   { en: "Full-Stack TypeScript Developer", es: "Desarrollador Full-Stack TypeScript" },
-  { en: "UiPath RPA Builder", es: "Constructor de RPA con UiPath" },
+  { en: "RPA Developer (UiPath)", es: "Desarrollador RPA (UiPath)" },
   { en: "Startup Founder", es: "Fundador de startups" },
 ];
 
@@ -30,14 +30,14 @@ export interface HeroStat {
 }
 
 export const heroStats: HeroStat[] = [
-  { value: "3-hour", label: { en: "manual import made zero-touch", es: "importación manual hecha automática" } },
-  { value: "730+", label: { en: "commits on truckWhat, solo", es: "commits en truckWhat, solo" } },
-  { value: "1,038", label: { en: "tests behind PrismShift", es: "pruebas detrás de PrismShift" } },
-  { value: "2", label: { en: "app stores, SmartFit is live", es: "tiendas de apps, SmartFit en vivo" } },
+  { value: "3-hour", label: { en: "manual import, now fully automated", es: "importación manual hecha automática" } },
+  { value: "730+", label: { en: "commits to truckWhat, built solo", es: "commits en truckWhat, solo" } },
+  { value: "1,038", label: { en: "automated tests in PrismShift", es: "pruebas detrás de PrismShift" } },
+  { value: "2", label: { en: "app stores: SmartFit is live on iOS and Android", es: "tiendas de apps, SmartFit en vivo" } },
 ];
 
 export const award: Bi = {
-  en: "Winner (team), Best use of AWS AI",
+  en: "Winner, Best Use of AWS AI (team)",
   es: "Ganador (equipo), Mejor uso de AWS AI",
 };
 
@@ -95,7 +95,7 @@ export const projectCopy: Record<string, ProjectCopy> = {
     kicker: { en: "Solo · Banking RPA", es: "Solo · RPA bancario" },
     title: { en: "Blue Prism to UiPath migration", es: "Migración de Blue Prism a UiPath" },
     pitch: {
-      en: "Banks leaving Blue Prism face a full rewrite. PrismShift parses their exports in the browser, runs 14 analysis rules and generates UiPath REFramework projects, so source exports stay on the analyst's machine.",
+      en: "Banks leaving Blue Prism face a full rewrite. PrismShift parses their exports in the browser, runs 14 analysis rules and generates UiPath REFramework projects. The analysis runs in the browser.",
       es: "Los bancos que dejan Blue Prism enfrentan reescribir todo. PrismShift analiza sus exportaciones en el navegador, aplica 14 reglas de análisis y genera proyectos UiPath REFramework, sin que las exportaciones salgan de la máquina del analista.",
     },
     result: {

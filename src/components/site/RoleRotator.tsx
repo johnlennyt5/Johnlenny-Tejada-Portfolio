@@ -1,45 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import type { Bi } from "@/content/showcase";
 
+const TYPE_MS = 55;
+const ERASE_MS = 28;
+const HOLD_MS = 2600;
+const PAUSE_MS = 260;
+
 /**
- * Types each role, holds it, deletes it, moves on. The first role is in the static HTML,
- * so the line is never empty and screen readers get a stable sentence (aria-live off).
+ * Types each role, holds it, erases it, moves on. The typing is a stepped clip-path reveal
+ * (plus a caret moved with transform) in CSS, so it never triggers layout; React only swaps
+ * the text once per role. The first role is in the static HTML, so the line is never empty
+ * and screen readers get a stable sentence.
  */
 export function RoleRotator({ roles }: { roles: Bi[] }) {
   const [index, setIndex] = useState(0);
-  const [shown, setShown] = useState<string | null>(null);
+  const [cycle, setCycle] = useState(0);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const full = roles[index]!.en;
-    let i = full.length;
-    let timer: number;
-    const hold = window.setTimeout(function tick() {
-      i -= 1;
-      setShown(full.slice(0, Math.max(i, 0)));
-      if (i > 0) {
-        timer = window.setTimeout(tick, 28);
-      } else {
-        const next = roles[(index + 1) % roles.length]!.en;
-        let j = 0;
-        const type = () => {
-          j += 1;
-          setShown(next.slice(0, j));
-          if (j < next.length) timer = window.setTimeout(type, 55);
-          else timer = window.setTimeout(() => setIndex((x) => (x + 1) % roles.length), 0);
-        };
-        timer = window.setTimeout(type, 260);
-      }
-    }, 2600);
-    return () => {
-      window.clearTimeout(hold);
-      window.clearTimeout(timer);
-    };
-  }, [index, roles]);
+    setAnimate(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
-  const text = shown ?? roles[index]!.en;
+  const text = roles[index]!.en;
+  const len = text.length;
+  const first = cycle === 0;
+  const typeMs = first ? 0 : len * TYPE_MS;
+  const typeDelay = first ? 0 : PAUSE_MS;
+  const style = {
+    "--len": len,
+    "--type": `${typeMs}ms`,
+    "--type-delay": `${typeDelay}ms`,
+    "--erase": `${len * ERASE_MS}ms`,
+    "--erase-delay": `${typeDelay + typeMs + HOLD_MS}ms`,
+  } as CSSProperties;
 
   return (
     <p className="role">
@@ -47,8 +42,20 @@ export function RoleRotator({ roles }: { roles: Bi[] }) {
         &gt;
       </span>
       <span className="sr-only">{roles[0]!.en}</span>
-      <span aria-hidden="true">{text}</span>
-      <span className="caret" aria-hidden="true" />
+      <span
+        key={cycle}
+        className={animate ? "role-line is-typing" : "role-line"}
+        style={style}
+        aria-hidden="true"
+        onAnimationEnd={(e) => {
+          if (e.animationName !== "role-erase" || !(e.target as Element).classList.contains("role-text")) return;
+          setIndex((i) => (i + 1) % roles.length);
+          setCycle((c) => c + 1);
+        }}
+      >
+        <span className="role-text">{text}</span>
+        <span className="caret" />
+      </span>
     </p>
   );
 }

@@ -3,7 +3,7 @@ import { getProject } from "@/content";
 import { featuredSlugs, projectCopy } from "@/content/showcase";
 import { routes } from "@/lib/site";
 import { ArrowLeft, ArrowRight, Check } from "./icons";
-import { getArch, getCode, getShots } from "./media";
+import { getArch, getCodeIndex, getShots } from "./media";
 import { ProjectMedia } from "./ProjectMedia";
 import { T, TBlock } from "./T";
 
@@ -15,7 +15,7 @@ import { T, TBlock } from "./T";
 export async function CaseStudy({ slug }: { slug: string }) {
   const p = getProject(slug)!;
   const copy = projectCopy[slug]!;
-  const [shots, code, arch] = [getShots(slug, p.name), await getCode(slug), getArch(slug)];
+  const [shots, code, arch] = [getShots(slug, p.name), getCodeIndex(slug), getArch(slug)];
   const cs = p.caseStudy;
   const nextSlug = featuredSlugs[(featuredSlugs.indexOf(slug as never) + 1) % featuredSlugs.length] ?? featuredSlugs[0]!;
   const next = getProject(nextSlug)!;
@@ -91,7 +91,7 @@ export async function CaseStudy({ slug }: { slug: string }) {
             </div>
           ) : null}
           <div style={{ marginTop: 40 }} className="reveal">
-            <ProjectMedia name={p.name} shots={shots} code={code} arch={arch} fallback={{ big: p.name, small: copy.title.en }} />
+            <ProjectMedia name={p.name} shots={shots} code={code} codeUrl={`/code/${slug}.json`} arch={arch} fallback={{ big: p.name, small: copy.title.en }} />
           </div>
         </div>
       </section>

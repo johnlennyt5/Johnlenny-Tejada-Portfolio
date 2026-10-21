@@ -123,7 +123,7 @@ export const skills: SkillGroup[] = [
     id: "business",
     title: "Business and people",
     items: [
-      "Accounting (BBA)",
+      "Accounting (B.S. Business Administration)",
       "Bookkeeping in Excel",
       "Hiring and managing staff",
       "Vendor negotiation",

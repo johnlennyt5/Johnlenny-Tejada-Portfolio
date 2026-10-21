@@ -13,7 +13,7 @@ export const architecture: Record<string, Architecture> = {
       {
         id: "mobile",
         label: "Driver and company mobile app",
-        detail: "Expo Router app with (auth), (driver) and (company) route groups, HOS, live location and trip screens.",
+        detail: "React Native app (Expo Router) with (auth), (driver) and (company) route groups, HOS, live location and trip screens.",
         path: "truckWhatMobile/app",
       },
       {
@@ -104,7 +104,7 @@ export const architecture: Record<string, Architecture> = {
       {
         id: "web",
         label: "Browser app",
-        detail: "React + Vite UI; parsing runs in a Web Worker so source exports never leave the machine.",
+        detail: "React + Vite UI; exports are parsed in the browser, in a Web Worker.",
         path: "apps/web/src",
       },
       {
@@ -118,12 +118,6 @@ export const architecture: Record<string, Architecture> = {
         label: "@prismshift/parser",
         detail: "Blue Prism .bprelease / .xml export to the intermediate representation, schema-version tolerant.",
         path: "packages/parser/src/parse.ts",
-      },
-      {
-        id: "parser-aa",
-        label: "@prismshift/parser-aa",
-        detail: "Automation Anywhere bot parser into the same IR.",
-        path: "packages/parser-aa/src/parseAaBot.ts",
       },
       {
         id: "ir",
@@ -184,7 +178,6 @@ export const architecture: Record<string, Architecture> = {
       ["web", "worker", "file bytes"],
       ["worker", "parser"],
       ["parser", "ir"],
-      ["parser-aa", "ir"],
       ["rules", "ir", "reads"],
       ["transformer", "rules"],
       ["reports", "transformer"],
@@ -201,8 +194,8 @@ export const architecture: Record<string, Architecture> = {
     nodes: [
       {
         id: "app",
-        label: "Expo mobile app",
-        detail: "Expo Router screens for schedule, check-in, programs, memberships, account and an admin group (App Store: Ironclad Fitness RI).",
+        label: "React Native app",
+        detail: "React Native screens (Expo Router) for schedule, check-in, programs, memberships, account and an admin group (App Store: Ironclad Fitness RI).",
         path: "iron-clad-fit/app",
       },
       {
@@ -302,13 +295,13 @@ export const architecture: Record<string, Architecture> = {
       {
         id: "compliance",
         label: "Compliance Check Agent",
-        detail: "Hard-veto rules; a veto can never be outvoted into auto-approve.",
+        detail: "Checks each application against compliance rules.",
         path: "complianceCheckAgent/agent.json",
       },
       {
         id: "risk",
         label: "Risk Assessment Agent",
-        detail: "Deterministic 0 to 100 score from permitted inputs only, with confidence and data gaps.",
+        detail: "Deterministic risk score from permitted inputs only, with confidence and data gaps.",
         path: "riskAssessmentAgent/agent.json",
       },
       {
@@ -339,89 +332,6 @@ export const architecture: Record<string, Architecture> = {
       ["bpmn", "queues", "disposition"],
       ["bpmn", "rpa"],
       ["evals", "risk", "scores outputs"],
-    ],
-  },
-
-  meridian: {
-    nodes: [
-      {
-        id: "unified",
-        label: "Unified Maestro BPMN",
-        detail: "Week 3 process joining the loan and claims paths behind one disposition gateway.",
-        path: "Week 3/Unified/Process.bpmn",
-      },
-      {
-        id: "router",
-        label: "Intake Router Agent",
-        detail: "Classifies each uploaded document as a loan or a claim.",
-        path: "Week 3/IntakeRouterAgent/agent.json",
-      },
-      {
-        id: "loanAgent",
-        label: "Loan Agent",
-        detail: "Week 1 loan decision agent.",
-        path: "Week 1/LoanAgent/agent.json",
-      },
-      {
-        id: "claimsAgent",
-        label: "Claims Agent",
-        detail: "Week 2 health-claims adjudication agent.",
-        path: "Week 2/ClaimsAgent/agent.json",
-      },
-      {
-        id: "risk",
-        label: "Risk Scoring Agent",
-        detail: "Risk score, tier and recommended action.",
-        path: "Week 3/RiskScoringAgent/agent.json",
-      },
-      {
-        id: "compliance",
-        label: "Compliance Check Agent",
-        detail: "ECOA, Fair Housing, SR 11-7 and HIPAA checks; decides whether a human must review.",
-        path: "Week 3/ComplianceCheckAgent/agent.json",
-      },
-      {
-        id: "comms",
-        label: "Customer Communication Agent",
-        detail: "Writes the decision letter subject and body.",
-        path: "Week 3/CustomerCommunicationAgent/agent.json",
-      },
-      {
-        id: "rpa",
-        label: "Extraction robots",
-        detail: "RPA workflows that pull loan and claim fields from the uploaded files.",
-        path: "Week 2/Claims_RPA_Workflow",
-      },
-      {
-        id: "review",
-        label: "Review app (Action Center)",
-        detail: "Human-in-the-loop review form for low-confidence or escalated cases.",
-        path: "Week 3/MeridianReviewApp",
-      },
-      {
-        id: "decision",
-        label: "Decision Center dashboard",
-        detail: "Outcomes, straight-through-processing rate and performance metrics.",
-        path: "Week 3/MeridianDecisionCenter",
-      },
-      {
-        id: "queues",
-        label: "Orchestrator queues",
-        detail: "Auto-approve, auto-pay, auto-deny, SIU referral, high-value and manual review queues.",
-        path: "resources/solution_folder/queue",
-      },
-    ],
-    edges: [
-      ["unified", "router", "classify"],
-      ["unified", "rpa", "extract fields"],
-      ["unified", "loanAgent", "loan"],
-      ["unified", "claimsAgent", "claim"],
-      ["unified", "risk"],
-      ["unified", "compliance"],
-      ["unified", "queues", "disposition"],
-      ["unified", "review", "review (default)"],
-      ["unified", "comms"],
-      ["queues", "decision", "audit trail"],
     ],
   },
 };

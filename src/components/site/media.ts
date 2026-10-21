@@ -3,7 +3,7 @@ import path from "node:path";
 import { codeToHtml, createCssVariablesTheme } from "shiki";
 import { architecture } from "@/content/architecture";
 import { codeExcerpts } from "@/content/code-excerpts";
-import type { Arch, CodeSample, Shot } from "./ProjectMedia";
+import type { Arch, CodeRef, CodeSample, Shot } from "./ProjectMedia";
 
 /* Build-time loaders for each project's screenshots, highlighted code and architecture. */
 
@@ -74,6 +74,11 @@ export async function getCode(slug: string): Promise<CodeSample[]> {
       html: await codeToHtml(c.code.replace(/\s+$/, ""), { lang: c.lang, theme }),
     })),
   );
+}
+
+/** Titles and file names only; the highlighted code is served from /code/<slug>.json. */
+export function getCodeIndex(slug: string): CodeRef[] {
+  return (codeKeys[slug] ?? [slug]).flatMap((k) => codeExcerpts[k] ?? []).map((c) => ({ file: c.file, title: c.title }));
 }
 
 export function getArch(slug: string): Arch | undefined {

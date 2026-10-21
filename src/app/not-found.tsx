@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { routes } from "@/lib/site";
+import "./globals.css";
 
 export const metadata = { title: "Page not found", robots: { index: false } };
 

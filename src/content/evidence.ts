@@ -245,6 +245,12 @@ export const evidence = [
     claim: "Years of UiPath and SQL work at HumanixOS",
     source: "Ledger 'Timeline and education' (UiPath and SQL since Jan 2023, 3+ years each); Phase 0 E1",
   },
+  {
+    id: "devacc-months",
+    value: "9",
+    claim: "DevAccelerator certificate program length in months",
+    source: "Ledger: DevAccelerator Certificate in Computer Science, Jan 2023 to Sep 2023",
+  },
 
   // OpenAI Parameter Golf
   {
@@ -332,6 +338,9 @@ export function getEvidence(id: EvidenceId): EvidenceRow {
  * anywhere. Keep this list short and literal.
  */
 export const namedTerms = [
+  "REL-002",
+  "truckWhat2.0",
+  "Pub 78",
   "AES-GCM",
   "AES-256-GCM",
   "SOC 2",

@@ -62,7 +62,7 @@ export const community: CommunityItem[] = [
 
 /** The business side, for "Beyond code" strips. Supporting angle only. */
 export const beyondCode: string[] = [
-  "BBA in Accounting, University of Rhode Island.",
+  "B.S. in Business Administration (Accounting), University of Rhode Island.",
   "Managed a Providence barbershop for 7+ years and kept its books in Excel.",
   "Assistant Coordinator, TEDxProvidence 2025.",
   "Co-hosted the Red Day hackathon at Bryant University two years running.",
@@ -99,7 +99,7 @@ export const education: Education[] = [
   {
     id: "uri",
     school: "University of Rhode Island",
-    credential: "BBA, Accounting",
+    credential: "B.S. Business Administration, Accounting",
     dates: "2010 to 2014",
     location: "Kingston, RI",
   },
