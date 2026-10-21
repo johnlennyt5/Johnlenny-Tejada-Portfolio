@@ -15,7 +15,7 @@ export interface VersionSwitcherProps {
 }
 
 function detect(pathname: string | null): VersionId {
-  const match = pathname?.match(/^\/(v[1-4])(\/|$)/);
+  const match = pathname?.match(/^\/lab\/(v[1-4])(\/|$)/);
   return (match?.[1] as VersionId | undefined) ?? defaultVersion;
 }
 

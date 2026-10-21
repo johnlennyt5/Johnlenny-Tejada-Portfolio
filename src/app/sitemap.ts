@@ -1,15 +1,12 @@
 import type { MetadataRoute } from "next";
-import { projectSlugs } from "@/content";
-import { absoluteUrl, routes, versions } from "@/lib/site";
+import { absoluteUrl, routes } from "@/lib/site";
+import { featuredSlugs } from "@/content/showcase";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths: string[] = [routes.root];
-  for (const v of versions) {
-    paths.push(routes.home(v.id), routes.about(v.id));
-    for (const slug of projectSlugs) paths.push(routes.work(v.id, slug));
-  }
+  for (const slug of featuredSlugs) paths.push(routes.project(slug));
   return paths.map((p) => ({
     url: absoluteUrl(p),
     changeFrequency: "monthly",

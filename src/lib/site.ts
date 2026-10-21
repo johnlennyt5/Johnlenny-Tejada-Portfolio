@@ -63,11 +63,13 @@ export function getVersion(id: VersionId): VersionInfo {
 /** Route builders. All paths end with a slash to match `trailingSlash: true`. */
 export const routes = {
   root: "/",
-  home: (v: VersionId) => `/${v}/`,
-  about: (v: VersionId) => `/${v}/about/`,
-  work: (v: VersionId, slug: string) => `/${v}/work/${slug}/`,
+  home: (v: VersionId) => `/lab/${v}/`,
+  about: (v: VersionId) => `/lab/${v}/about/`,
+  work: (v: VersionId, slug: string) => `/lab/${v}/work/${slug}/`,
+  /** New main site. */
+  project: (slug: string) => `/work/${slug}/`,
   /** Side-by-side view of all four versions. Linked from each footer as "All versions", not from the main nav. */
-  compare: "/compare/",
+  compare: "/lab/compare/",
   resume: "/resume/Johnlenny_Tejada_Resume.pdf",
   og: (id: VersionId | "default") => `/og/${id}.png`,
 } as const;
