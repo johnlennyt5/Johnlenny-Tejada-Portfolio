@@ -2966,3 +2966,19 @@ html[data-bg-live] .hero-bg {
     radial-gradient(circle at 68% 60%, color-mix(in srgb, var(--s-fg) 45%, transparent) 0 2px, color-mix(in srgb, var(--s-accent-2) 45%, transparent) 9px, transparent 15px),
     var(--s-bg);
 }
+/* The two busiest effects get a deeper veil on the text side, so lines never fight the copy. */
+html[data-bg-live="swarm"] .bg-scrim,
+html[data-bg-live="field"] .bg-scrim {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--s-bg) 62%, transparent) 0%,
+    color-mix(in srgb, var(--s-bg) 50%, transparent) 42%,
+    color-mix(in srgb, var(--s-bg) var(--bg-scrim, 28%), transparent) 68%
+  );
+}
+@media (max-width: 979px) {
+  html[data-bg-live="swarm"] .bg-scrim,
+  html[data-bg-live="field"] .bg-scrim {
+    background: color-mix(in srgb, var(--s-bg) 52%, transparent);
+  }
+}
