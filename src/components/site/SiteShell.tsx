@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { profile } from "@/content/profile";
 import { routes } from "@/lib/site";
+import { BackgroundLayer } from "./backgrounds/BackgroundLayer";
 import { fontClassName } from "./fonts";
 import { Nav } from "./Nav";
 import { Reveal } from "./Reveal";
@@ -10,6 +11,7 @@ import "./site.css";
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className={`site ${fontClassName}`}>
+      <BackgroundLayer />
       <a href="#main" className="skip">
         <T en="Skip to content" es="Saltar al contenido" />
       </a>

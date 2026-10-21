@@ -3,7 +3,18 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { MODE_KEY, PALETTE_KEY, palettes, trendPalettes, type Mode, type Palette, type PaletteId } from "./prefs";
+import {
+  BG_KEY,
+  MODE_KEY,
+  PALETTE_KEY,
+  backgrounds,
+  palettes,
+  trendPalettes,
+  type BackgroundId,
+  type Mode,
+  type Palette,
+  type PaletteId,
+} from "./prefs";
 import { Close, Download, Menu } from "./icons";
 
 const links = [
@@ -28,12 +39,14 @@ export function Nav() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [palette, setPalette] = useState<PaletteId>("ember");
   const [mode, setMode] = useState<Mode>("dark");
+  const [bg, setBg] = useState<BackgroundId>("void");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
     setPalette((d.dataset.palette as PaletteId) || "ember");
     setMode(d.dataset.mode === "light" ? "light" : "dark");
+    setBg((d.dataset.bg as BackgroundId) || "void");
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -64,6 +77,12 @@ export function Nav() {
     document.documentElement.dataset.mode = next;
     setMode(next);
     save(MODE_KEY, next);
+  }
+
+  function chooseBg(id: BackgroundId) {
+    document.documentElement.dataset.bg = id;
+    setBg(id);
+    save(BG_KEY, id);
   }
 
   const isTrend = trendPalettes.some((p) => p.id === palette);
@@ -126,6 +145,26 @@ export function Nav() {
             </button>
             {paletteOpen ? (
               <div className="palette-pop">
+                <div role="radiogroup" aria-labelledby="pal-bg">
+                  <p id="pal-bg">Background</p>
+                  <div className="bg-options">
+                    {backgrounds.map((b) => (
+                      <button
+                        key={b.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={bg === b.id}
+                        className="bg-opt"
+                        data-preview={b.id}
+                        onClick={() => chooseBg(b.id)}
+                      >
+                        <span className="bg-thumb" aria-hidden="true" />
+                        <b>{b.name}</b>
+                        <small>{b.mood}</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div role="radiogroup" aria-labelledby="pal-sig">
                   <p id="pal-sig">Signature</p>
                   {palettes.map(option)}

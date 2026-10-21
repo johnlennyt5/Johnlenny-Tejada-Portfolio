@@ -2847,3 +2847,122 @@ html:not([data-cv="off"]) .section {
 .bigword {
   letter-spacing: -0.03em;
 }
+
+/* ---------- Animated backgrounds (backgrounds/*) ---------- */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+html[data-bg-live] .bg-canvas {
+  opacity: 1;
+}
+/* A light veil of the palette background keeps text readable over any effect.
+   A background can tune it with --bg-scrim on its canvas wrapper. */
+.bg-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--s-bg) var(--bg-scrim, 28%), transparent);
+}
+.site > main,
+.site > footer {
+  position: relative;
+  z-index: 1;
+}
+html[data-bg-live] .site {
+  background: transparent;
+}
+html[data-bg-live] .marquee {
+  background: color-mix(in srgb, var(--s-bg-2) 70%, transparent);
+}
+html[data-bg-live] .hero-bg {
+  opacity: 0.5;
+}
+
+/* Background picker */
+.bg-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.bg-opt {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--s-line);
+  text-align: left;
+  color: var(--s-fg);
+}
+.bg-opt:hover {
+  background: var(--s-surface-2);
+}
+.bg-opt[aria-checked="true"] {
+  border-color: var(--s-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--s-accent) 25%, transparent);
+}
+.bg-opt b {
+  font: 600 0.82rem/1.2 var(--ff-b);
+}
+.bg-opt small {
+  font-size: 0.68rem;
+  color: var(--s-muted);
+  line-height: 1.25;
+}
+.bg-thumb {
+  height: 40px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+}
+[data-preview="void"] .bg-thumb {
+  background:
+    linear-gradient(var(--s-grid) 1px, transparent 1px) 0 0 / 8px 8px,
+    linear-gradient(90deg, var(--s-grid) 1px, transparent 1px) 0 0 / 8px 8px,
+    var(--s-bg);
+}
+[data-preview="aurora"] .bg-thumb {
+  background:
+    radial-gradient(120% 60% at 30% 100%, color-mix(in srgb, var(--s-accent) 70%, transparent), transparent 60%),
+    radial-gradient(100% 50% at 80% 90%, color-mix(in srgb, var(--s-accent-2) 60%, transparent), transparent 60%),
+    var(--s-bg);
+}
+[data-preview="wavegrid"] .bg-thumb {
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--s-accent) 70%, transparent) 0 1px, transparent 1px 9px) 0 22px / 100% 18px no-repeat,
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--s-accent) 70%, transparent) 0 1px, transparent 1px 5px) 0 22px / 100% 18px no-repeat,
+    linear-gradient(to top, color-mix(in srgb, var(--s-accent) 25%, transparent), transparent 70%),
+    var(--s-bg);
+}
+[data-preview="swarm"] .bg-thumb {
+  background:
+    radial-gradient(circle at 20% 30%, var(--s-accent) 1.5px, transparent 2px),
+    radial-gradient(circle at 55% 60%, var(--s-accent) 1.5px, transparent 2px),
+    radial-gradient(circle at 80% 25%, var(--s-accent-2) 1.5px, transparent 2px),
+    radial-gradient(circle at 40% 80%, var(--s-accent-2) 1.5px, transparent 2px),
+    linear-gradient(32deg, transparent 48%, color-mix(in srgb, var(--s-accent) 50%, transparent) 49% 51%, transparent 52%),
+    var(--s-bg);
+}
+[data-preview="field"] .bg-thumb {
+  background:
+    radial-gradient(circle at 50% 55%, var(--s-accent) 0 4px, transparent 5px),
+    repeating-radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--s-accent) 55%, transparent) 0 1px, transparent 1px 6px),
+    var(--s-bg);
+}
+[data-preview="glass"] .bg-thumb {
+  background:
+    radial-gradient(circle at 30% 45%, color-mix(in srgb, var(--s-fg) 50%, transparent) 0 3px, color-mix(in srgb, var(--s-accent) 45%, transparent) 8px, transparent 13px),
+    radial-gradient(circle at 68% 60%, color-mix(in srgb, var(--s-fg) 45%, transparent) 0 2px, color-mix(in srgb, var(--s-accent-2) 45%, transparent) 9px, transparent 15px),
+    var(--s-bg);
+}
