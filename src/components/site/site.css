@@ -73,7 +73,7 @@ html[data-palette="daylight"] {
   --s-fg: #15161b;
   --s-muted: #5a5f6b;
   --s-line: rgb(20 20 30 / 0.1);
-  --s-accent: #e8442a;
+  --s-accent: #cf3a20;
   --s-accent-2: #ff8a5c;
   --s-accent-ink: #c2321c;
   --s-on-accent: #ffffff;
@@ -1361,6 +1361,10 @@ html[data-palette] {
 }
 
 /* Section word that lights up (Build / Solve / Scale) */
+/* The word is drawn from data-word in ::before: it is decoration, not page text. */
+.bigword::before {
+  content: attr(data-word);
+}
 .bigword {
   position: absolute;
   top: clamp(40px, 7vw, 90px);
@@ -1866,7 +1870,7 @@ html[data-palette] {
   display: block;
   font: 800 2.2rem/1 var(--ff-d);
   letter-spacing: -0.03em;
-  color: var(--s-accent);
+  color: var(--s-accent-ink);
 }
 .fact span {
   display: block;
@@ -2343,8 +2347,26 @@ html[data-palette="daylight"] .site {
   }
 }
 
+/* Previews: every screenshot is shown whole and centered, over a blurred copy of itself. */
 .panel-shot {
-  object-position: left top;
+  position: relative;
+  z-index: 1;
+  object-fit: contain;
+  object-position: center;
+  padding: 14px 14px 64px;
+}
+.panel-shot-bg {
+  position: absolute;
+  inset: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  object-fit: cover;
+  filter: blur(28px) saturate(120%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.shot-strip {
+  z-index: 2;
 }
 
 /* Compare: on narrow screens the two sides stack and the slider is hidden. */
@@ -2772,4 +2794,56 @@ html:not([data-cv="off"]) .section {
     top: 72px;
     width: auto;
   }
+}
+
+/* Award trophy: solid, larger, never picks up the muted stat label color. */
+.stat .trophy {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: 0 0 12px;
+  color: var(--s-on-accent);
+  font-size: inherit;
+  box-shadow: 0 10px 26px -10px var(--s-glow);
+}
+.stat .trophy svg {
+  width: 28px;
+  height: 28px;
+}
+.shot-strip {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+/* Section words (Build, Solve, Scale): a stronger outline, and a slow color pulse while the section is on screen. */
+.bigword {
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: color-mix(in srgb, var(--s-fg) 18%, transparent);
+}
+.section[data-inview="true"] .bigword {
+  animation: bigword-pulse 3.2s ease-in-out infinite;
+}
+@keyframes bigword-pulse {
+  0%,
+  100% {
+    -webkit-text-stroke-color: color-mix(in srgb, var(--s-accent) 45%, transparent);
+    color: color-mix(in srgb, var(--s-accent) 5%, transparent);
+    text-shadow: none;
+  }
+  50% {
+    -webkit-text-stroke-color: var(--s-accent);
+    color: color-mix(in srgb, var(--s-accent) 16%, transparent);
+    text-shadow: 0 0 48px var(--s-glow);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section[data-inview="true"] .bigword {
+    animation: none;
+    -webkit-text-stroke-color: color-mix(in srgb, var(--s-accent) 80%, transparent);
+    color: color-mix(in srgb, var(--s-accent) 10%, transparent);
+  }
+}
+.bigword {
+  letter-spacing: -0.03em;
 }

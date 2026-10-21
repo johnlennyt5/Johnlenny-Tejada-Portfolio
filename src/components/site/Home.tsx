@@ -247,9 +247,7 @@ export async function Home() {
 
       {/* ---------------- BUILD: projects ---------------- */}
       <section className="section" id="build" data-spy aria-labelledby="build-title">
-        <span className="bigword" aria-hidden="true">
-          Build
-        </span>
+        <span className="bigword" data-word="Build" aria-hidden="true" />
         <div className="wrap">
           <div className="section-head reveal">
             <span className="eyebrow">01 · Build</span>
@@ -332,9 +330,7 @@ export async function Home() {
 
       {/* ---------------- SOLVE: automation ---------------- */}
       <section className="section" id="solve" data-spy aria-labelledby="solve-title" style={{ background: "var(--s-bg-2)" }}>
-        <span className="bigword" aria-hidden="true">
-          Solve
-        </span>
+        <span className="bigword" data-word="Solve" aria-hidden="true" />
         <div className="wrap">
           <div className="section-head reveal">
             <span className="eyebrow">02 · Solve</span>
@@ -398,9 +394,7 @@ export async function Home() {
 
       {/* ---------------- SCALE: experience + community ---------------- */}
       <section className="section" id="scale" data-spy aria-labelledby="scale-title">
-        <span className="bigword" aria-hidden="true">
-          Scale
-        </span>
+        <span className="bigword" data-word="Scale" aria-hidden="true" />
         <div className="wrap">
           <div className="section-head reveal">
             <span className="eyebrow">03 · Scale</span>
@@ -476,11 +470,11 @@ export async function Home() {
                   <T en="Aug 2012 to Mar 2020" es="Ago 2012 a mar 2020" />
                 </span>
                 <h3>
-                  Manager <span>· Supreme Cuts, Providence</span>
+                  <T en="Accounting & Bookkeeping" es="Contabilidad y teneduría de libros" />
                 </h3>
                 <TBlock
-                  en={<p>Hired and led a team of barbers, built a loyal client base and kept the books in Excel.</p>}
-                  es={<p>Contraté y dirigí barberos, mantuve a los clientes y llevé la contabilidad en Excel.</p>}
+                  en={<p>Accounting and financial bookkeeping, with the books and financial records kept in Excel.</p>}
+                  es={<p>Contabilidad y teneduría de libros en Excel.</p>}
                 />
               </li>
               <li className="tl-item">
@@ -556,16 +550,18 @@ export async function Home() {
               en={
                 <>
                   <p>
-                    I came to software from the business side. I earned a B.S. in Business Administration with a major in Accounting from
-                    the University of Rhode Island, then spent more than seven years managing Supreme Cuts, a barbershop in Providence: hiring and
-                    leading staff, building a loyal client base and keeping the books. That background is why I measure every automation by what
-                    it saves, who it serves and how it behaves when something goes wrong.
+                    I build software that removes busywork. At HumanixOS I build UiPath robots and AI features for a live multi-tenant
+                    platform, and on my own time I build full-stack products in TypeScript and React Native: truckWhat, PrismShift and
+                    SmartFit Metrics.
                   </p>
                   <p>
-                    Today I build AI and automation at HumanixOS, and on my own time I build startups: truckWhat, PrismShift and SmartFit
-                    Metrics. I co-host hackathons, helped run TEDxProvidence 2025, and teach people to build with AI, in English and
-                    Spanish. Being bilingual means I can work directly with Spanish-speaking users, clients and teammates, not through a
-                    translator.
+                    My path started in finance. I earned a B.S. in Business Administration with a major in Accounting from the University of
+                    Rhode Island and spent more than seven years in accounting and financial bookkeeping. That is why I measure every
+                    automation by what it saves, who it serves and how it behaves when something goes wrong.
+                  </p>
+                  <p>
+                    I co-host hackathons, helped run TEDxProvidence 2025 and teach people to build with AI. I am fluent in English and
+                    Spanish, so I work directly with Spanish-speaking users, clients and teammates.
                   </p>
                 </>
               }
@@ -587,11 +583,11 @@ export async function Home() {
             <div className="about-facts">
               <div className="mini">
                 <b>B.S.</b>
-                <T en="Business Admin, Accounting, URI" es="Administración, Contabilidad, URI" />
+                <T en="Accounting, URI" es="Contabilidad, URI" />
               </div>
               <div className="mini">
                 <b>7+ yrs</b>
-                <T en="managing a business" es="dirigiendo un negocio" />
+                <T en="accounting & bookkeeping" es="contabilidad" />
               </div>
               <div className="mini">
                 <b>3</b>

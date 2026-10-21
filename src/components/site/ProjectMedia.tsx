@@ -155,6 +155,8 @@ export function ProjectMedia({
             {activeShot ? (
               <>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="panel-shot-bg" src={activeShot.src} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="panel-shot"
                   src={activeShot.src}

@@ -94,7 +94,7 @@ export function Nav() {
   return (
     <header className="nav" data-scrolled={scrolled || menu}>
       <div className="wrap nav-inner">
-        <Link href="/" className="logo" aria-label={`${profile.name}, home`}>
+        <Link href="/" className="logo" title={`${profile.name}, home`}>
           <span className="logo-mark" aria-hidden="true">
             JT
           </span>
