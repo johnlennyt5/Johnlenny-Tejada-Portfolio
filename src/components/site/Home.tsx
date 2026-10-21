@@ -122,7 +122,16 @@ export async function Home() {
                 <b>AI</b> agents
               </span>
               <span className="orbit orbit-3" aria-hidden="true">
-                <b>TS</b> full-stack
+                <b>TS</b> TypeScript
+              </span>
+              <span className="orbit orbit-4" aria-hidden="true">
+                <b>JS</b> JavaScript
+              </span>
+              <span className="orbit orbit-5" aria-hidden="true">
+                <b>{"{ }"}</b> Node.js
+              </span>
+              <span className="orbit orbit-6" aria-hidden="true">
+                <b>Expo</b> mobile apps
               </span>
               <div className="botrun" aria-hidden="true">
                 <div className="botrun-head">

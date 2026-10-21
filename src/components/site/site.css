@@ -2117,3 +2117,41 @@ html[data-palette="daylight"] .site {
 .socials {
   flex-wrap: wrap;
 }
+
+/* More skill chips around the photo, spaced so they never stack on each other. */
+.orbit-4 {
+  top: 31%;
+  left: -9%;
+  animation-delay: 1.5s, 2.2s;
+}
+.orbit-5 {
+  top: 66%;
+  right: -6%;
+  animation-delay: 1.7s, 4s;
+}
+.orbit-6 {
+  bottom: -1%;
+  right: 10%;
+  animation-delay: 1.9s, 1s;
+}
+@media (max-width: 979px) {
+  .orbit-4 {
+    left: -2%;
+  }
+  .orbit-5 {
+    right: 0;
+  }
+  .orbit-6 {
+    bottom: auto;
+    top: 52%;
+    right: auto;
+    left: -4%;
+  }
+}
+/* Phones: four chips are enough around a small photo. */
+@media (max-width: 599px) {
+  .orbit-4,
+  .orbit-5 {
+    display: none;
+  }
+}
