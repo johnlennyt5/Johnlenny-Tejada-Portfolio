@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+/*
+ * Shared tokens. Each version's Shell sets the --c-* and --ff-* variables on its wrapper,
+ * and these utilities pick them up: bg-bg, text-fg, text-muted, text-accent, border-line,
+ * bg-surface, font-display, font-body, font-mono.
+ */
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-fg: var(--c-fg);
+  --color-muted: var(--c-muted);
+  --color-accent: var(--c-accent);
+  --color-accent-2: var(--c-accent-2);
+  --color-line: var(--c-line);
+  --color-surface: var(--c-surface);
+  --font-display: var(--ff-display);
+  --font-body: var(--ff-body);
+  --font-mono: var(--ff-mono);
+}
+
+:root {
+  --c-bg: #ffffff;
+  --c-fg: #111111;
+  --c-muted: #555555;
+  --c-accent: #1f3fbf;
+  --c-accent-2: #c8261a;
+  --c-line: #d4d4d4;
+  --c-surface: #f5f5f5;
+  --ff-display: ui-sans-serif, system-ui, sans-serif;
+  --ff-body: ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg: #111111;
+    --c-fg: #eeeeee;
+    --c-muted: #a3a3a3;
+    --c-accent: #8ea6ff;
+    --c-accent-2: #ff8a7a;
+    --c-line: #333333;
+    --c-surface: #1a1a1a;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Accessibility helpers ---------- */
+
+.jt-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.jt-skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--c-fg);
+  color: var(--c-bg);
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.jt-skip-link:focus,
+.jt-skip-link:focus-visible {
+  top: 1rem;
+  outline: 3px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes jt-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.jt-caret {
+  animation: jt-blink 1.06s steps(1, end) infinite;
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Shared component defaults (versions override with className or variables) ---------- */
+
+.jt-version-switcher ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jt-version-switcher a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  min-height: 44px;
+  min-width: 44px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.6rem;
+  border: 1px solid var(--vs-line, currentColor);
+  border-radius: 999px;
+  color: var(--vs-fg, inherit);
+  font: inherit;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.jt-version-switcher a[aria-current="page"] {
+  background: var(--vs-accent, currentColor);
+  border-color: var(--vs-accent, currentColor);
+  color: var(--vs-on-accent, var(--c-bg));
+  font-weight: 700;
+}
+
+.jt-version-switcher .jt-vs-id {
+  text-transform: lowercase;
+}
+
+.jt-motion-toggle,
+.jt-resume-button,
+.jt-copy-email button {
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.jt-copy-email {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.jt-copy-email-address {
+  user-select: all;
+  font-family: var(--ff-mono);
+}
+
+/* ---------- Diagrams ---------- */
+
+.jt-diagram {
+  margin: 0;
+  container-type: inline-size;
+  color: var(--dg-fg, currentColor);
+}
+
+.jt-dg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  font-family: var(--dg-font, inherit);
+  overflow: visible;
+}
+
+.jt-diagram[data-layout="auto"] .jt-diagram-tall {
+  display: none;
+}
+
+@container (max-width: 560px) {
+  .jt-diagram[data-layout="auto"] .jt-diagram-wide {
+    display: none;
+  }
+  .jt-diagram[data-layout="auto"] .jt-diagram-tall {
+    display: block;
+  }
+}
+
+.jt-dg-node {
+  fill: var(--dg-node, transparent);
+  stroke: var(--dg-node-stroke, currentColor);
+  stroke-width: 1.25;
+}
+
+.jt-dg-node[data-kind="agent"] {
+  stroke: var(--dg-accent, currentColor);
+  stroke-width: 2;
+}
+
+.jt-dg-node[data-kind="human"] {
+  stroke: var(--dg-accent-2, currentColor);
+  stroke-width: 2;
+}
+
+.jt-dg-node[data-kind="end"] {
+  stroke-width: 3;
+}
+
+.jt-dg-node[data-kind="cluster"],
+.jt-dg-node[data-kind="store"] {
+  fill: var(--dg-group, transparent);
+}
+
+.jt-dg-node[data-kind="external"] {
+  stroke-dasharray: 4 3;
+}
+
+.jt-dg-label {
+  fill: var(--dg-fg, currentColor);
+  font-weight: 600;
+}
+
+.jt-dg-sub {
+  fill: var(--dg-muted, currentColor);
+}
+
+.jt-dg-badge {
+  font-family: var(--dg-mono, ui-monospace, monospace);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.jt-dg-badge-agent {
+  fill: var(--dg-accent, currentColor);
+}
+
+.jt-dg-badge-human {
+  fill: var(--dg-accent-2, currentColor);
+}
+
+.jt-dg-group {
+  fill: var(--dg-group, transparent);
+  stroke: var(--dg-line, currentColor);
+  stroke-width: 1.25;
+}
+
+.jt-dg-group[data-dashed="true"] {
+  stroke-dasharray: 6 5;
+}
+
+.jt-dg-group-label {
+  fill: var(--dg-muted, currentColor);
+  font-family: var(--dg-mono, ui-monospace, monospace);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.jt-dg-edge {
+  fill: none;
+  stroke: var(--dg-line, currentColor);
+  stroke-width: 1.4;
+}
+
+.jt-dg-edge[data-dashed="true"] {
+  stroke-dasharray: 5 4;
+}
+
+.jt-dg-arrow {
+  fill: var(--dg-line, currentColor);
+}
+
+.jt-dg-edge-label-bg {
+  fill: var(--dg-bg, var(--c-bg));
+}
+
+.jt-dg-edge-label {
+  fill: var(--dg-muted, currentColor);
+  font-family: var(--dg-mono, ui-monospace, monospace);
+}
+
+.jt-diagram-caption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--dg-muted, var(--c-muted));
+}

@@ -1,0 +1,58 @@
+/* v4 theme (Providence, Built by Hand). Owned by the v4 agent. Tokens feed the shared utilities in globals.css. */
+
+:root:has(.v4-root),
+.v4-root {
+  --c-bg: #FBF5EC;
+  --c-fg: #2B1D14;
+  --c-muted: #6B5646;
+  --c-accent: #A9481F;
+  --c-accent-2: #1F5F7A;
+  --c-line: #E2D5C3;
+  --c-surface: #F4EADC;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:has(.v4-root),
+  .v4-root {
+    --c-bg: #1C1410;
+    --c-fg: #F3E9DC;
+    --c-muted: #BFAE9C;
+    --c-accent: #E8875A;
+    --c-accent-2: #7FC0D8;
+    --c-line: #3A2C23;
+    --c-surface: #261C16;
+  }
+}
+
+.v4-root {
+  --ff-display: var(--font-v4-display), Georgia, serif;
+  --ff-body: var(--font-v4-body), Georgia, serif;
+  --ff-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mono-ink: var(--c-fg);
+  --mono-paper: var(--c-bg);
+  --mono-accent: var(--c-accent);
+  --vs-fg: var(--c-fg);
+  --vs-line: var(--c-line);
+  --vs-accent: var(--c-fg);
+  --vs-on-accent: var(--c-bg);
+  --dg-bg: var(--c-bg);
+  --dg-fg: var(--c-fg);
+  --dg-muted: var(--c-muted);
+  --dg-line: var(--c-muted);
+  --dg-node: var(--c-surface);
+  --dg-node-stroke: var(--c-fg);
+  --dg-accent: var(--c-accent);
+  --dg-accent-2: var(--c-accent-2);
+  --dg-group: transparent;
+  --dg-font: var(--ff-body);
+  --dg-mono: var(--ff-mono);
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--ff-body);
+  color-scheme: light dark;
+}
+
+.v4-root a {
+  color: inherit;
+}

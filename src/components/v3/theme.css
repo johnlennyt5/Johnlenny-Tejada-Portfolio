@@ -1,0 +1,58 @@
+/* v3 theme (The Robot Room). Owned by the v3 agent. Tokens feed the shared utilities in globals.css. */
+
+:root:has(.v3-root),
+.v3-root {
+  --c-bg: #0B0F0C;
+  --c-fg: #D6E4D9;
+  --c-muted: #8A9E90;
+  --c-accent: #4ADE80;
+  --c-accent-2: #7DD3FC;
+  --c-line: #24302A;
+  --c-surface: #121A15;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:has(.v3-root),
+  .v3-root {
+    --c-bg: #F3F6F2;
+    --c-fg: #0E1A12;
+    --c-muted: #4B5B50;
+    --c-accent: #1C7A3E;
+    --c-accent-2: #9A4A12;
+    --c-line: #C9D3CB;
+    --c-surface: #E7ECE6;
+  }
+}
+
+.v3-root {
+  --ff-display: var(--font-v3-display), ui-sans-serif, system-ui, sans-serif;
+  --ff-body: var(--font-v3-body), ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: var(--font-v3-mono), ui-monospace, monospace;
+  --mono-ink: var(--c-fg);
+  --mono-paper: var(--c-bg);
+  --mono-accent: var(--c-accent);
+  --vs-fg: var(--c-fg);
+  --vs-line: var(--c-line);
+  --vs-accent: var(--c-fg);
+  --vs-on-accent: var(--c-bg);
+  --dg-bg: var(--c-bg);
+  --dg-fg: var(--c-fg);
+  --dg-muted: var(--c-muted);
+  --dg-line: var(--c-muted);
+  --dg-node: var(--c-surface);
+  --dg-node-stroke: var(--c-fg);
+  --dg-accent: var(--c-accent);
+  --dg-accent-2: var(--c-accent-2);
+  --dg-group: transparent;
+  --dg-font: var(--ff-body);
+  --dg-mono: var(--ff-mono);
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--ff-body);
+  color-scheme: light dark;
+}
+
+.v3-root a {
+  color: inherit;
+}

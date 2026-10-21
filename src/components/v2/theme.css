@@ -1,0 +1,45 @@
+/* v2 theme (Launch). Owned by the v2 agent. Tokens feed the shared utilities in globals.css. */
+
+:root:has(.v2-root),
+.v2-root {
+  --c-bg: #07080C;
+  --c-fg: #EDEEF3;
+  --c-muted: #9AA0AE;
+  --c-accent: #8EA6FF;
+  --c-accent-2: #3DE0C8;
+  --c-line: #2A2E3A;
+  --c-surface: #12141C;
+}
+
+.v2-root {
+  --ff-display: var(--font-v2-display), ui-sans-serif, system-ui, sans-serif;
+  --ff-body: var(--font-v2-body), ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: var(--font-v2-mono), ui-monospace, monospace;
+  --mono-ink: var(--c-fg);
+  --mono-paper: var(--c-bg);
+  --mono-accent: var(--c-accent);
+  --vs-fg: var(--c-fg);
+  --vs-line: var(--c-line);
+  --vs-accent: var(--c-fg);
+  --vs-on-accent: var(--c-bg);
+  --dg-bg: var(--c-bg);
+  --dg-fg: var(--c-fg);
+  --dg-muted: var(--c-muted);
+  --dg-line: var(--c-muted);
+  --dg-node: var(--c-surface);
+  --dg-node-stroke: var(--c-fg);
+  --dg-accent: var(--c-accent);
+  --dg-accent-2: var(--c-accent-2);
+  --dg-group: transparent;
+  --dg-font: var(--ff-body);
+  --dg-mono: var(--ff-mono);
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--ff-body);
+  color-scheme: dark;
+}
+
+.v2-root a {
+  color: inherit;
+}
