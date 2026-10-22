@@ -3,7 +3,7 @@
  * Set NEXT_PUBLIC_SITE_URL in the environment to change the canonical origin.
  */
 
-const DEFAULT_SITE_URL = "https://johnlenny-tejada.vercel.app";
+const DEFAULT_SITE_URL = "https://johnlenny-tejada-portfolio.vercel.app";
 
 export const siteUrl: string = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, "");
 

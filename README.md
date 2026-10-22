@@ -12,7 +12,12 @@ The design is built around three words: **Build. Solve. Scale.** Every page is s
 | `/work/<slug>/` | A case study for truckWhat, PrismShift, SmartFit Metrics and ILOP: screenshots, real code, architecture, decisions, what broke, results and honest caveats. |
 | `/lab/v1/` to `/lab/v4/` | The four earlier design explorations, with `/lab/compare/`. Linked only from the footer ("Design lab") and not indexed. |
 
-A palette picker in the header recolors the whole site live (Ember, Volt, Midnight, Royal, Daylight). The choice is saved in the browser, and `?palette=<name>` shares a look.
+The menu behind the rainbow dot in the header recolors and re-skins the whole site live:
+
+- **Backgrounds:** six options. Wave Grid (the default) is a 3D wireframe energy landscape. Aurora, Neural Swarm, Force Field and Liquid Glass are the other animated ones, and Void is a plain solid background. The animated ones are real-time WebGL shaders (`src/components/site/backgrounds/`). They react to the cursor, scroll and clicks, recolor with the palette, pause in hidden tabs and show one still frame under reduced motion. Each background is its own chunk, loaded only when chosen.
+- **Palettes:** 6 signature palettes (Royal Flame is the default) plus 9 trend palettes, each in dark and light.
+
+The choices are saved in the browser, and `?palette=<id>` / `?bg=<id>` share a look.
 
 ## Stack
 
@@ -71,7 +76,7 @@ Accessibility is also checked with axe-core at phone and desktop widths, in ever
 1. Push this repo to GitHub.
 2. Go to [vercel.com/new](https://vercel.com/new), sign in with GitHub and import the repo.
 3. Framework preset: **Next.js** (detected automatically). Leave the build command and output settings as they are; Vercel handles the static `out/` export.
-4. Under Environment Variables, add `NEXT_PUBLIC_SITE_URL` set to the final address, for example `https://johnlenny-tejada.vercel.app` (no trailing slash). It sets canonical URLs, the sitemap and Open Graph links.
+4. Under Environment Variables, add `NEXT_PUBLIC_SITE_URL` set to the final address, for example `https://johnlenny-tejada-portfolio.vercel.app` (no trailing slash). It sets canonical URLs, the sitemap and Open Graph links.
 5. Optional: add `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` with the token from Google Search Console's "HTML tag" method.
 6. Deploy. Every later push to `main` redeploys on its own, and pull requests get preview links.
 
