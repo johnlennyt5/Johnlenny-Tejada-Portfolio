@@ -17,6 +17,22 @@ html:not([data-palette]) {
   --s-grid: rgb(255 255 255 / 0.035);
   color-scheme: dark;
 }
+html[data-palette="royalflame"] {
+  --s-bg: #060a1f;
+  --s-bg-2: #0a1030;
+  --s-surface: #0f1638;
+  --s-surface-2: #161f4a;
+  --s-fg: #f2f4ff;
+  --s-muted: #a9b3d9;
+  --s-line: rgb(150 170 255 / 0.12);
+  --s-accent: #3d63ff;
+  --s-accent-2: #ff8a1f;
+  --s-accent-ink: #8aa4ff;
+  --s-on-accent: #ffffff;
+  --s-glow: rgb(61 99 255 / 0.45);
+  --s-grid: rgb(150 170 255 / 0.04);
+  color-scheme: dark;
+}
 html[data-palette="volt"] {
   --s-bg: #09090a;
   --s-bg-2: #0e0f10;
@@ -2981,4 +2997,19 @@ html[data-bg-live="field"] .bg-scrim {
   html[data-bg-live="field"] .bg-scrim {
     background: color-mix(in srgb, var(--s-bg) 52%, transparent);
   }
+}
+
+/* Royal Flame: royal blue burning into fire orange on the signature moments. */
+html[data-palette="royalflame"] .hero h1 .last {
+  background: linear-gradient(95deg, #5b7cff 0%, #3d63ff 35%, #ff6a1f 75%, #ffb02e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+html[data-palette="royalflame"] .stage-disc {
+  background: radial-gradient(circle at 50% 35%, #ffb02e 0%, #ff6a1f 28%, #3d63ff 72%, #0f1a5c 100%);
+  box-shadow:
+    0 0 120px 10px rgb(255 120 40 / 0.35),
+    0 0 80px 0 rgb(61 99 255 / 0.4),
+    inset 0 -30px 60px rgb(0 0 0 / 0.25);
 }

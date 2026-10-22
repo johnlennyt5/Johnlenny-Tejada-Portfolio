@@ -6,6 +6,7 @@ export const BG_KEY = "jt-bg";
 
 export type PaletteId =
   | "ember"
+  | "royalflame"
   | "volt"
   | "midnight"
   | "royal"
@@ -24,9 +25,9 @@ export type BackgroundId = "void" | "aurora" | "wavegrid" | "swarm" | "field" | 
 
 /** Page backgrounds. "void" is the original solid background with the hero grid. */
 export const backgrounds: { id: BackgroundId; name: string; mood: string }[] = [
-  { id: "void", name: "Void", mood: "Clean, the original" },
+  { id: "wavegrid", name: "Wave Grid", mood: "3D energy landscape (default)" },
+  { id: "void", name: "Void", mood: "Clean, solid" },
   { id: "aurora", name: "Aurora", mood: "Flowing light ribbons" },
-  { id: "wavegrid", name: "Wave Grid", mood: "3D energy landscape" },
   { id: "swarm", name: "Neural Swarm", mood: "Particles that link up" },
   { id: "field", name: "Force Field", mood: "Plasma around your cursor" },
   { id: "glass", name: "Liquid Glass", mood: "Floating 3D glass orbs" },
@@ -42,6 +43,7 @@ export interface Palette {
 /** The site's own palettes. Each has a fixed light or dark look. */
 export const palettes: Palette[] = [
   { id: "ember", name: "Ember", mood: "Warm, bold (default)", swatch: ["#0b0c10", "#ff6b2c"] },
+  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire", swatch: ["#060a1f", "#3d63ff", "#ff8a1f"] },
   { id: "volt", name: "Volt", mood: "Electric, sharp", swatch: ["#0a0a0a", "#b6ff2e"] },
   { id: "midnight", name: "Midnight", mood: "Cool, focused", swatch: ["#070d1a", "#38bdf8"] },
   { id: "royal", name: "Royal", mood: "Rich, creative", swatch: ["#140b20", "#c084fc"] },
@@ -70,4 +72,4 @@ export const defaultPalette: PaletteId = "ember";
  */
 export const prefsBootScript = `(function(){var d=document.documentElement;var ids=${JSON.stringify(
   [...palettes, ...trendPalettes].map((p) => p.id),
-)};var p=null,m=null,b=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"void";d.dataset.mode=m==="light"?"light":"dark";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;
+)};var p=null,m=null,b=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"wavegrid";d.dataset.mode=m==="light"?"light":"dark";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;
