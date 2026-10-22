@@ -228,7 +228,7 @@ export const projects: Project[] = [
       "My own startup: a trucking marketplace where shippers post loads and drivers haul them, with live tracking and payouts across a web app and a mobile app I am building solo.",
     summary:
       "truckWhat is a web and mobile logistics marketplace with live tracking, an offline GPS outbox, face-match identity checks and a 3D load viewer. It moves money and stores sensitive data, so it ships behind 800+ Vitest and 350+ Jest tests, 200+ row-level security policies and a closed-out security review.",
-    links: [],
+    links: [{ label: "truckwhat.com", href: "https://www.truckwhat.com", kind: "site" }],
     linkNote: "The repositories are private. I am happy to walk through the code live.",
     metrics: [
       { value: "730+", label: "commits, all mine", evidence: "tw-commits" },
@@ -321,7 +321,7 @@ export const projects: Project[] = [
       caveats: [
         "In development since January 2026, and still in progress.",
         "Accessibility practices are built in (ARIA, alt text, keyboard handling), but there has been no formal accessibility audit.",
-        "The repositories are private, so there is no public link.",
+        "The code repositories are private. The public site is live at truckwhat.com.",
       ],
     },
   },

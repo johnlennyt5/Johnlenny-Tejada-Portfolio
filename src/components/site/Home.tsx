@@ -312,12 +312,11 @@ export async function Home() {
                       <T en="Read the case study" es="Ver el caso completo" />
                       <ArrowRight />
                     </a>
-                    {p.links
-                      .filter((l) => l.kind === "store")
-                      .slice(0, 2)
+                    {/* Store buttons when the app is live in a store, otherwise the live website. */}
+                    {(p.links.some((l) => l.kind === "store") ? p.links.filter((l) => l.kind === "store").slice(0, 2) : p.links.filter((l) => l.kind === "site").slice(0, 1))
                       .map((l) => (
                         <a className="btn btn-ghost" href={l.href} key={l.href} target="_blank" rel="noopener noreferrer">
-                          {l.href.includes("apple") ? "App Store" : "Google Play"}
+                          {l.kind === "store" ? (l.href.includes("apple") ? "App Store" : "Google Play") : `Visit ${l.label}`}
                           <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                       ))}
