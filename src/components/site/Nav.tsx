@@ -8,6 +8,7 @@ import {
   MODE_KEY,
   PALETTE_KEY,
   backgrounds,
+  defaultPalette,
   palettes,
   trendPalettes,
   type BackgroundId,
@@ -37,14 +38,14 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [palette, setPalette] = useState<PaletteId>("ember");
+  const [palette, setPalette] = useState<PaletteId>(defaultPalette);
   const [mode, setMode] = useState<Mode>("dark");
   const [bg, setBg] = useState<BackgroundId>("wavegrid");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
-    setPalette((d.dataset.palette as PaletteId) || "ember");
+    setPalette((d.dataset.palette as PaletteId) || defaultPalette);
     setMode(d.dataset.mode === "light" ? "light" : "dark");
     setBg((d.dataset.bg as BackgroundId) || "wavegrid");
     const onScroll = () => setScrolled(window.scrollY > 24);

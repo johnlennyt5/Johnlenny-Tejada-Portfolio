@@ -1,7 +1,6 @@
 /* Main site. Every color comes from a palette token, so the palette picker recolors everything. */
 
-html[data-palette="ember"],
-html:not([data-palette]) {
+html[data-palette="ember"] {
   --s-bg: #0b0c10;
   --s-bg-2: #101218;
   --s-surface: #15171e;
@@ -17,7 +16,8 @@ html:not([data-palette]) {
   --s-grid: rgb(255 255 255 / 0.035);
   color-scheme: dark;
 }
-html[data-palette="royalflame"] {
+html[data-palette="royalflame"],
+html:not([data-palette]) {
   --s-bg: #060a1f;
   --s-bg-2: #0a1030;
   --s-surface: #0f1638;

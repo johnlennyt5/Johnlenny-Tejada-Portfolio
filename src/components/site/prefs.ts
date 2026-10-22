@@ -42,8 +42,8 @@ export interface Palette {
 
 /** The site's own palettes. Each has a fixed light or dark look. */
 export const palettes: Palette[] = [
-  { id: "ember", name: "Ember", mood: "Warm, bold (default)", swatch: ["#0b0c10", "#ff6b2c"] },
-  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire", swatch: ["#060a1f", "#3d63ff", "#ff8a1f"] },
+  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire (default)", swatch: ["#060a1f", "#3d63ff", "#ff8a1f"] },
+  { id: "ember", name: "Ember", mood: "Warm, bold", swatch: ["#0b0c10", "#ff6b2c"] },
   { id: "volt", name: "Volt", mood: "Electric, sharp", swatch: ["#0a0a0a", "#b6ff2e"] },
   { id: "midnight", name: "Midnight", mood: "Cool, focused", swatch: ["#070d1a", "#38bdf8"] },
   { id: "royal", name: "Royal", mood: "Rich, creative", swatch: ["#140b20", "#c084fc"] },
@@ -63,7 +63,7 @@ export const trendPalettes: Palette[] = [
   { id: "sunset", name: "Sunset Highway", mood: "Retro-future, warm", swatch: ["#f4ece7", "#de457c", "#ed9b10", "#1f1121"] },
 ];
 
-export const defaultPalette: PaletteId = "ember";
+export const defaultPalette: PaletteId = "royalflame";
 
 /**
  * Runs in <head> before first paint so a saved palette never flashes.
