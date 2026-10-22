@@ -83,10 +83,10 @@ export async function Home() {
                 </a>
               </div>
               <div className="socials">
-                <a className="social" href={profile.links.linkedin.href} aria-label="LinkedIn">
+                <a className="social" href={profile.links.linkedin.href} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">
                   <LinkedIn />
                 </a>
-                <a className="social" href={profile.links.github.href} aria-label="GitHub">
+                <a className="social" href={profile.links.github.href} target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">
                   <GitHub />
                 </a>
                 <span>Providence, RI</span>
@@ -316,8 +316,9 @@ export async function Home() {
                       .filter((l) => l.kind === "store")
                       .slice(0, 2)
                       .map((l) => (
-                        <a className="btn btn-ghost" href={l.href} key={l.href}>
+                        <a className="btn btn-ghost" href={l.href} key={l.href} target="_blank" rel="noopener noreferrer">
                           {l.href.includes("apple") ? "App Store" : "Google Play"}
+                          <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                       ))}
                   </div>
@@ -628,9 +629,10 @@ export async function Home() {
                 copiedLabel={<T en="Copied!" es="¡Copiado!" />}
                 showAddress
               />
-              <a href={profile.links.linkedin.href} className="btn btn-ghost">
+              <a href={profile.links.linkedin.href} className="btn btn-ghost" target="_blank" rel="noopener noreferrer">
                 <LinkedIn />
                 LinkedIn
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
               <a href={profile.resume.href} download={profile.resume.fileName} className="btn btn-ghost">
                 <Download />

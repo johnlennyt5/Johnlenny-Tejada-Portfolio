@@ -42,7 +42,7 @@ export interface Palette {
 
 /** The site's own palettes. Each has a fixed light or dark look. */
 export const palettes: Palette[] = [
-  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire (default)", swatch: ["#060a1f", "#3d63ff", "#ff8a1f"] },
+  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire (default)", swatch: ["#05071c", "#0909ed", "#ff8a1f"] },
   { id: "ember", name: "Ember", mood: "Warm, bold", swatch: ["#0b0c10", "#ff6b2c"] },
   { id: "volt", name: "Volt", mood: "Electric, sharp", swatch: ["#0a0a0a", "#b6ff2e"] },
   { id: "midnight", name: "Midnight", mood: "Cool, focused", swatch: ["#070d1a", "#38bdf8"] },

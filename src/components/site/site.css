@@ -18,19 +18,21 @@ html[data-palette="ember"] {
 }
 html[data-palette="royalflame"],
 html:not([data-palette]) {
-  --s-bg: #060a1f;
-  --s-bg-2: #0a1030;
-  --s-surface: #0f1638;
-  --s-surface-2: #161f4a;
+  --s-bg: #05071c;
+  --s-bg-2: #080b2a;
+  --s-surface: #0d1236;
+  --s-surface-2: #141a48;
   --s-fg: #f2f4ff;
-  --s-muted: #a9b3d9;
-  --s-line: rgb(150 170 255 / 0.12);
-  --s-accent: #3d63ff;
+  --s-muted: #a9b0dc;
+  --s-line: rgb(140 150 255 / 0.13);
+  /* Kansas City Royals blue for fills (buttons, disc, ring, glow); a lighter tint where blue is text. */
+  --s-accent: #0909ed;
+  --s-accent-text: #7a7aff;
   --s-accent-2: #ff8a1f;
-  --s-accent-ink: #8aa4ff;
+  --s-accent-ink: #8a8aff;
   --s-on-accent: #ffffff;
-  --s-glow: rgb(61 99 255 / 0.45);
-  --s-grid: rgb(150 170 255 / 0.04);
+  --s-glow: rgb(9 9 237 / 0.55);
+  --s-grid: rgb(140 150 255 / 0.045);
   color-scheme: dark;
 }
 html[data-palette="volt"] {
@@ -665,7 +667,7 @@ html[data-palette] {
   box-shadow: 0 6px 20px -6px var(--s-glow);
 }
 .logo-dot {
-  color: var(--s-accent);
+  color: var(--s-accent-text, var(--s-accent));
 }
 .nav-links {
   display: none;
@@ -909,7 +911,7 @@ html[data-palette] {
   margin-bottom: 10px;
 }
 .hero h1 .last {
-  color: var(--s-accent);
+  color: var(--s-accent-text, var(--s-accent));
 }
 .role {
   margin-top: 18px;
@@ -1353,7 +1355,7 @@ html[data-palette] {
   margin-top: 18px;
   font: 800 clamp(2.4rem, 4vw, 3.2rem) / 1 var(--ff-d);
   letter-spacing: -0.04em;
-  color: var(--s-accent);
+  color: var(--s-accent-text, var(--s-accent));
 }
 .pillar h3 {
   margin: 14px 0 0;
@@ -1794,7 +1796,7 @@ html[data-palette] {
   letter-spacing: -0.04em;
 }
 .cmp-auto .cmp-value {
-  color: var(--s-accent);
+  color: var(--s-accent-text, var(--s-accent));
 }
 .cmp-unit {
   margin-top: 6px;
@@ -2333,7 +2335,7 @@ html[data-palette="daylight"] .site {
 .next-arrow {
   width: 32px;
   height: 32px;
-  color: var(--s-accent);
+  color: var(--s-accent-text, var(--s-accent));
 }
 
 /* ---------- Phone and tablet adjustments ---------- */
@@ -3001,16 +3003,16 @@ html[data-bg-live="field"] .bg-scrim {
 
 /* Royal Flame: royal blue burning into fire orange on the signature moments. */
 html[data-palette="royalflame"] .hero h1 .last {
-  background: linear-gradient(95deg, #5b7cff 0%, #3d63ff 35%, #ff6a1f 75%, #ffb02e 100%);
+  background: linear-gradient(95deg, #7a7aff 0%, #3b3bff 30%, #ff6a1f 75%, #ffb02e 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 html[data-palette="royalflame"] .stage-disc {
-  background: radial-gradient(circle at 50% 35%, #ffb02e 0%, #ff6a1f 28%, #3d63ff 72%, #0f1a5c 100%);
+  background: radial-gradient(circle at 50% 35%, #ffb02e 0%, #ff6a1f 28%, #0909ed 70%, #05086b 100%);
   box-shadow:
     0 0 120px 10px rgb(255 120 40 / 0.35),
-    0 0 80px 0 rgb(61 99 255 / 0.4),
+    0 0 90px 0 rgb(9 9 237 / 0.55),
     inset 0 -30px 60px rgb(0 0 0 / 0.25);
 }
 
@@ -3020,4 +3022,7 @@ html[data-bg="wavegrid"]:not([data-bg-live]) .hero {
   background:
     radial-gradient(38% 42% at 72% 42%, color-mix(in srgb, var(--s-accent-2) 16%, transparent), transparent 70%),
     linear-gradient(to top, color-mix(in srgb, var(--s-accent) 12%, transparent) 0%, transparent 38%);
+}
+html[data-palette="royalflame"] .orbit-dot {
+  background: #5a5aff;
 }

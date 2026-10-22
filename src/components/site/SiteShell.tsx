@@ -27,8 +27,12 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <T en="Built with Next.js, deployed free on Vercel." es="Hecho con Next.js, publicado gratis en Vercel." />
           </span>
           <span style={{ display: "flex", gap: 16 }}>
-            <a href={profile.links.linkedin.href}>LinkedIn</a>
-            <a href={profile.links.github.href}>GitHub</a>
+            <a href={profile.links.linkedin.href} target="_blank" rel="noopener noreferrer">
+              LinkedIn<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+            <a href={profile.links.github.href} target="_blank" rel="noopener noreferrer">
+              GitHub<span className="sr-only"> (opens in a new tab)</span>
+            </a>
             <a href={routes.compare}>
               <T en="Design lab" es="Laboratorio de diseño" />
             </a>

@@ -73,7 +73,10 @@ export async function CaseStudy({ slug }: { slug: string }) {
                   ? p.links.map((l, i) => (
                       <span key={l.href}>
                         {i ? " · " : ""}
-                        <a href={l.href}>{l.kind === "store" ? (l.href.includes("apple") ? "App Store" : "Google Play") : l.label}</a>
+                        <a href={l.href} target="_blank" rel="noopener noreferrer">
+                          {l.kind === "store" ? (l.href.includes("apple") ? "App Store" : "Google Play") : l.label}
+                          <span className="sr-only"> (opens in a new tab)</span>
+                        </a>
                       </span>
                     ))
                   : (p.linkNote ?? "Private repository")}
