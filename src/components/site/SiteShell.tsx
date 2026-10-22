@@ -24,7 +24,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <div className="wrap footer-inner">
           <span>
             © 2026 {profile.name} · Providence, RI ·{" "}
-            <T en="Built with Next.js, deployed free on Vercel." es="Hecho con Next.js, publicado gratis en Vercel." />
+            <T en="Built with Next.js and WebGL, hosted on Vercel." es="Hecho con Next.js y WebGL, alojado en Vercel." />
           </span>
           <span style={{ display: "flex", gap: 16 }}>
             <a href={profile.links.linkedin.href} target="_blank" rel="noopener noreferrer">

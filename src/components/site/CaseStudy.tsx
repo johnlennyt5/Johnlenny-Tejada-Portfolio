@@ -56,7 +56,7 @@ export async function CaseStudy({ slug }: { slug: string }) {
               <dt>
                 <T en="Team" es="Equipo" />
               </dt>
-              <dd>{p.team === "solo" ? "Solo" : p.team === "co-founder" ? "Co-founder, 2 engineers" : "Team"}</dd>
+              <dd>{p.team === "solo" ? "Solo" : p.team === "co-founder" ? "2 engineers, co-founded" : "Team"}</dd>
             </div>
             <div>
               <dt>

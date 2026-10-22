@@ -47,7 +47,7 @@ export const projects: Project[] = [
       problem:
         "Banks that want to leave Blue Prism face a rewrite: every process has to be rebuilt by hand in UiPath. The exports that hold that logic can also carry credential references, internal hostnames and business rules, so a migration tool built for banks should not need to upload them anywhere.",
       constraints: [
-        "Source exports should stay on the analyst's machine, so parsing and analysis run client-side in the browser.",
+        "Source exports should not have to leave the analyst's machine, so parsing and analysis run client-side in the browser.",
         "The output has to run in real UiPath tooling, not just look plausible in a diff.",
         "Enterprise reviewers need evidence before they say yes: tenant isolation, an audit trail, retention rules and a threat model.",
         "A solo build, July to August 2026.",
@@ -107,7 +107,7 @@ export const projects: Project[] = [
         "Built and tested on synthetic samples and a public Blue Prism sample, not on a bank's production estate.",
         "Conversion is assisted: what does not convert automatically is estimated in the migration report for a person to finish.",
         "The tool does not read a mailbox. In the Packt sample run, the email-field values on the queue items were seeded by hand.",
-        "This is my own independent project, separate from the Blue Prism work I have done at HumanixOS.",
+        "This is my own independent project.",
         "The repository is private, so there is no public link.",
       ],
     },
@@ -177,13 +177,7 @@ export const projects: Project[] = [
         "LLM extraction where the documents vary, deterministic code where a decision has to be explained.",
         "Agent evaluation sets are small for now: quick to run, but thin as evidence.",
       ],
-      whatBroke: [
-        {
-          title: "Evaluations are thin",
-          detail:
-            "Each agent has an LLM-judge evaluator and a trajectory evaluator configured, but the evaluation sets are still small. Growing them is the next step.",
-        },
-      ],
+      whatBroke: [],
       results: [
         "A BPMN flow from a Gmail trigger through classification, extraction and compliance to an Action Center review task, across 7 Orchestrator queues.",
         "Configured agent evaluations: an LLM-judge evaluator and a trajectory evaluator on each agent.",
@@ -196,6 +190,7 @@ export const projects: Project[] = [
       caveats: [
         "Still in progress: the approval and adverse-action emails at the end of the flow are placeholders.",
         "Robot-identity governance and Data Fabric logging are designed, not built.",
+        "The agent evaluation sets are still small. Growing them is the next step.",
         "Fictional bank, synthetic borrowers and synthetic documents.",
       ],
     },
@@ -287,7 +282,7 @@ export const projects: Project[] = [
       ],
       tradeoffs: [
         "In-house monitoring means more code to own, in exchange for keeping personal data inside the platform and alerts landing where I already work.",
-        "A role-based admin portal with 4 admin roles and an audit-log viewer, instead of ad hoc database access for support work.",
+        "A role-based admin portal with 4 admin roles and an audit-log viewer instead of ad hoc database access: more to build up front, but every support action is permissioned and logged.",
       ],
       whatBroke: [
         {
@@ -382,7 +377,7 @@ export const projects: Project[] = [
         },
       ],
       tradeoffs: [
-        "I stepped back from day-to-day development. My partner now runs the company and its development full time, and I still hold equity.",
+        "One React Native codebase for iOS and Android instead of two native apps, so two engineers could ship to both stores.",
       ],
       whatBroke: [],
       results: [
@@ -391,6 +386,7 @@ export const projects: Project[] = [
       ],
       tests: [],
       caveats: [
+        "I have since stepped back from day-to-day development. My partner now runs the company and its development full time, and I still hold equity.",
         "The current feature set on the SmartFit Metrics website includes work done after I stepped back from day-to-day development.",
         "The code repositories are private.",
       ],

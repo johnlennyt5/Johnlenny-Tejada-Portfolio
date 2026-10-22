@@ -95,7 +95,7 @@ export const projectCopy: Record<string, ProjectCopy> = {
     kicker: { en: "Solo · Banking RPA", es: "Solo · RPA bancario" },
     title: { en: "Blue Prism to UiPath migration", es: "Migración de Blue Prism a UiPath" },
     pitch: {
-      en: "Banks leaving Blue Prism face a full rewrite. PrismShift parses their exports in the browser, runs 14 analysis rules and generates UiPath REFramework projects. The analysis runs in the browser.",
+      en: "Banks leaving Blue Prism face a full rewrite. PrismShift parses their exports right in the browser, runs 14 analysis rules and generates UiPath REFramework projects, with a migration report that estimates the rest.",
       es: "Los bancos que dejan Blue Prism enfrentan reescribir todo. PrismShift analiza sus exportaciones en el navegador, aplica 14 reglas de análisis y genera proyectos UiPath REFramework, sin que las exportaciones salgan de la máquina del analista.",
     },
     result: {
