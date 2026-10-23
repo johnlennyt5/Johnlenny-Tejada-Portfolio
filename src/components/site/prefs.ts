@@ -25,7 +25,7 @@ export type BackgroundId = "void" | "aurora" | "wavegrid" | "swarm" | "field" | 
 
 /** Page backgrounds. "void" is the original solid background with the hero grid. */
 export const backgrounds: { id: BackgroundId; name: string; mood: string }[] = [
-  { id: "void", name: "Void", mood: "Clean, solid (default)" },
+  { id: "void", name: "Calm", mood: "Clean, solid (default)" },
   { id: "wavegrid", name: "Wave Grid", mood: "3D energy landscape" },
   { id: "aurora", name: "Aurora", mood: "Flowing light ribbons" },
   { id: "swarm", name: "Neural Swarm", mood: "Particles that link up" },
