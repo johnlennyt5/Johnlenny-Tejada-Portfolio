@@ -25,8 +25,8 @@ export type BackgroundId = "void" | "aurora" | "wavegrid" | "swarm" | "field" | 
 
 /** Page backgrounds. "void" is the original solid background with the hero grid. */
 export const backgrounds: { id: BackgroundId; name: string; mood: string }[] = [
-  { id: "wavegrid", name: "Wave Grid", mood: "3D energy landscape (default)" },
-  { id: "void", name: "Void", mood: "Clean, solid" },
+  { id: "void", name: "Void", mood: "Clean, solid (default)" },
+  { id: "wavegrid", name: "Wave Grid", mood: "3D energy landscape" },
   { id: "aurora", name: "Aurora", mood: "Flowing light ribbons" },
   { id: "swarm", name: "Neural Swarm", mood: "Particles that link up" },
   { id: "field", name: "Force Field", mood: "Plasma around your cursor" },
@@ -72,4 +72,4 @@ export const defaultPalette: PaletteId = "royalflame";
  */
 export const prefsBootScript = `(function(){var d=document.documentElement;var ids=${JSON.stringify(
   [...palettes, ...trendPalettes].map((p) => p.id),
-)};var p=null,m=null,b=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"wavegrid";d.dataset.mode=m==="light"?"light":"dark";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;
+)};var p=null,m=null,b=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"void";d.dataset.mode=m==="light"?"light":"dark";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;

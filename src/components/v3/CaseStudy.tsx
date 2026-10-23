@@ -15,7 +15,7 @@ import { jobState } from "./sections/Work";
 const TEAM: Record<Project["team"], string> = {
   solo: "Solo build",
   team: "Team build",
-  "co-founder": "Co-founder",
+  "co-founder": "Engineer, one of two",
 };
 
 const LANE: Record<string, string> = { automation: "Automation", fullstack: "Full-stack" };

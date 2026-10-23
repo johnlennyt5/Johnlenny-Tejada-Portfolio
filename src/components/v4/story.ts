@@ -167,10 +167,10 @@ export const chapters: Chapter[] = [
     numeral: roman(7),
     years: "2025 to 2026",
     place: "Providence",
-    title: "A gym app, co-founded",
+    title: "A gym app, built by two engineers",
     paragraphs: [
-      "In May 2025 I co-founded SmartFit Metrics, which began as Iron Clad Fitness. I was one of the two engineers who coded the entire product, a React Native and Expo app with a Bun and Hono API, and I built its Stripe membership checkout.",
-      "In January 2026 it shipped to the App Store as Ironclad Fitness RI, and it is on Google Play too. My partner now runs the company and its development full time, and I still hold equity.",
+      "In May 2025 I started building SmartFit Metrics, which began as Iron Clad Fitness. I was one of the two engineers who coded the entire product, a React Native and Expo app with a Bun and Hono API, and I built its Stripe membership checkout.",
+      "In January 2026 it shipped to the App Store as Ironclad Fitness RI, and it is on Google Play too. I have since stepped back from day-to-day development, and the company's own team now runs it.",
     ],
     artifact: "store",
     caption: "Ironclad Fitness RI, App Store release, January 2026",
@@ -183,7 +183,7 @@ export const chapters: Chapter[] = [
     place: "Providence",
     title: "A company of my own",
     paragraphs: [
-      "In January 2026 I started truckWhat, my own startup: a trucking marketplace where shippers post loads and drivers haul them, with live tracking and payouts.",
+      "In January 2026 I started truckWhat, a trucking marketplace where shippers post loads and drivers haul them, with live tracking and payouts.",
       "I am building the web app, the mobile app and the Supabase backend behind them, solo. It moves money and stores sensitive data, so security could not wait for later. There is no QA team, so the CI gate is the QA team.",
     ],
     artifact: "shipping",
@@ -285,7 +285,7 @@ export const houseRules: HouseRule[] = [
 export const teamLabel: Record<Project["team"], string> = {
   solo: "Solo",
   team: "With a team",
-  "co-founder": "Co-founder",
+  "co-founder": "Engineer, one of two",
 };
 
 /** Community items by id, for the "Beyond work" page. */

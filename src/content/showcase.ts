@@ -16,11 +16,11 @@ export const roles: Bi[] = [
   { en: "Automation & AI Engineer", es: "Ingeniero de Automatización e IA" },
   { en: "Full-Stack TypeScript Developer", es: "Desarrollador Full-Stack TypeScript" },
   { en: "RPA Developer (UiPath)", es: "Desarrollador RPA (UiPath)" },
-  { en: "Startup Founder", es: "Fundador de startups" },
+  { en: "Mobile Developer (React Native)", es: "Desarrollador móvil (React Native)" },
 ];
 
 export const heroIntro: Bi = {
-  en: "I turn slow, manual work into automations that run themselves, and I build the full-stack products around them. Software Engineer at HumanixOS. Founder of truckWhat.",
+  en: "I turn slow, manual work into automations that run themselves, and I build the full-stack products around them. Software Engineer at HumanixOS, building truckWhat on the side.",
   es: "Convierto trabajo manual y lento en automatizaciones que funcionan solas, y construyo los productos full-stack que las rodean. Ingeniero de Software en HumanixOS. Fundador de truckWhat.",
 };
 
@@ -80,11 +80,11 @@ export interface ProjectCopy {
 
 export const projectCopy: Record<string, ProjectCopy> = {
   truckwhat: {
-    kicker: { en: "Founder · Web + Mobile", es: "Fundador · Web + Móvil" },
+    kicker: { en: "Solo build · Web + Mobile", es: "Proyecto propio · Web + Móvil" },
     title: { en: "Logistics marketplace", es: "Mercado de logística" },
     pitch: {
-      en: "My own startup: shippers post loads, drivers haul them. Live GPS tracking that survives dead zones, face-match identity checks, Stripe Connect payouts and a 3D load viewer, built solo across a web app and a mobile app.",
-      es: "Mi propia startup: los remitentes publican cargas y los conductores las transportan. Rastreo GPS en vivo que sobrevive sin señal, verificación de identidad facial, pagos con Stripe Connect y un visor 3D de carga, construido solo en una app web y una app móvil.",
+      en: "A freight marketplace I build solo: shippers post loads, drivers haul them. Live GPS tracking that survives dead zones, face-match identity checks, Stripe Connect payouts and a 3D load viewer, built solo across a web app and a mobile app.",
+      es: "Un mercado de carga que construyo solo: los remitentes publican cargas y los conductores las transportan. Rastreo GPS en vivo que sobrevive sin señal, verificación de identidad facial, pagos con Stripe Connect y un visor 3D de carga, construido solo en una app web y una app móvil.",
     },
     result: {
       en: "800+ web tests and 350+ mobile tests on every push. 200+ row-level security policies. 28 security findings closed.",
@@ -116,7 +116,7 @@ export const projectCopy: Record<string, ProjectCopy> = {
     },
   },
   "smartfit-metrics": {
-    kicker: { en: "Co-founder · Equity", es: "Cofundador · Socio" },
+    kicker: { en: "Engineer · Live in both stores", es: "Ingeniero · En ambas tiendas" },
     title: { en: "Gym membership app", es: "App de membresías de gimnasio" },
     pitch: {
       en: "One of the two engineers who built the entire product: a React Native app and a Bun and Hono API with Stripe membership checkout.",

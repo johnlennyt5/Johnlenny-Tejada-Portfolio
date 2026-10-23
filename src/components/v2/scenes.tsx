@@ -382,7 +382,7 @@ export function MoreWork({ n }: { n: number }) {
             AI on stage, agents in a team, an app in two stores.
           </h2>
           <p className="v2-body mt-5 max-w-md">
-            A keynote avatar, agents built with the yconic team, a small-model challenge and a co-founded gym app.
+            A keynote avatar, agents built with the yconic team, a small-model challenge and a gym app shipped to both stores.
           </p>
         </>
       }

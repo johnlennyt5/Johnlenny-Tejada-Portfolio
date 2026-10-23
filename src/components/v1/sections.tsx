@@ -224,7 +224,7 @@ export function RecordSection({ s }: { s: SectionInfo }) {
         label={s.label}
         title={s.title}
         titleId={`${s.id}-title`}
-        deck="Most recent first: the day job, the company I co-founded, and the chapter before software."
+        deck="Most recent first: the day job, the products I built, and the chapter before software."
       />
       <div className="v1-wrap mt-16">
         {lead ? <ExperienceEntry e={lead} lead /> : null}

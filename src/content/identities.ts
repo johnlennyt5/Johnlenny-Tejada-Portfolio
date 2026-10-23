@@ -26,7 +26,7 @@ export const identities: Identity[] = [
       "I ship tested, secure products end to end: Next.js and React Native front ends, Node and Postgres back ends, payments, CI and security review.",
     proof: [
       "truckWhat runs 800+ Vitest and 350+ Jest tests on every push and enforces 200+ row-level security policies.",
-      "SmartFit Metrics, which I co-founded, is live on the App Store and Google Play.",
+      "SmartFit Metrics, which I helped build as one of its two engineers, is live on the App Store and Google Play.",
       "A security review on truckWhat closed 28 findings.",
     ],
     projects: ["truckwhat", "smartfit-metrics", "prismshift"],

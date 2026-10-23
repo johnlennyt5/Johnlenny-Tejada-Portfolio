@@ -420,7 +420,7 @@ export async function Home() {
                   <T en="Jan 2026 to present" es="Ene 2026 al presente" />
                 </span>
                 <h3>
-                  <T en="Founder" es="Fundador" /> <span>· truckWhat</span>
+                  <T en="Solo Engineer" es="Ingeniero" /> <span>· truckWhat</span>
                 </h3>
                 <TBlock
                   en={<p>Building a logistics marketplace solo, web and mobile.</p>}
@@ -432,11 +432,11 @@ export async function Home() {
                   <T en="May 2025 to Jan 2026" es="May 2025 a ene 2026" />
                 </span>
                 <h3>
-                  <T en="Co-founder & Engineer" es="Cofundador e ingeniero" /> <span>· SmartFit Metrics</span>
+                  <T en="Software Engineer" es="Ingeniero de software" /> <span>· SmartFit Metrics</span>
                 </h3>
                 <TBlock
-                  en={<p>One of two engineers; shipped to the App Store and Google Play. Still hold equity.</p>}
-                  es={<p>Uno de dos ingenieros; publicada en App Store y Google Play. Sigo siendo socio.</p>}
+                  en={<p>One of two engineers; shipped to the App Store and Google Play.</p>}
+                  es={<p>Uno de dos ingenieros; publicada en App Store y Google Play.</p>}
                 />
               </li>
               <li className="tl-item">
@@ -573,7 +573,7 @@ export async function Home() {
                     automatización ahorra, a quién sirve y qué pasa cuando falla.
                   </p>
                   <p>
-                    Hoy construyo IA y automatización en HumanixOS, y en mi tiempo libre construyo startups: truckWhat, PrismShift y
+                    Hoy construyo IA y automatización en HumanixOS, y en mi tiempo libre construyo productos: truckWhat, PrismShift y
                     SmartFit Metrics. Coorganizo hackathons, ayudé a dirigir TEDxProvidence 2025 y enseño a otros a construir con IA, en
                     inglés y español.
                   </p>
@@ -591,7 +591,7 @@ export async function Home() {
               </div>
               <div className="mini">
                 <b>3</b>
-                <T en="startups built" es="startups construidas" />
+                <T en="products built" es="productos construidos" />
               </div>
               <div className="mini">
                 <b>EN + ES</b>

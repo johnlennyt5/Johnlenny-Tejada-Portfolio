@@ -40,14 +40,14 @@ export function Nav() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [palette, setPalette] = useState<PaletteId>(defaultPalette);
   const [mode, setMode] = useState<Mode>("dark");
-  const [bg, setBg] = useState<BackgroundId>("wavegrid");
+  const [bg, setBg] = useState<BackgroundId>("void");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
     setPalette((d.dataset.palette as PaletteId) || defaultPalette);
     setMode(d.dataset.mode === "light" ? "light" : "dark");
-    setBg((d.dataset.bg as BackgroundId) || "wavegrid");
+    setBg((d.dataset.bg as BackgroundId) || "void");
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

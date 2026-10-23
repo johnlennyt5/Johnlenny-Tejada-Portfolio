@@ -55,7 +55,7 @@ export function Frame({ title, children, className = "", bodyClassName = "" }: {
 
 export function teamLabel(project: Project): string {
   if (project.team === "solo") return "Solo build";
-  if (project.team === "co-founder") return "Co-founded";
+  if (project.team === "co-founder") return "2 engineers";
   return "Team build";
 }
 

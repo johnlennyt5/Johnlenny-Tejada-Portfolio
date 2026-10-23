@@ -78,5 +78,5 @@ export function figureItems(): FigureItem[] {
 export const teamLabel: Record<Project["team"], string> = {
   solo: "Solo",
   team: "Team",
-  "co-founder": "Co-founder",
+  "co-founder": "Engineer, one of two",
 };

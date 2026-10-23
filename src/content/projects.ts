@@ -199,7 +199,7 @@ export const projects: Project[] = [
     slug: "truckwhat",
     name: "truckWhat",
     tagline: "Logistics marketplace, web and mobile",
-    role: "Founder and solo engineer",
+    role: "Solo engineer",
     team: "solo",
     dates: { start: "2026-01", end: null, label: "Jan 2026 to present" },
     identities: ["fullstack"],
@@ -225,7 +225,7 @@ export const projects: Project[] = [
       "GitHub Actions",
     ],
     oneLiner:
-      "My own startup: a trucking marketplace where shippers post loads and drivers haul them, with live tracking and payouts across a web app and a mobile app I am building solo.",
+      "A trucking marketplace I am building solo, where shippers post loads and drivers haul them, with live tracking and payouts across a web app and a mobile app I am building solo.",
     summary:
       "truckWhat is a web and mobile logistics marketplace with live tracking, an offline GPS outbox, face-match identity checks and a 3D load viewer. It moves money and stores sensitive data, so it ships behind 800+ Vitest and 350+ Jest tests, 200+ row-level security policies and a closed-out security review.",
     links: [{ label: "truckwhat.com", href: "https://www.truckwhat.com", kind: "site" }],
@@ -243,7 +243,7 @@ export const projects: Project[] = [
       problem:
         "Freight still runs on phone calls, paperwork and trust. Shippers need to know where a load is and that it arrived. Drivers need to get paid quickly. Both sides need to know who they are dealing with. That means live tracking, identity checks and money movement in one product, on the web and in a driver's pocket.",
       constraints: [
-        "One founder building a web app, a mobile app and the Supabase backend behind them.",
+        "One engineer building a web app, a mobile app and the Supabase backend behind them.",
         "It moves money and stores sensitive personal and financial data, such as bank tokens and license details, so security cannot wait for later.",
         "Drivers lose signal on the road, so tracking has to survive dead zones.",
         "There is no QA team. The CI gate is the QA team.",
@@ -328,8 +328,8 @@ export const projects: Project[] = [
   {
     slug: "smartfit-metrics",
     name: "SmartFit Metrics",
-    tagline: "Gym membership app, co-founded",
-    role: "Co-founder and engineer (equity)",
+    tagline: "Gym membership app",
+    role: "Engineer, one of two",
     team: "co-founder",
     dates: { start: "2025-05", end: "2026-01", label: "May 2025 to Jan 2026" },
     identities: ["fullstack"],
@@ -337,7 +337,7 @@ export const projects: Project[] = [
     featured: true,
     stack: ["React Native", "Expo and EAS", "Bun", "Hono", "Supabase", "Stripe"],
     oneLiner:
-      "Co-founded a gym membership product and was one of its two engineers: a React Native app and a Bun and Hono API with Stripe checkout, live on the App Store and Google Play.",
+      "One of the two engineers who built a gym membership product: a React Native app and a Bun and Hono API with Stripe checkout, live on the App Store and Google Play.",
     summary:
       "SmartFit Metrics began as Iron Clad Fitness. I was one of the two people who coded the entire product, built its Stripe membership checkout, and helped ship it to the App Store and Google Play as Ironclad Fitness RI.",
     links: [
@@ -386,7 +386,7 @@ export const projects: Project[] = [
       ],
       tests: [],
       caveats: [
-        "I have since stepped back from day-to-day development. My partner now runs the company and its development full time, and I still hold equity.",
+        "I have since stepped back from day-to-day development, and the company's own team now runs it.",
         "The current feature set on the SmartFit Metrics website includes work done after I stepped back from day-to-day development.",
         "The code repositories are private.",
       ],
