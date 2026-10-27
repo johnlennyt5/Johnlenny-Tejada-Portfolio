@@ -90,10 +90,12 @@ export async function Home() {
             <div className="stage">
               <div className="stage-disc" aria-hidden="true" />
               {/* Ring and skill chips are off by default; the palette menu's "Skill orbit" switch turns them on. */}
-              <svg className="stage-ring" viewBox="0 0 100 100" aria-hidden="true">
-                <circle cx="50" cy="50" r="49" />
-                <circle className="draw" cx="50" cy="50" r="45" pathLength={1000} />
-              </svg>
+              <div className="stage-ring-clip" aria-hidden="true">
+                <svg className="stage-ring" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="49" />
+                  <circle className="draw" cx="50" cy="50" r="45" pathLength={1000} />
+                </svg>
+              </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="stage-photo"

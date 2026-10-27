@@ -996,10 +996,29 @@ html[data-palette] {
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--s-accent) 85%, white 0%) 0%, var(--s-accent) 35%, color-mix(in srgb, var(--s-accent) 40%, var(--s-bg)) 100%);
-  box-shadow:
-    0 0 120px 10px var(--s-glow),
-    inset 0 -30px 60px rgb(0 0 0 / 0.25);
+  box-shadow: inset 0 -30px 60px rgb(0 0 0 / 0.25);
+  /* A 3/4 circle: cut flat at the top of the shoulders so it never shows through the suit. */
+  clip-path: inset(0 0 27% 0);
   animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* The disc's glow lives on its own layer (centered on the disc) and fades out above the cut,
+   so the flat edge never leaves a hard line in the glow. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: -11% -13% -23%;
+  background: radial-gradient(closest-side, var(--s-glow) 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 65%);
+  mask-image: linear-gradient(to bottom, #000 42%, transparent 65%);
+  pointer-events: none;
+  animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* Not rotating, so the ring is cut at the same shoulder line as the disc while it spins. */
+.stage-ring-clip {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(-20% -20% 23.8% -20%);
+  pointer-events: none;
 }
 .stage-ring {
   position: absolute;
@@ -2902,12 +2921,12 @@ html[data-palette="royalflame"] .hero h1 .last {
   background-clip: text;
   color: transparent;
 }
+html[data-palette="royalflame"] .stage::before {
+  background: radial-gradient(closest-side, rgb(9 9 237 / 0.55) 50%, rgb(255 120 40 / 0.3) 70%, transparent 100%);
+}
 html[data-palette="royalflame"] .stage-disc {
   background: radial-gradient(circle at 50% 35%, #ffb02e 0%, #ff6a1f 28%, #0909ed 70%, #05086b 100%);
-  box-shadow:
-    0 0 120px 10px rgb(255 120 40 / 0.35),
-    0 0 90px 0 rgb(9 9 237 / 0.55),
-    inset 0 -30px 60px rgb(0 0 0 / 0.25);
+  box-shadow: inset 0 -30px 60px rgb(0 0 0 / 0.25);
 }
 
 /* Before the Wave Grid canvas is ready, paint a soft CSS version of its glow (sun behind the
