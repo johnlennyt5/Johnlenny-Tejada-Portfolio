@@ -6,13 +6,16 @@ import { profile } from "@/content/profile";
 import {
   BG_KEY,
   MODE_KEY,
+  ORBIT_KEY,
   PALETTE_KEY,
   backgrounds,
+  defaultMode,
   defaultPalette,
   palettes,
   trendPalettes,
   type BackgroundId,
   type Mode,
+  type Orbit,
   type Palette,
   type PaletteId,
 } from "./prefs";
@@ -39,14 +42,16 @@ export function Nav() {
   const [menu, setMenu] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [palette, setPalette] = useState<PaletteId>(defaultPalette);
-  const [mode, setMode] = useState<Mode>("dark");
+  const [mode, setMode] = useState<Mode>(defaultMode);
+  const [orbit, setOrbit] = useState<Orbit>("off");
   const [bg, setBg] = useState<BackgroundId>("void");
   const popRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = document.documentElement;
     setPalette((d.dataset.palette as PaletteId) || defaultPalette);
-    setMode(d.dataset.mode === "light" ? "light" : "dark");
+    setMode(d.dataset.mode === "dark" ? "dark" : "light");
+    setOrbit(d.dataset.orbit === "on" ? "on" : "off");
     setBg((d.dataset.bg as BackgroundId) || "void");
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
@@ -78,6 +83,12 @@ export function Nav() {
     document.documentElement.dataset.mode = next;
     setMode(next);
     save(MODE_KEY, next);
+  }
+
+  function chooseOrbit(next: Orbit) {
+    document.documentElement.dataset.orbit = next;
+    setOrbit(next);
+    save(ORBIT_KEY, next);
   }
 
   function chooseBg(id: BackgroundId) {
@@ -146,6 +157,19 @@ export function Nav() {
             </button>
             {paletteOpen ? (
               <div className="palette-pop">
+                <div>
+                  <div className="palette-head">
+                    <p id="pal-orbit">Skill orbit</p>
+                    <div className="mode-switch" role="group" aria-labelledby="pal-orbit">
+                      {(["off", "on"] as Orbit[]).map((o) => (
+                        <button key={o} type="button" aria-pressed={orbit === o} onClick={() => chooseOrbit(o)}>
+                          {o === "off" ? "Off" : "On"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <small className="palette-note">Spinning ring and skill chips around the photo.</small>
+                </div>
                 <div role="radiogroup" aria-labelledby="pal-bg">
                   <p id="pal-bg">Background</p>
                   <div className="bg-options">

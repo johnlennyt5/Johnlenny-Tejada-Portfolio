@@ -27,17 +27,6 @@ const tech = [
   "Claude Code",
 ];
 
-const botSteps = [
-  { ic: "✉", en: "Document arrives", es: "Llega el documento" },
-  { ic: "✦", en: "AI agent reads it", es: "Un agente de IA lo lee" },
-  { ic: "⚖", en: "Rules check it", es: "Las reglas lo revisan" },
-  {
-    ic: "✓",
-    en: "Human approves edge case",
-    es: "Una persona aprueba la excepción",
-  },
-];
-
 export async function Home() {
   const projects = await Promise.all(
     featuredSlugs.map(async (slug) => {
@@ -100,6 +89,7 @@ export async function Home() {
 
             <div className="stage">
               <div className="stage-disc" aria-hidden="true" />
+              {/* Ring and skill chips are off by default; the palette menu's "Skill orbit" switch turns them on. */}
               <svg className="stage-ring" viewBox="0 0 100 100" aria-hidden="true">
                 <circle cx="50" cy="50" r="49" />
                 <circle className="draw" cx="50" cy="50" r="45" pathLength={1000} />
@@ -139,24 +129,6 @@ export async function Home() {
                 <i className="orbit-dot" />
                 React Native
               </span>
-              <div className="botrun" aria-hidden="true">
-                <div className="botrun-head">
-                  <span>bot_run.xaml</span>
-                  <span className="botrun-live">live</span>
-                </div>
-                <ol>
-                  {botSteps.map((s, i) => (
-                    <li key={s.en} style={{ ["--i" as string]: i }}>
-                      <span className="ic">{s.ic}</span>
-                      {s.en}
-                    </li>
-                  ))}
-                </ol>
-                <div className="botrun-foot">
-                  <s>3 hrs manual</s>
-                  <strong>→ zero-touch</strong>
-                </div>
-              </div>
             </div>
           </div>
 

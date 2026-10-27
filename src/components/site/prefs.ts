@@ -1,8 +1,10 @@
 /* Palette preference. Shared by the boot script and the client toggles. */
 
-export const PALETTE_KEY = "jt-palette";
-export const MODE_KEY = "jt-mode";
+/* "-2": keys renamed when the default moved to Transformative Teal light, so old saved choices reset. */
+export const PALETTE_KEY = "jt-palette-2";
+export const MODE_KEY = "jt-mode-2";
 export const BG_KEY = "jt-bg";
+export const ORBIT_KEY = "jt-orbit";
 
 export type PaletteId =
   | "ember"
@@ -21,6 +23,7 @@ export type PaletteId =
   | "swiss"
   | "sunset";
 export type Mode = "dark" | "light";
+export type Orbit = "on" | "off";
 export type BackgroundId = "void" | "aurora" | "wavegrid" | "swarm" | "field" | "glass";
 
 /** Page backgrounds. "void" is the original solid background with the hero grid. */
@@ -42,7 +45,7 @@ export interface Palette {
 
 /** The site's own palettes. Each has a fixed light or dark look. */
 export const palettes: Palette[] = [
-  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire (default)", swatch: ["#05071c", "#0909ed", "#ff8a1f"] },
+  { id: "royalflame", name: "Royal Flame", mood: "Royal blue into fire", swatch: ["#05071c", "#0909ed", "#ff8a1f"] },
   { id: "ember", name: "Ember", mood: "Warm, bold", swatch: ["#0b0c10", "#ff6b2c"] },
   { id: "volt", name: "Volt", mood: "Electric, sharp", swatch: ["#0a0a0a", "#b6ff2e"] },
   { id: "midnight", name: "Midnight", mood: "Cool, focused", swatch: ["#070d1a", "#38bdf8"] },
@@ -52,7 +55,7 @@ export const palettes: Palette[] = [
 
 /** Trend palettes, matched to the truckWhat splash pages. Each works in dark and light (MODE_KEY). */
 export const trendPalettes: Palette[] = [
-  { id: "teal", name: "Transformative Teal", mood: "Calm, trusted", swatch: ["#e7e5e0", "#14898b", "#e97056", "#0f1f21"] },
+  { id: "teal", name: "Transformative Teal", mood: "Calm, trusted (default)", swatch: ["#e7e5e0", "#14898b", "#e97056", "#0f1f21"] },
   { id: "luminous", name: "Luminous", mood: "Electric, optimistic", swatch: ["#f1f2f6", "#356ef9", "#f64097", "#0c1024"] },
   { id: "harvest", name: "Harvest Road", mood: "Warm, grounded", swatch: ["#f0ebe0", "#b0542f", "#347f5b", "#1a1510"] },
   { id: "espresso", name: "Espresso", mood: "Premium, tactile", swatch: ["#ede8e2", "#9a6d58", "#a02f41", "#191412"] },
@@ -63,7 +66,8 @@ export const trendPalettes: Palette[] = [
   { id: "sunset", name: "Sunset Highway", mood: "Retro-future, warm", swatch: ["#f4ece7", "#de457c", "#ed9b10", "#1f1121"] },
 ];
 
-export const defaultPalette: PaletteId = "royalflame";
+export const defaultPalette: PaletteId = "teal";
+export const defaultMode: Mode = "light";
 
 /**
  * Runs in <head> before first paint so a saved palette never flashes.
@@ -72,4 +76,4 @@ export const defaultPalette: PaletteId = "royalflame";
  */
 export const prefsBootScript = `(function(){var d=document.documentElement;var ids=${JSON.stringify(
   [...palettes, ...trendPalettes].map((p) => p.id),
-)};var p=null,m=null,b=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"void";d.dataset.mode=m==="light"?"light":"dark";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;
+)};var p=null,m=null,b=null,o=null;try{p=localStorage.getItem("${PALETTE_KEY}");m=localStorage.getItem("${MODE_KEY}");b=localStorage.getItem("${BG_KEY}");o=localStorage.getItem("${ORBIT_KEY}")}catch(e){}try{var qb=new URLSearchParams(location.search).get("bg");if(qb)b=qb}catch(e){}d.dataset.bg=${JSON.stringify(["void","aurora","wavegrid","swarm","field","glass"])}.indexOf(b)>-1?b:"void";d.dataset.mode=m==="dark"||m==="light"?m:"${defaultMode}";d.dataset.orbit=o==="on"?"on":"off";try{var q=new URLSearchParams(location.search).get("palette");if(q)p=q}catch(e){}d.dataset.palette=ids.indexOf(p)>-1?p:"${defaultPalette}";if(location.hash.length>1)d.dataset.cv="off";document.addEventListener("click",function(e){var t=e.target;var a=t&&t.closest?t.closest("a[href*='#']"):null;if(a)d.dataset.cv="off"},true)})();`;
